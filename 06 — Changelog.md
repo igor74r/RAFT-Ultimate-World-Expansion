@@ -126,3 +126,10 @@ The final candidate was rebuilt after enabling bounded field inspection for each
 - Refined the metadata-only probe plan with provisional global/per-type budgets, a versioned line-oriented output contract, and explicit Reflection allocation/time-bound caveats.
 - Added regression requirements RB01–RB15 for global caps, escaping, deterministic output, error handling and honest completion status.
 - Design only: no C# source, package, local installation, game process, save or runtime state was changed.
+
+
+## v0.1.3 build-compatibility constraints — 2026-11-06
+
+- Recorded repository project settings: legacy MSBuild ToolsVersion 15.0, .NET Framework target v4.8, C# language version 7.3, library output and deterministic compilation.
+- Clarified that project target framework does not prove the game's actual runtime or compiler version.
+- Added source-compatibility guardrails for the planned metadata probe; no project format, dependency, C# source or package was changed.
