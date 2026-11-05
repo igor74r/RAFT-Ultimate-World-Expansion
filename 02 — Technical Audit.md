@@ -62,3 +62,15 @@ The final candidate was rebuilt after enabling bounded field inspection for each
 The later installation record supersedes older paragraphs in this file that say the installed package is still the lifecycle-only build or that Raft.exe was running during staging. The user closed Raft; the prior installed package was backed up; v0.1.2 was copied into the Raft mods directory and its SHA-256 matched the verified candidate. Current truth: v0.1.2 is staged/installed at file level; no v0.1.2 in-game load has yet been observed. User requested continuation without launching the game, so current work remains static/offline research and code review.
 
 [executed on device: DESKTOP-3MKBODB (8088b63f-2a05-4f71-a7a4-ad740486ff11)]
+
+## Repository-only status reconciliation — 2026-11-06
+
+This section supersedes contradictory earlier status paragraphs in this file:
+
+- **v0.1.1:** the first read-only World probe was runtime-confirmed by the user's F10 screenshot. Its observed counts are documented above and are limited to the tested Raft 1.1.01 / Steam build 22312909 / RML 2.8.10 setup.
+- **v0.1.2:** the final candidate source/package was built and hash-verified on the user's Windows machine, and the candidate was staged into the local Raft mods directory after backing up the prior package. This repository-only session did not inspect that machine, re-verify the installed file, compile, or launch Raft. Therefore the repository records the prior staging report as historical evidence, but **v0.1.2 runtime validation remains pending**.
+- The repository contains the selected source and documentation, not the local game assemblies, full Unity project, generated metadata dump, or packaged release artifacts. Static IL/ownership analysis cannot be completed from this repository alone.
+- The portable MSBuild path changes were reviewed as text in the committed project file. They have not been compiled on a second machine in this workflow.
+- Custom AssetBundle registration, custom Landmark registration, custom ChunkPointType support, persistence, and multiplayer remain unproven.
+
+**Operating boundary:** current work is GitHub-repository-only. Do not claim fresh local build, installation, package hash verification, or runtime testing unless new evidence is supplied.
