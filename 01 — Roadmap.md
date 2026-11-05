@@ -91,3 +91,15 @@ The later installation record supersedes older paragraphs in this file that say 
 - [ ] Do not implement registration or placement adapters until the relevant call order, ownership, ID rules and authority are proven.
 
 **Status correction:** v0.1.1 diagnostic runtime evidence is confirmed. v0.1.2 build/package and file staging are historical reports; v0.1.2 in-game load/probe remains unconfirmed. This work session made no local verification, compilation, installation, or game launch.
+
+
+## Landmark API evidence matrix — repository-only update (2026-11-06)
+
+- [x] Consolidated recorded API observations into `01 — Research/Landmark API Evidence Matrix.md`.
+- [x] Separated exact runtime observations from member-name-only/static audit notes.
+- [x] Listed missing proof for manager ownership, AssetBundle call graph, registration semantics, Landmark ID allocation, scene/bundle key conventions, persistence and network authority.
+- [x] Added a capture template for exact signatures, assembly hashes, call sites and relevant IL behavior.
+- [ ] Obtain text-only metadata/IL evidence for the target build; raw game assemblies are not in this repository.
+- [ ] Do not implement registration/placement code until the missing contracts are proven.
+
+This update is documentation-only. It does not independently verify local DLLs or the v0.1.2 runtime candidate.
