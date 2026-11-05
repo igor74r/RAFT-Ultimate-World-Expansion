@@ -24,7 +24,7 @@ This section is the single current status summary. Older entries below are retai
 - v0.1.2 Diagnostic Source Review — source-level limitations and proposed v0.1.3 metadata-only scope.
 
 ## Immediate next milestone
-Prepare a reviewable, metadata-only v0.1.3 implementation plan and test/evidence checklist. Do not edit C# source or claim an implementation until the user authorizes the local build/test workflow or provides the required target-build metadata/IL as repository artifacts.
+[x] Added `01 — Research/v0.1.3 Metadata Probe Implementation Plan.md` with metadata-only scope, safety checklist, acceptance tests M01–M12 and release gates G0–G5. [ ] Review the design and obtain target-build metadata/IL before any C# implementation. Do not build/package v0.1.3 while operating repository-only.
 
 ## World-generation implementation gate
 No registration adapter, custom numeric Landmark ID, custom ChunkPointType, AssetBundle load, scene instantiation, world mutation, save write, or network message is approved until manager ownership, call order, key format, identity allocation and host authority are established from exact target-build evidence.
@@ -147,3 +147,15 @@ This update is documentation-only. It does not independently verify local DLLs o
 - [ ] Obtain exact target-build metadata/IL to resolve manager ownership, registration semantics, stable ID allocation, persistence and network authority.
 
 The source review is not a runtime test and does not change the v0.1.2 status.
+
+
+## v0.1.3 metadata probe plan — repository-only update (2026-11-06)
+
+- [x] Added the design-only v0.1.3 Metadata Probe Implementation Plan.
+- [x] Defined target type allowlist, full type/member identity requirements, deterministic bounded output, truncation reporting and exception isolation.
+- [x] Added explicit safety prohibitions and acceptance tests M01–M12.
+- [x] Added release gates G0–G5 and clarified that metadata does not replace IL/call-site analysis.
+- [ ] Review the design; obtain exact target-build metadata/IL before source implementation.
+- [ ] Keep C# implementation, build, packaging and runtime validation deferred under repository-only mode.
+
+No code or package was changed, and no local machine or game process was accessed.
