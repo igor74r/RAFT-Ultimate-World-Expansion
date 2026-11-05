@@ -75,3 +75,15 @@ The final candidate was rebuilt after enabling bounded field inspection for each
 The later installation record supersedes older paragraphs in this file that say the installed package is still the lifecycle-only build or that Raft.exe was running during staging. The user closed Raft; the prior installed package was backed up; v0.1.2 was copied into the Raft mods directory and its SHA-256 matched the verified candidate. Current truth: v0.1.2 is staged/installed at file level; no v0.1.2 in-game load has yet been observed. User requested continuation without launching the game, so current work remains static/offline research and code review.
 
 [executed on device: DESKTOP-3MKBODB (8088b63f-2a05-4f71-a7a4-ad740486ff11)]
+
+## Repository-only evidence reconciliation — 2026-11-06
+
+This section supersedes earlier v0.1.2 test rows that say the candidate was not installed or that Raft.exe prevented staging.
+
+- v0.1.1 read-only World probe: **PASS** for runtime execution on the tested configuration, based on the user's F10 screenshot.
+- v0.1.2 candidate build/package validation: **PASS historically**, as recorded in the prior local build and integrity reports.
+- v0.1.2 file staging: **reported PASS historically**; the prior package was backed up and the candidate hash was reported to match the staged file.
+- v0.1.2 in-game load and F10 probe: **NOT RUN / NOT CONFIRMED**.
+- Current repository-only continuation: no local files, process state, game installation, or package hashes were rechecked; no compilation or game launch was performed.
+
+Do not interpret historical file-staging evidence as a successful RML load or runtime probe.
