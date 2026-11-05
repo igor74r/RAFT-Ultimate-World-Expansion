@@ -100,3 +100,19 @@ These observations do not prove custom island registration or generation.
 v0.1.2 is a diagnostic candidate, not custom world generation.
 
 [executed on device: DESKTOP-3MKBODB (8088b63f-2a05-4f71-a7a4-ad740486ff11)]
+
+## Repository-only status correction — 2026-11-06
+
+This section supersedes stale statuses in the earlier World module tables:
+
+| Subsystem | Current status | Evidence boundary |
+|---|---|---|
+| World.Core | v0.1.1 read-only diagnostic runtime-confirmed; v0.1.2 bounded diagnostic candidate historically built/staged, runtime pending | User-provided F10 evidence confirms v0.1.1 only. No fresh local verification in the current repository-only session. |
+| World.Chunks | Vanilla structures discovered; v0.1.1 counts observed; v0.1.2 deeper enumeration awaits runtime output | No custom point insertion or spawn-rule mutation tested. |
+| World.Landmarks | Vanilla metadata inventory observed; custom Landmark registration research | 38 is metadata count, not spawned Landmark count. |
+| World.AssetBundles | Static API surface documented; integration unresolved | Type/method discovery is not proof of mod bundle registration. |
+| World.Persistence | Research | No custom save format, migration, or reload test. |
+| World.Network | Research | No custom authority or replication test. |
+| World.Biomes | Planned | No custom biome extension point confirmed. |
+
+Do not label World module as implemented: only diagnostic code exists in the selected Core entry point. Custom world generation is not implemented.
