@@ -1,3 +1,18 @@
+# Authoritative repository-only status — 2026-11-06
+
+This block supersedes conflicting older status paragraphs below. Older build and installation records are historical reports, not fresh verification.
+
+- v0.1.1: read-only runtime probe confirmed by user-provided F10 output on Raft 1.1.01 / Steam 22312909 / RML 2.8.10.
+- v0.1.2: source is in GitHub. Strict compile, package integrity and file staging were reported in earlier local sessions; none were re-run in the current repository-only workflow.
+- v0.1.2 in-game load and probe: not confirmed.
+- v0.1.3: not implemented; only a metadata-only research scope is documented.
+- Custom Landmark registration, AssetBundle integration, placement, persistence and multiplayer: unproven/not implemented.
+- No local machine, build, installation, game process, save or runtime state was accessed or changed during the current work.
+
+See `01 — Roadmap.md` for the single current project status and `01 — Research/v0.1.2 Diagnostic Source Review.md` for the proposed next diagnostic scope.
+
+---
+
 [Reading 60 lines from start (total: 60 lines, 0 remaining)]
 
 
