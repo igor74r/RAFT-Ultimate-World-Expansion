@@ -107,3 +107,14 @@ Architecture boundaries:
 The proposed string keys are provisional mod-side identifiers. No numeric Landmark ID is assigned. No custom ChunkPointType is proposed. The sequence is static contract → offline asset package → isolated registration → controlled placement → cleanup → persistence → multiplayer.
 
 The prototype is specified, not implemented. Do not create adapter classes or call AssetBundle/SceneLoader methods based only on their names.
+
+
+## Landmark API evidence matrix — 2026-11-06
+
+The detailed evidence table is maintained in [[Landmark API Evidence Matrix]]. Current conclusions:
+- ChunkManager, SceneLoader, Landmark, AssetBundleManager and AssetBundleHooker member names are recorded from prior local audit notes.
+- Most exact signatures, ownership, call order and IL semantics are not preserved in this repository.
+- v0.1.1 runtime counts are distinct from v0.1.2 source-level metadata inspection.
+- No custom AssetBundle registration, custom numeric ID allocation, persistence or network extension point is confirmed.
+
+Architecture remains blocked at the registration-contract stage. No adapter implementation is approved.
