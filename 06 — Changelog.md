@@ -119,3 +119,10 @@ The final candidate was rebuilt after enabling bounded field inspection for each
 - Identified full-array materialization before output caps, missing global output budget, first-match type lookup, runtime-value output and early completion-latch risks.
 - Recorded v0.1.3 design corrections and regression cases B-T01–B-T10.
 - No C# source, package, local installation, game process, or save was changed.
+
+
+## v0.1.3 resource budget refinement — 2026-11-06
+
+- Refined the metadata-only probe plan with provisional global/per-type budgets, a versioned line-oriented output contract, and explicit Reflection allocation/time-bound caveats.
+- Added regression requirements RB01–RB15 for global caps, escaping, deterministic output, error handling and honest completion status.
+- Design only: no C# source, package, local installation, game process, save or runtime state was changed.
