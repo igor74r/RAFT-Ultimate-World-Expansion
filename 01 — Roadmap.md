@@ -66,3 +66,16 @@ The final candidate was rebuilt after enabling bounded field inspection for each
 The later installation record supersedes older paragraphs in this file that say the installed package is still the lifecycle-only build or that Raft.exe was running during staging. The user closed Raft; the prior installed package was backed up; v0.1.2 was copied into the Raft mods directory and its SHA-256 matched the verified candidate. Current truth: v0.1.2 is staged/installed at file level; no v0.1.2 in-game load has yet been observed. User requested continuation without launching the game, so current work remains static/offline research and code review.
 
 [executed on device: DESKTOP-3MKBODB (8088b63f-2a05-4f71-a7a4-ad740486ff11)]
+
+## Repository-only continuation — 2026-11-06
+
+- [x] Reconciled the current repository state against README, Technical Audit, World Generation API Audit, source and build configuration.
+- [x] Added `01 — Research/AssetBundle and Landmark Integration Plan.md` with evidence levels and a static investigation checklist.
+- [x] Added the new research plan to the README.
+- [x] Reviewed the portable MSBuild properties in the RML project: `RaftDir`, `RaftManagedDir`, `RmlDataDir`, `RmlPublicizedDir`, and `RmlBinariesDir` are defined and used by reference HintPaths. This is source inspection only; no new build was run.
+- [ ] Inspect AssetBundleManager/AssetBundleHooker/SceneLoader IL and ownership/call order from repository-accessible metadata. The raw game assemblies are not stored in this repository, so this step requires a metadata dump or disassembly artifact to be added before code-level conclusions can be made.
+- [ ] Validate the v0.1.2 read-only probe in-game only when the user explicitly chooses to launch Raft.
+
+**Current operating constraint:** repository-only work. Do not access the local Windows project, compile, install packages, or launch Raft unless the user changes this instruction.
+
+**Current technical decision:** custom Landmark/AssetBundle registration remains unproven. Do not implement a guessed registration call or custom ChunkPointType.
