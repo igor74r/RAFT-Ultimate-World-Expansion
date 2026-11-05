@@ -86,3 +86,10 @@ The final candidate was rebuilt after enabling bounded field inspection for each
 - Added `01 — Research/Landmark API Evidence Matrix.md` with recorded member observations, runtime/static evidence boundaries, missing proof and an IL capture template.
 - Linked the matrix from README, Roadmap and Architecture.
 - No game API calls, C# implementation, local build, game launch, or save modification occurred.
+
+
+## v0.1.2 diagnostic source review — 2026-11-06
+
+- Added `01 — Research/v0.1.2 Diagnostic Source Review.md`.
+- Audited the checked-in diagnostic source for coverage limits and defined a safe metadata-only v0.1.3 research scope.
+- No code, package version, local build, game process, save or runtime state was changed.
