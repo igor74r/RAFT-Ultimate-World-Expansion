@@ -102,3 +102,10 @@ Repository-only limitation: because the raw assemblies/IL are absent from GitHub
 ## Diagnostic source coverage note
 
 The checked-in v0.1.2 source review is documented in [[v0.1.2 Diagnostic Source Review]]. Its bounded reflection output is not a complete API contract: it omits key Landmark data types, constructor/property detail, assembly-qualified signatures and call-site/IL semantics. Do not treat an absent item in its capped output as proof that the member does not exist.
+
+
+## v0.1.3 metadata probe design
+
+See the repository document `01 — Research/v0.1.3 Metadata Probe Implementation Plan.md` for the design-only type allowlist, metadata-only member coverage, deterministic bounded output, duplicate handling, truncation reporting, exception isolation, safety checklist, acceptance tests M01–M12, and release gates G0–G5.
+
+Status: design-only. The plan does not supply missing target-build signatures or IL semantics. It does not authorize C# implementation, package creation, Landmark registration, or world mutation.
