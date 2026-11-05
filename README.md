@@ -7,11 +7,12 @@
 - Raft: **1.1.01** (Steam build **22312909**)
 - Raft Mod Loader: **2.8.10**
 - Последний кандидат: **v0.1.2 — read-only World Probe**
-- Core strict preflight compile: passed
-- RML package integrity: verified
-- v0.1.2 package staged in the local game's mods folder; **in-game validation is pending**
+- v0.1.1 read-only probe: **runtime confirmed**
+- v0.1.2 build/package and file staging: **historical reports; not freshly verified**
+- v0.1.2 in-game load/probe: **not confirmed**
+- v0.1.3: **not implemented**; metadata-only research scope documented
 - Custom island/world generation: **not implemented**
-- Current work: static/offline research of Landmark, SceneLoader, AssetBundle and world-generation lifecycle. The game does not need to be launched for this research.
+- Current work: repository-only static research and documentation; no local build or game launch
 
 ## Project documentation
 
@@ -40,6 +41,5 @@
 ## Build
 
 The RML project source and Core source are under their respective directories. The RML `.csproj` uses overridable MSBuild properties: `RaftDir` (default Steam install), `RmlDataDir` (default `%APPDATA%\\RaftModLoader`), `RmlPublicizedDir`, and `RmlBinariesDir`. The Core build script accepts the `RAFT_DIR` environment variable (default Steam install). Set these values for non-standard installations before building. These path-portability edits have not yet been compiled on a second machine.
-- [Landmark API Evidence Matrix
+- [Landmark API Evidence Matrix](01%20%E2%80%94%20Research/Landmark%20API%20Evidence%20Matrix.md)
 - [v0.1.2 Diagnostic Source Review](01%20%E2%80%94%20Research/v0.1.2%20Diagnostic%20Source%20Review.md)
-](01%20%E2%80%94%20Research/Landmark%20API%20Evidence%20Matrix.md)
