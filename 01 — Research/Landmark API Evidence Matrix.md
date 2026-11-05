@@ -97,3 +97,8 @@ Preserve raw metadata or IL excerpts with the target assembly hash. Do not uploa
 **No registration adapter or placement code is authorized by this matrix.** It records partial evidence and names the missing proof. The next implementation decision is blocked until the call graph, manager ownership, identity rules and bundle naming contract are supported by actual metadata/IL evidence.
 
 Repository-only limitation: because the raw assemblies/IL are absent from GitHub, this session can organize known audit evidence but cannot independently complete the static analysis. No local machine, build, Raft process, save, or runtime test was accessed or changed.
+
+
+## Diagnostic source coverage note
+
+The checked-in v0.1.2 source review is documented in [[v0.1.2 Diagnostic Source Review]]. Its bounded reflection output is not a complete API contract: it omits key Landmark data types, constructor/property detail, assembly-qualified signatures and call-site/IL semantics. Do not treat an absent item in its capped output as proof that the member does not exist.
