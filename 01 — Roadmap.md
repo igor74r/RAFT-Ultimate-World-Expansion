@@ -159,3 +159,14 @@ The source review is not a runtime test and does not change the v0.1.2 status.
 - [ ] Keep C# implementation, build, packaging and runtime validation deferred under repository-only mode.
 
 No code or package was changed, and no local machine or game process was accessed.
+
+
+## v0.1.2 diagnostic boundedness audit — repository-only update (2026-11-06)
+
+- [x] Reviewed the checked-in v0.1.2 RML source for allocation, reflection, enumeration and output limits.
+- [x] Documented that several output caps occur after APIs have already materialized full arrays.
+- [x] Recorded missing global output budget, duplicate-type first-match behavior, runtime-value output and early completion-latch risks.
+- [x] Added required v0.1.3 design corrections and regression cases B-T01–B-T10 in `01 — Research/v0.1.2 Diagnostic Boundedness Audit.md`.
+- [ ] Carry these requirements into v0.1.3 acceptance before source implementation.
+
+This is a static source review only. No code, package, local installation, game process or save was changed.
