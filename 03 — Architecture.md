@@ -92,3 +92,18 @@ The read-only diagnostic pass now maps bounded contents of ChunkManager.chunkPoi
 Candidate compiled and packaged, but remains unvalidated in a live game. Do not interpret the new code as proof of custom island registration.
 
 [executed on device: DESKTOP-3MKBODB (8088b63f-2a05-4f71-a7a4-ad740486ff11)]
+
+## First Landmark prototype — design baseline (2026-11-06)
+
+The first content prototype is defined in [[First Landmark Prototype Specification]]. It is a tiny original test Landmark, not a production island or procedural generation feature.
+
+Architecture boundaries:
+- WorldContentManifest owns mod-side namespaced content identity.
+- LandmarkAssetProvider may own embedded bundle bytes and bundle lifetime only after the RML/Unity path is verified.
+- LandmarkRegistrationAdapter may call only a proven Raft registration path.
+- LandmarkLifecycleObserver is diagnostic and read-only.
+- Placement, persistence and network adapters remain deferred until their authority and serialization contracts are established.
+
+The proposed string keys are provisional mod-side identifiers. No numeric Landmark ID is assigned. No custom ChunkPointType is proposed. The sequence is static contract → offline asset package → isolated registration → controlled placement → cleanup → persistence → multiplayer.
+
+The prototype is specified, not implemented. Do not create adapter classes or call AssetBundle/SceneLoader methods based only on their names.
