@@ -102,3 +102,12 @@ The final candidate was rebuilt after enabling bounded field inspection for each
 - Repaired README research links and added the missing prototype specification link.
 - Added the same evidence boundary to Technical Audit.
 - No code, package, local installation, game process, or save was changed.
+
+
+## v0.1.3 metadata probe design — 2026-11-06
+
+- Added 01 — Research/v0.1.3 Metadata Probe Implementation Plan.md.
+- Specified metadata-only type/member inventory, deterministic output, bounded limits, duplicate handling, truncation and exception isolation.
+- Added source safety checklist, acceptance tests M01–M12, and release gates G0–G5.
+- Linked the plan from README, Roadmap and Landmark API Evidence Matrix.
+- Design only: no C# source, package, local installation, game process, save or runtime state was changed.
