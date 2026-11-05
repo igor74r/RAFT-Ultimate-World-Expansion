@@ -111,3 +111,11 @@ The final candidate was rebuilt after enabling bounded field inspection for each
 - Added source safety checklist, acceptance tests M01–M12, and release gates G0–G5.
 - Linked the plan from README, Roadmap and Landmark API Evidence Matrix.
 - Design only: no C# source, package, local installation, game process, save or runtime state was changed.
+
+
+## v0.1.2 diagnostic boundedness audit — 2026-11-06
+
+- Added `01 — Research/v0.1.2 Diagnostic Boundedness Audit.md` after static review of the checked-in RML source.
+- Identified full-array materialization before output caps, missing global output budget, first-match type lookup, runtime-value output and early completion-latch risks.
+- Recorded v0.1.3 design corrections and regression cases B-T01–B-T10.
+- No C# source, package, local installation, game process, or save was changed.
