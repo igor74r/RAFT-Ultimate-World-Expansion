@@ -25,6 +25,7 @@
 - [Known Issues](07%20%E2%80%94%20Known%20Issues.md)
 - [RML API map](01%20%E2%80%94%20Research/RML%20API%20map.md)
 - [World Generation API Audit](01%20%E2%80%94%20Research/World%20Generation%20API%20Audit.md)
+- [AssetBundle and Landmark Integration Plan](01%20%E2%80%94%20Research/AssetBundle%20and%20Landmark%20Integration%20Plan.md)
 
 ## Development rules
 
