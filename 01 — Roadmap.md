@@ -103,3 +103,14 @@ The later installation record supersedes older paragraphs in this file that say 
 - [ ] Do not implement registration/placement code until the missing contracts are proven.
 
 This update is documentation-only. It does not independently verify local DLLs or the v0.1.2 runtime candidate.
+
+
+## v0.1.2 source review — repository-only update (2026-11-06)
+
+- [x] Reviewed the checked-in Core/RML diagnostic source without executing it.
+- [x] Documented coverage boundaries: short-name type discovery, first valid-scene component selection, declared-member caps, abbreviated signatures, omitted LandmarkData/AsyncedLandmark types, and lack of IL/call-site analysis.
+- [x] Defined a proposed v0.1.3 metadata-only scope, explicitly excluding all game mutations and AssetBundle/scene registration calls.
+- [ ] Do not implement or package v0.1.3 while operating repository-only.
+- [ ] Obtain exact target-build metadata/IL to resolve manager ownership, registration semantics, stable ID allocation, persistence and network authority.
+
+The source review is not a runtime test and does not change the v0.1.2 status.
