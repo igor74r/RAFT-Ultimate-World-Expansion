@@ -93,3 +93,12 @@ The final candidate was rebuilt after enabling bounded field inspection for each
 - Added `01 — Research/v0.1.2 Diagnostic Source Review.md`.
 - Audited the checked-in diagnostic source for coverage limits and defined a safe metadata-only v0.1.3 research scope.
 - No code, package version, local build, game process, save or runtime state was changed.
+
+
+## Repository status and README correction — 2026-11-06
+
+- Added an authoritative status block to Roadmap to supersede conflicting historical checklist entries.
+- Corrected README's current status to distinguish v0.1.1 runtime confirmation from v0.1.2 historical build/staging reports and unconfirmed in-game validation.
+- Repaired README research links and added the missing prototype specification link.
+- Added the same evidence boundary to Technical Audit.
+- No code, package, local installation, game process, or save was changed.
