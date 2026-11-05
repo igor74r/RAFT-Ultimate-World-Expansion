@@ -79,3 +79,15 @@ The later installation record supersedes older paragraphs in this file that say 
 **Current operating constraint:** repository-only work. Do not access the local Windows project, compile, install packages, or launch Raft unless the user changes this instruction.
 
 **Current technical decision:** custom Landmark/AssetBundle registration remains unproven. Do not implement a guessed registration call or custom ChunkPointType.
+
+
+## First Landmark prototype design — repository-only update (2026-11-06)
+
+- [x] Defined a minimal original test Landmark and provisional mod-owned content keys in `01 — Research/First Landmark Prototype Specification.md`.
+- [x] Defined explicit non-goals: no custom ChunkPointType, no vanilla spawn-rule mutation, no production gameplay systems, no valuable-save testing.
+- [x] Defined lifecycle proof obligations and acceptance gates P0–P6: static contract, offline asset package, registration, placement, cleanup, persistence and multiplayer.
+- [x] Linked the specification from README and Architecture.
+- [ ] Build the API evidence matrix from actual metadata/IL for AssetBundleManager, AssetBundleHooker, SceneLoader, Landmark and LandmarkData. Required raw assemblies/IL are not in this repository.
+- [ ] Do not implement registration or placement adapters until the relevant call order, ownership, ID rules and authority are proven.
+
+**Status correction:** v0.1.1 diagnostic runtime evidence is confirmed. v0.1.2 build/package and file staging are historical reports; v0.1.2 in-game load/probe remains unconfirmed. This work session made no local verification, compilation, installation, or game launch.
