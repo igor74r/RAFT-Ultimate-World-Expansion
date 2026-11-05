@@ -64,3 +64,10 @@ The final candidate was rebuilt after enabling bounded field inspection for each
 - Linked the new plan from README.
 - Reviewed portable MSBuild property definitions and HintPath usage in the repository; no compilation was performed.
 - No game files, local project files, saves, or runtime state were accessed or changed.
+
+
+## Evidence/status reconciliation — 2026-11-06
+
+- Corrected Technical Audit and Modules status descriptions to distinguish v0.1.1 runtime evidence from v0.1.2 historical build/staging evidence.
+- Added an explicit repository-only evidence boundary: no fresh local verification, compilation, or game launch occurred.
+- Clarified that custom Landmark/AssetBundle registration, custom chunk types, persistence and multiplayer remain unproven.
