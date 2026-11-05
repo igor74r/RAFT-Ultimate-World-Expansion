@@ -79,3 +79,10 @@ The final candidate was rebuilt after enabling bounded field inspection for each
 - Defined the first isolated Landmark's provisional identity, minimal original scene scope, logical responsibilities, lifecycle proof obligations, safety rules and P0–P6 acceptance gates.
 - Linked the specification from README and Architecture.
 - No C# implementation, asset bundle, game file, save, or runtime state was changed.
+
+
+## Landmark API evidence matrix — 2026-11-06
+
+- Added `01 — Research/Landmark API Evidence Matrix.md` with recorded member observations, runtime/static evidence boundaries, missing proof and an IL capture template.
+- Linked the matrix from README, Roadmap and Architecture.
+- No game API calls, C# implementation, local build, game launch, or save modification occurred.
