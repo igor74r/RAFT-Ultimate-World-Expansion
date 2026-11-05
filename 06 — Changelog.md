@@ -71,3 +71,11 @@ The final candidate was rebuilt after enabling bounded field inspection for each
 - Corrected Technical Audit and Modules status descriptions to distinguish v0.1.1 runtime evidence from v0.1.2 historical build/staging evidence.
 - Added an explicit repository-only evidence boundary: no fresh local verification, compilation, or game launch occurred.
 - Clarified that custom Landmark/AssetBundle registration, custom chunk types, persistence and multiplayer remain unproven.
+
+
+## First Landmark prototype specification — 2026-11-06
+
+- Added `01 — Research/First Landmark Prototype Specification.md`.
+- Defined the first isolated Landmark's provisional identity, minimal original scene scope, logical responsibilities, lifecycle proof obligations, safety rules and P0–P6 acceptance gates.
+- Linked the specification from README and Architecture.
+- No C# implementation, asset bundle, game file, save, or runtime state was changed.
