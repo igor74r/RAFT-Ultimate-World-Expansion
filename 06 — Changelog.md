@@ -133,3 +133,12 @@ The final candidate was rebuilt after enabling bounded field inspection for each
 - Recorded repository project settings: legacy MSBuild ToolsVersion 15.0, .NET Framework target v4.8, C# language version 7.3, library output and deterministic compilation.
 - Clarified that project target framework does not prove the game's actual runtime or compiler version.
 - Added source-compatibility guardrails for the planned metadata probe; no project format, dependency, C# source or package was changed.
+
+
+## v0.1.3 Type Discovery and Reflection Safety Specification — 2026-11-06
+
+- Added `01 — Research/v0.1.3 Type Discovery and Reflection Safety Specification.md`.
+- Defined the nine-type allowlist, short-name versus exact-FullName matching, duplicate/ambiguity rules, loaded-assembly-only discovery, and safe handling of `ReflectionTypeLoadException` and null type slots.
+- Specified deterministic type/member identity, metadata-only inventory, explicit side-effect prohibitions, bounded failure isolation, terminal status semantics, and acceptance tests TD01–TD20.
+- Linked the specification from README and Roadmap.
+- Design/documentation only: no C# source, build, package, local installation, game process, save, or runtime state was changed.
