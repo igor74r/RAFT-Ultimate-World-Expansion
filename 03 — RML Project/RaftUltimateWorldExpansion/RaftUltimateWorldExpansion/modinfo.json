@@ -1,0 +1,20 @@
+[Reading 16 lines from start (total: 16 lines, 0 remaining)]
+
+﻿{
+    "name":  "Raft: Ultimate World Expansion",
+    "slug":  "raft-ultimate-world-expansion",
+    "author":  "",
+    "description":  "A large-scale world expansion for Raft.",
+    "version":  "0.1.2",
+    "license":  "UNLICENSED",
+    "icon":  "icon.png",
+    "banner":  "banner.jpg",
+    "gameVersion":  "Raft Update 1.1",
+    "requiredByAllPlayers":  false,
+    "isModPermanent":  false,
+    "excludedFiles":  [
+
+                      ]
+}
+
+[executed on device: DESKTOP-3MKBODB (8088b63f-2a05-4f71-a7a4-ad740486ff11)]
