@@ -1,3 +1,36 @@
+# Authoritative current status — 2026-11-06
+
+This section is the single current status summary. Older entries below are retained as historical session records and must not be read as current instructions or status when they conflict with this section.
+
+## Operating mode
+- Repository-only. No local Windows access, compilation, package installation, or Raft launch unless the user explicitly changes this constraint.
+- All local build/staging/runtime facts below are historical reports from earlier sessions, not fresh verification in this session.
+
+## Version and test evidence
+| Item | Current status | Evidence boundary |
+|---|---|---|
+| v0.1.1 lifecycle/read-only probe | Runtime-confirmed PASS | User-provided F10 output; Raft 1.1.01 / Steam 22312909 / RML 2.8.10 |
+| v0.1.2 source | Present in repository | Source review only |
+| v0.1.2 strict compile/package | Historically reported PASS | Prior local report; not rerun |
+| v0.1.2 file staging | Historically reported SHA match | Prior local report; not rechecked on device |
+| v0.1.2 in-game load/probe | NOT CONFIRMED | No v0.1.2 runtime output recorded |
+| v0.1.3 | NOT IMPLEMENTED | Research requirements only |
+| Custom Landmark/AssetBundle registration | NOT PROVEN | No verified call graph or IL evidence |
+| Custom placement, persistence, multiplayer | NOT IMPLEMENTED / NOT TESTED | Contracts unresolved |
+
+## Current research deliverables
+- First Landmark Prototype Specification — design only.
+- Landmark API Evidence Matrix — partial evidence transcribed from prior audit notes; not a fresh assembly inspection.
+- v0.1.2 Diagnostic Source Review — source-level limitations and proposed v0.1.3 metadata-only scope.
+
+## Immediate next milestone
+Prepare a reviewable, metadata-only v0.1.3 implementation plan and test/evidence checklist. Do not edit C# source or claim an implementation until the user authorizes the local build/test workflow or provides the required target-build metadata/IL as repository artifacts.
+
+## World-generation implementation gate
+No registration adapter, custom numeric Landmark ID, custom ChunkPointType, AssetBundle load, scene instantiation, world mutation, save write, or network message is approved until manager ownership, call order, key format, identity allocation and host authority are established from exact target-build evidence.
+
+---
+
 [Reading 64 lines from start (total: 64 lines, 0 remaining)]
 
 
