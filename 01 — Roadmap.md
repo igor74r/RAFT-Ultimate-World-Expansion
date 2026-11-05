@@ -22,6 +22,7 @@ This section is the single current status summary. Older entries below are retai
 - First Landmark Prototype Specification — design only.
 - Landmark API Evidence Matrix — partial evidence transcribed from prior audit notes; not a fresh assembly inspection.
 - v0.1.2 Diagnostic Source Review — source-level limitations and proposed v0.1.3 metadata-only scope.
+- v0.1.3 Type Discovery and Reflection Safety Specification — design-only contract for candidate identity, ambiguity, exception isolation, member metadata, safety and regression tests.
 
 ## Immediate next milestone
 [x] Added `01 — Research/v0.1.3 Metadata Probe Implementation Plan.md` with metadata-only scope, safety checklist, acceptance tests M01–M12 and release gates G0–G5. [ ] Review the design and obtain target-build metadata/IL before any C# implementation. Do not build/package v0.1.3 while operating repository-only.
@@ -170,3 +171,15 @@ No code or package was changed, and no local machine or game process was accesse
 - [ ] Carry these requirements into v0.1.3 acceptance before source implementation.
 
 This is a static source review only. No code, package, local installation, game process or save was changed.
+
+
+## v0.1.3 type discovery and reflection safety — repository-only update (2026-11-06)
+
+- [x] Added the Type Discovery and Reflection Safety Specification for all nine required target types.
+- [x] Defined loaded-assembly-only scanning, deterministic identities, duplicate/ambiguity semantics, and `ReflectionTypeLoadException` partial recovery.
+- [x] Defined metadata-only member inventory, side-effect prohibitions, bounded errors/output, COMPLETE/PARTIAL/FAILED semantics, and acceptance tests TD01–TD20.
+- [x] Linked the specification from README.
+- [ ] Review/approve G0 and obtain exact target-build metadata/IL before any C# implementation.
+- [ ] Keep v0.1.3 implementation, compilation, packaging and runtime testing deferred in repository-only mode.
+
+Documentation-only update. No local machine, compiler, game process, save or runtime state was accessed or changed.
