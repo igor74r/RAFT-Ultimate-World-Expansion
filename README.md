@@ -37,4 +37,4 @@
 
 ## Build
 
-The RML project source and Core source are under their respective directories. Build scripts currently reference the local Raft/RML installation; adjust paths for another development machine before building.
+The RML project source and Core source are under their respective directories. The RML `.csproj` uses overridable MSBuild properties: `RaftDir` (default Steam install), `RmlDataDir` (default `%APPDATA%\\RaftModLoader`), `RmlPublicizedDir`, and `RmlBinariesDir`. The Core build script accepts the `RAFT_DIR` environment variable (default Steam install). Set these values for non-standard installations before building. These path-portability edits have not yet been compiled on a second machine.
