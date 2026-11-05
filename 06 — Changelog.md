@@ -55,3 +55,12 @@ The final candidate was rebuilt after enabling bounded field inspection for each
 - This verifies file staging only. RML loading and the v0.1.2 in-game probe are still pending until the user launches Raft and loads a test world.
 
 [executed on device: DESKTOP-3MKBODB (8088b63f-2a05-4f71-a7a4-ad740486ff11)]
+
+## Repository-only research continuation — 2026-11-06
+
+- Added `01 — Research/AssetBundle and Landmark Integration Plan.md`.
+- Documented the known static API surface for SceneLoader, Landmark, AssetBundleManager, AssetBundleHooker and `GetEmbeddedFileBytes(String)`.
+- Added evidence gates for metadata/IL, offline asset validation, controlled runtime, save/reload and multiplayer.
+- Linked the new plan from README.
+- Reviewed portable MSBuild property definitions and HintPath usage in the repository; no compilation was performed.
+- No game files, local project files, saves, or runtime state were accessed or changed.
