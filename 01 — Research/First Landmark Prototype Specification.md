@@ -124,3 +124,8 @@ A gate is not passed by source inspection alone if it requires a runtime test. R
 ## Current decision
 
 The first prototype is specified but **not implemented**. The next technical deliverable is the API evidence matrix for AssetBundleManager, AssetBundleHooker, SceneLoader, Landmark and LandmarkData. If the required IL cannot be obtained without leaving the repository-only workflow, record that as an external evidence dependency and continue with repository documentation only.
+
+
+## Related API evidence
+
+See [[Landmark API Evidence Matrix]] for the current member-by-member evidence boundary and the exact metadata/IL questions that must be answered before implementation.
