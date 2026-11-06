@@ -33,6 +33,8 @@ namespace RaftUltimateWorldExpansion
                 IslandSpawnCandidate island = islands[i];
                 if (island == null || island.Island == null)
                     throw new ArgumentException("Island candidates cannot contain null entries.", "islands");
+                if (island.ResourceNodes == null)
+                    continue;
 
                 WorldRegionSelection region = WorldRegionResolver.Resolve(
                     regions, island.X, island.Z, transitionWidthRadians);
@@ -48,7 +50,9 @@ namespace RaftUltimateWorldExpansion
                     bool primary = Contains(resource.Biomes, region.PrimaryBiomeId);
                     bool transition = region.IsTransition &&
                         Contains(resource.Biomes, region.TransitionBiomeId);
-                    if (primary || transition)
+                    bool islandBiomeMatches = String.Equals(island.Island.Biome, region.PrimaryBiomeId, StringComparison.Ordinal) ||
+                        (region.IsTransition && String.Equals(island.Island.Biome, region.TransitionBiomeId, StringComparison.Ordinal));
+                    if (islandBiomeMatches && (primary || transition))
                         eligible.Add(resource);
                 }
 
@@ -196,9 +200,11 @@ namespace RaftUltimateWorldExpansion
                     result.Errors.Add("Resource node " + i + " is null.");
                     continue;
                 }
-                if (node.IslandSlot < 0 || node.IslandSlot >= islands.Length ||
-                    islands[node.IslandSlot] == null ||
-                    islands[node.IslandSlot].Slot != node.IslandSlot)
+                bool islandFound = false;
+                for (int islandIndex = 0; islandIndex < islands.Length; islandIndex++)
+                    if (islands[islandIndex] != null && islands[islandIndex].Slot == node.IslandSlot)
+                    { islandFound = true; break; }
+                if (!islandFound)
                     result.Errors.Add("Resource node " + i + " references an unknown island slot.");
                 if (!resourceIds.Contains(node.ResourceId))
                     result.Errors.Add("Resource node " + i + " references an unknown resource.");
