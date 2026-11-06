@@ -113,14 +113,15 @@ namespace RaftUltimateWorldExpansion
                         " lies outside every configured world region.");
                     continue;
                 }
+                string expectedTransitionBiomeId = selection.IsTransition
+                    ? selection.TransitionBiomeId : null;
                 bool primaryMatches = String.Equals(selection.PrimaryBiomeId,
                     node.PrimaryBiomeId, StringComparison.Ordinal);
-                bool transitionMatches = !String.IsNullOrEmpty(node.TransitionBiomeId) &&
-                    (String.Equals(selection.PrimaryBiomeId, node.TransitionBiomeId, StringComparison.Ordinal) ||
-                     String.Equals(selection.TransitionBiomeId, node.TransitionBiomeId, StringComparison.Ordinal));
-                if (!primaryMatches && !transitionMatches)
+                bool transitionMatches = String.Equals(expectedTransitionBiomeId,
+                    node.TransitionBiomeId, StringComparison.Ordinal);
+                if (!primaryMatches || !transitionMatches)
                     errors.Add("Resource pair " + pairIndex + " node " + i +
-                        " biome context does not match its resolved world region.");
+                        " biome context does not exactly match its resolved world region.");
             }
         }
 
