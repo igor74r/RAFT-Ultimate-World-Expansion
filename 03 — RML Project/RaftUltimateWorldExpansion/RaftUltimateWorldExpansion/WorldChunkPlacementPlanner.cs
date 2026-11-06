@@ -208,14 +208,29 @@ namespace RaftUltimateWorldExpansion
                     placement.LocalZ < 0f || placement.LocalZ >= plan.ChunkSize)
                     errors.Add("Placement " + i + " has local coordinates outside its chunk.");
                 if (plan.ChunkSize > 0f &&
-                    (!Single.IsNaN(plan.ChunkSize) && !Single.IsInfinity(plan.ChunkSize)))
+                    !Single.IsNaN(plan.ChunkSize) && !Single.IsInfinity(plan.ChunkSize))
                 {
-                    int expectedX = (int)Math.Floor((double)placement.WorldX / plan.ChunkSize);
-                    int expectedZ = (int)Math.Floor((double)placement.WorldZ / plan.ChunkSize);
+                    double chunkX = Math.Floor((double)placement.WorldX / plan.ChunkSize);
+                    double chunkZ = Math.Floor((double)placement.WorldZ / plan.ChunkSize);
+                    if (chunkX < Int32.MinValue || chunkX > Int32.MaxValue ||
+                        chunkZ < Int32.MinValue || chunkZ > Int32.MaxValue)
+                    {
+                        errors.Add("Placement " + i + " exceeds the supported Int32 chunk-index range.");
+                        continue;
+                    }
+
+                    int expectedX = (int)chunkX;
+                    int expectedZ = (int)chunkZ;
                     if (expectedX != placement.ChunkX || expectedZ != placement.ChunkZ)
                         errors.Add("Placement " + i + " has inconsistent chunk indices.");
                     else
                     {
+                        double expectedLocalX = (double)placement.WorldX - chunkX * plan.ChunkSize;
+                        double expectedLocalZ = (double)placement.WorldZ - chunkZ * plan.ChunkSize;
+                        if (Math.Abs(expectedLocalX - placement.LocalX) > 0.02d ||
+                            Math.Abs(expectedLocalZ - placement.LocalZ) > 0.02d)
+                            errors.Add("Placement " + i + " has inconsistent local coordinates.");
+
                         double reconstructedX = (double)placement.ChunkX * plan.ChunkSize + placement.LocalX;
                         double reconstructedZ = (double)placement.ChunkZ * plan.ChunkSize + placement.LocalZ;
                         if (Math.Abs(reconstructedX - placement.WorldX) > 0.02d ||
