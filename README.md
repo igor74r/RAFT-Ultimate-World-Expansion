@@ -50,6 +50,7 @@ The RML project source and Core source are under their respective directories. T
 - [World Biome Catalog](Content/World/biomes.json) — four biome definitions.
 - [World Resource Catalog](Content/World/resources.json) — 16 resource identities and biome/source tags.
 - [Island Archetype Catalog](Content/World/islands.json) — eight island and landmark blueprints.
+- RML startup now attempts read-only loading and validation of the three embedded catalogs; runtime verification is pending.
 
 
 Diagnostic source review: `01 — Research/v0.1.2 Diagnostic Boundedness Audit.md`.
