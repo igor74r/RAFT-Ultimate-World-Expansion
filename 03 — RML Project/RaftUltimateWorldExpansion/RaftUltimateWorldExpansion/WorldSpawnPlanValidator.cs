@@ -23,6 +23,8 @@ namespace RaftUltimateWorldExpansion
                 errors.Add("Spawn plan has no biome ID.");
             if (plan.Islands == null || plan.Islands.Length == 0)
                 errors.Add("Spawn plan contains no island candidates.");
+            else if (plan.Islands.Length > 256)
+                errors.Add("Spawn plan exceeds the maximum of 256 island candidates.");
             if (Single.IsNaN(plan.MinimumSeparation) || Single.IsInfinity(plan.MinimumSeparation) ||
                 plan.MinimumSeparation < 0f)
                 errors.Add("Spawn plan minimum separation is invalid.");
@@ -45,10 +47,18 @@ namespace RaftUltimateWorldExpansion
 
                     if (candidate.Slot < 0 || !slots.Add(candidate.Slot))
                         errors.Add("Candidate slot is negative or duplicated: " + candidate.Slot + ".");
+                    if (candidate.Slot != i)
+                        errors.Add("Candidate slot does not match its deterministic plan position: index " +
+                            i + ", slot " + candidate.Slot + ".");
                     if (candidate.Island == null)
                         errors.Add("Candidate " + i + " has no island definition.");
-                    else if (!String.Equals(candidate.Island.Biome, plan.BiomeId, StringComparison.Ordinal))
-                        errors.Add("Candidate " + i + " belongs to a different biome.");
+                    else
+                    {
+                        if (String.IsNullOrEmpty(candidate.Island.Id))
+                            errors.Add("Candidate " + i + " has an island definition without an ID.");
+                        if (!String.Equals(candidate.Island.Biome, plan.BiomeId, StringComparison.Ordinal))
+                            errors.Add("Candidate " + i + " belongs to a different biome.");
+                    }
 
                     if (Single.IsNaN(candidate.X) || Single.IsInfinity(candidate.X) ||
                         Single.IsNaN(candidate.Z) || Single.IsInfinity(candidate.Z))
