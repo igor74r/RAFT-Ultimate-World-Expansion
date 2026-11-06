@@ -201,7 +201,8 @@ The review is documentation-only. No local machine, compiler, game process, save
 - [x] Added the normative UWE-META/1 output schema for all twelve record families.
 - [x] Defined UTF-8/LF framing, field order, escaping, sentinels, IDs, deterministic record ordering and parser validation.
 - [x] Added OS01–OS15 acceptance tests and explicit terminal status/count validation.
-- [ ] Review five open schema decisions and obtain exact target-build metadata/IL before G0 approval.
+- [x] Resolve the five UWE-META/1 schema design decisions in the normative schema section.
+- [ ] Obtain exact target-build metadata/IL and complete required design/fixture reviews before G0 approval; TD01–TD25 and OS01–OS15 remain unexecuted.
 - [ ] Keep writer/parser implementation, compilation, packaging and runtime testing deferred in repository-only mode.
 
 Documentation-only. No local machine, compiler, game process, save or runtime state was accessed or changed.
