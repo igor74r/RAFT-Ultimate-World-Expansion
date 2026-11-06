@@ -100,14 +100,15 @@ namespace RaftUltimateWorldExpansion
                             String.IsNullOrEmpty(nodeRegion.PrimaryBiomeId))
                             continue;
 
-                        bool nodePrimaryAllowed = Contains(resource.Biomes, nodeRegion.PrimaryBiomeId);
-                        bool nodeTransitionAllowed = nodeRegion.IsTransition &&
-                            Contains(resource.Biomes, nodeRegion.TransitionBiomeId);
+                        double nodeAffinity = GetBiomeAffinity(
+                            resource, nodeRegion.PrimaryBiomeId,
+                            nodeRegion.IsTransition ? nodeRegion.TransitionBiomeId : null,
+                            nodeRegion.TransitionWeight);
                         bool nodeIslandBiomeMatches =
                             String.Equals(island.Island.Biome, nodeRegion.PrimaryBiomeId, StringComparison.Ordinal) ||
                             (nodeRegion.IsTransition &&
                              String.Equals(island.Island.Biome, nodeRegion.TransitionBiomeId, StringComparison.Ordinal));
-                        if (!nodeIslandBiomeMatches || (!nodePrimaryAllowed && !nodeTransitionAllowed))
+                        if (!nodeIslandBiomeMatches || nodeAffinity <= 0d)
                             continue;
 
                         string key = island.Slot.ToString() + ":" + resource.Id;
@@ -160,6 +161,27 @@ namespace RaftUltimateWorldExpansion
                     return i;
             }
             return candidates.Count - 1;
+        }
+
+        private static double GetBiomeAffinity(
+            ResourceDefinition resource, string primaryBiomeId,
+            string transitionBiomeId, float transitionWeight)
+        {
+            if (resource == null || String.IsNullOrEmpty(primaryBiomeId) ||
+                Single.IsNaN(transitionWeight) || Single.IsInfinity(transitionWeight) ||
+                transitionWeight < 0f || transitionWeight > 1f)
+                return 0d;
+
+            bool primary = Contains(resource.Biomes, primaryBiomeId);
+            bool transition = !String.IsNullOrEmpty(transitionBiomeId) &&
+                Contains(resource.Biomes, transitionBiomeId);
+            if (String.IsNullOrEmpty(transitionBiomeId))
+                return primary ? 1d : 0d;
+
+            double affinity = 0d;
+            if (primary) affinity += 1d - transitionWeight;
+            if (transition) affinity += transitionWeight;
+            return affinity;
         }
 
         private static ResourceDefinition FindResource(ResourceDefinition[] resources, string id)
@@ -281,6 +303,27 @@ namespace RaftUltimateWorldExpansion
             return null;
         }
 
+        private static double GetBiomeAffinity(
+            ResourceDefinition resource, string primaryBiomeId,
+            string transitionBiomeId, float transitionWeight)
+        {
+            if (resource == null || String.IsNullOrEmpty(primaryBiomeId) ||
+                Single.IsNaN(transitionWeight) || Single.IsInfinity(transitionWeight) ||
+                transitionWeight < 0f || transitionWeight > 1f)
+                return 0d;
+
+            bool primary = ContainsResource(resource.Biomes, primaryBiomeId);
+            bool transition = !String.IsNullOrEmpty(transitionBiomeId) &&
+                ContainsResource(resource.Biomes, transitionBiomeId);
+            if (String.IsNullOrEmpty(transitionBiomeId))
+                return primary ? 1d : 0d;
+
+            double affinity = 0d;
+            if (primary) affinity += 1d - transitionWeight;
+            if (transition) affinity += transitionWeight;
+            return affinity;
+        }
+
         public static WorldResourceDistributionValidationResult Validate(
             WorldResourceDistributionPlan plan, WorldRegionPlan regions,
             IslandSpawnCandidate[] islands, WorldCatalogLoadResult catalog,
@@ -365,6 +408,11 @@ namespace RaftUltimateWorldExpansion
                         ContainsResource(definition.Biomes, node.TransitionBiomeId);
                     if (!primaryAllowed && !transitionAllowed)
                         result.Errors.Add("Resource node " + i + " is not allowed in its recorded biome context.");
+                    double affinity = GetBiomeAffinity(definition, node.PrimaryBiomeId,
+                        node.TransitionBiomeId, node.TransitionWeight);
+                    if (affinity <= 0d)
+                        result.Errors.Add("Resource node " + i +
+                            " has no positive resource affinity for its recorded biome transition weight.");
                     if (owner != null && owner.Island != null &&
                         !String.Equals(owner.Island.Biome, node.PrimaryBiomeId, StringComparison.Ordinal) &&
                         !String.Equals(owner.Island.Biome, node.TransitionBiomeId, StringComparison.Ordinal))
