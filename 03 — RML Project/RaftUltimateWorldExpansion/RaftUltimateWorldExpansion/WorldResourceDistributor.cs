@@ -24,15 +24,25 @@ namespace RaftUltimateWorldExpansion
                 throw new ArgumentOutOfRangeException("spreadRadius");
             if (regions == null || regions.Regions == null || regions.Regions.Length == 0)
                 throw new ArgumentException("A non-empty region plan is required.", "regions");
+            if (regions.WorldSeed != worldSeed)
+                throw new InvalidOperationException("Resource distribution and regional layout must use the same world seed.");
 
             List<WorldResourceNode> nodes = new List<WorldResourceNode>();
             HashSet<string> placements = new HashSet<string>(StringComparer.Ordinal);
+            HashSet<int> islandSlots = new HashSet<int>();
 
             for (int i = 0; i < islands.Length; i++)
             {
                 IslandSpawnCandidate island = islands[i];
                 if (island == null || island.Island == null)
                     throw new ArgumentException("Island candidates cannot contain null entries.", "islands");
+                if (island.Slot < 0)
+                    throw new ArgumentException("Island candidate slots cannot be negative.", "islands");
+                if (!islandSlots.Add(island.Slot))
+                    throw new ArgumentException("Island candidate slots must be unique within a distribution batch.", "islands");
+                if (Single.IsNaN(island.X) || Single.IsInfinity(island.X) ||
+                    Single.IsNaN(island.Z) || Single.IsInfinity(island.Z))
+                    throw new ArgumentException("Island candidate coordinates must be finite.", "islands");
                 if (island.ResourceNodes == null)
                     continue;
 
