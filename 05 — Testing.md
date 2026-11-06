@@ -127,3 +127,18 @@ The following are design requirements only; no parser, writer or fixture suite h
 | OS15 | UTF-8 BOM or invalid byte sequence | Enforce BOM policy; reject invalid UTF-8 |
 
 Schema source: [v0.1.3 UWE-META/1 Output Schema](v0.1.3%20UWE-META-1%20Output%20Schema.md). G0 remains REVIEWED — APPROVAL PENDING. No test execution is claimed.
+
+
+## World catalog startup integration — 2026-11-06
+
+| Check | Result | Evidence |
+|---|---|---|
+| Catalogs mirrored into RML project | PASS (repository check) | Three nested JSON files match the canonical Content/World catalogs |
+| Project content entries | PASS (static check) | .csproj includes all three paths with CopyToOutputDirectory=PreserveNewest |
+| Embedded loader adapter | PASS (source check) | WorldCatalog.LoadFromEmbeddedFiles accepts a byte-reader delegate and validates all catalogs |
+| Startup invocation | IMPLEMENTED; runtime pending | Mod Start calls LoadFromEmbeddedFiles(GetEmbeddedFileBytes) and logs bounded errors |
+| Embedded nested-path resolution | NOT CONFIRMED | Requires actual RML runtime test |
+| C# compilation/package | NOT RUN | Repository-only workflow |
+| In-game catalog log | NOT RUN | No new package loaded in Raft |
+
+The startup path is read-only and does not invoke world mutation, save, or network APIs.
