@@ -158,5 +158,5 @@ The final candidate was rebuilt after enabling bounded field inspection for each
 
 - Added `01 — Research/v0.1.3 UWE-META-1 Output Schema.md` as the normative protocol specification.
 - Defined framing, UTF-8/LF encoding, escaping, null/unknown sentinels, positional layouts for RUN/ASSEMBLY/TYPE/FIELD/PROPERTY/EVENT/METHOD/CTOR/ENUM/ERROR/TRUNCATED/SUMMARY, deterministic ordering, parser checks and terminal status rules.
-- Added schema acceptance tests OS01–OS15 and documented five open G0 review decisions.
+- Added schema acceptance tests OS01–OS15 and resolved five schema design decisions in the normative schema section. Formal G0 approval remains pending; exact target-build metadata/IL is absent and TD01–TD25 / OS01–OS15 have not been executed.
 - Documentation only; no C# source, parser/writer, build, package, local installation, game process, save or runtime state was changed.
