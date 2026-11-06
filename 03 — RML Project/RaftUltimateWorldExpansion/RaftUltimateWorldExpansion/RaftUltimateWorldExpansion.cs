@@ -67,6 +67,22 @@ public class RaftUltimateWorldExpansion : Mod
                         ", neighbors=" + region.PreviousBiomeId + "/" + region.NextBiomeId + ".");
                 }
 
+                for (int sampleIndex = 0; sampleIndex < regionPlan.Regions.Length; sampleIndex++)
+                {
+                    WorldRegion sampleRegion = regionPlan.Regions[sampleIndex];
+                    float sampleAngle = sampleRegion.StartAngleRadians +
+                        (sampleRegion.EndAngleRadians >= sampleRegion.StartAngleRadians
+                            ? sampleRegion.EndAngleRadians - sampleRegion.StartAngleRadians
+                            : 6.28318530718f - sampleRegion.StartAngleRadians + sampleRegion.EndAngleRadians) * 0.5f;
+                    float sampleRadius = (sampleRegion.InnerRadius + sampleRegion.OuterRadius) * 0.5f;
+                    WorldRegionSelection sample = WorldRegionResolver.Resolve(regionPlan,
+                        (float)Math.Cos(sampleAngle) * sampleRadius,
+                        (float)Math.Sin(sampleAngle) * sampleRadius, 0.05f);
+                    Log("Region coordinate probe: expected=" + sampleRegion.BiomeId +
+                        ", resolved=" + sample.PrimaryBiomeId +
+                        ", transition=" + sample.IsTransition + ".");
+                }
+
                 for (int i = 0; i < result.Biomes.Biomes.Length; i++)
                 {
                     BiomeDefinition biome = result.Biomes.Biomes[i];
