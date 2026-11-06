@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../03 — RML Project/RaftUltimateWorldExpansion/RaftUltimateWorldExpansion/WorldCatalog.cs" Link="WorldCatalog.cs" />
+    <Compile Include="../../03 — RML Project/RaftUltimateWorldExpansion/RaftUltimateWorldExpansion/WorldBiomeResolver.cs" Link="WorldBiomeResolver.cs" />
+    <Compile Include="../../03 — RML Project/RaftUltimateWorldExpansion/RaftUltimateWorldExpansion/WorldRegionPlanner.cs" Link="WorldRegionPlanner.cs" />
+    <Compile Include="../../03 — RML Project/RaftUltimateWorldExpansion/RaftUltimateWorldExpansion/WorldRegionPlanValidator.cs" Link="WorldRegionPlanValidator.cs" />
+    <Compile Include="../../03 — RML Project/RaftUltimateWorldExpansion/RaftUltimateWorldExpansion/WorldRegionResolver.cs" Link="WorldRegionResolver.cs" />
+    <Compile Include="../../03 — RML Project/RaftUltimateWorldExpansion/RaftUltimateWorldExpansion/WorldSpawnPlanner.cs" Link="WorldSpawnPlanner.cs" />
+    <Compile Include="../../03 — RML Project/RaftUltimateWorldExpansion/RaftUltimateWorldExpansion/WorldSpawnPlanValidator.cs" Link="WorldSpawnPlanValidator.cs" />
+    <Content Include="../../Content/World/*.json">
+      <Link>Content/World/%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>
