@@ -206,3 +206,15 @@ The review is documentation-only. No local machine, compiler, game process, save
 - [ ] Keep writer/parser implementation, compilation, packaging and runtime testing deferred in repository-only mode.
 
 Documentation-only. No local machine, compiler, game process, save or runtime state was accessed or changed.
+
+## v0.1.3 G0.3 consistency repair — 2026-11-06
+
+- [x] Normalize logical and escaped serialized UTF-16 character ceilings in schema, plan and reflection specification.
+- [x] Align diagnostic ordering and bounded top-eight candidate retention.
+- [x] Clarify the 512-record global ceiling and additional 32-ERROR ceiling.
+- [x] Correct OS03 and OS09 acceptance-test wording.
+- [x] Update Changelog and Roadmap decision status; formal G0 approval remains pending.
+- [ ] Define and review the exact record/character reservation algorithm for mandatory terminal diagnostics and SUMMARY before G1.
+- [ ] Obtain exact target-build metadata/IL and execute required fixture/parser acceptance tests before G0 approval.
+
+Documentation-only. No implementation, local build, package, installation or game execution was performed.
