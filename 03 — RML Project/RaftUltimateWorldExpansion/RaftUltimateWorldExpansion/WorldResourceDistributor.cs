@@ -22,6 +22,9 @@ namespace RaftUltimateWorldExpansion
                 throw new ArgumentOutOfRangeException("maxNodesPerIsland");
             if (Single.IsNaN(spreadRadius) || Single.IsInfinity(spreadRadius) || spreadRadius < 0f)
                 throw new ArgumentOutOfRangeException("spreadRadius");
+            if (Single.IsNaN(transitionWidthRadians) || Single.IsInfinity(transitionWidthRadians) ||
+                transitionWidthRadians < 0f || transitionWidthRadians >= 1.57079632679f)
+                throw new ArgumentOutOfRangeException("transitionWidthRadians");
             if (regions == null || regions.Regions == null || regions.Regions.Length == 0)
                 throw new ArgumentException("A non-empty region plan is required.", "regions");
             if (regions.WorldSeed != worldSeed)
@@ -87,7 +90,7 @@ namespace RaftUltimateWorldExpansion
                 }
             }
 
-            return new WorldResourceDistributionPlan(worldSeed, spreadRadius, nodes.ToArray());
+            return new WorldResourceDistributionPlan(worldSeed, spreadRadius, transitionWidthRadians, nodes.ToArray());
         }
 
         private static ResourceDefinition FindResource(ResourceDefinition[] resources, string id)
@@ -140,13 +143,15 @@ namespace RaftUltimateWorldExpansion
     {
         public int WorldSeed { get; private set; }
         public float SpreadRadius { get; private set; }
+        public float TransitionWidthRadians { get; private set; }
         public WorldResourceNode[] Nodes { get; private set; }
 
         internal WorldResourceDistributionPlan(int worldSeed, float spreadRadius,
-            WorldResourceNode[] nodes)
+            float transitionWidthRadians, WorldResourceNode[] nodes)
         {
             WorldSeed = worldSeed;
             SpreadRadius = spreadRadius;
+            TransitionWidthRadians = transitionWidthRadians;
             Nodes = nodes;
         }
     }
@@ -225,6 +230,11 @@ namespace RaftUltimateWorldExpansion
             if (Single.IsNaN(plan.SpreadRadius) || Single.IsInfinity(plan.SpreadRadius) ||
                 plan.SpreadRadius < 0f)
                 result.Errors.Add("Resource spread radius must be finite and non-negative.");
+            if (Single.IsNaN(plan.TransitionWidthRadians) ||
+                Single.IsInfinity(plan.TransitionWidthRadians) ||
+                plan.TransitionWidthRadians < 0f ||
+                plan.TransitionWidthRadians >= 1.57079632679f)
+                result.Errors.Add("Resource transition width must be finite and between zero and PI/2.");
 
             HashSet<string> resourceIds = new HashSet<string>(StringComparer.Ordinal);
             for (int i = 0; i < catalog.Resources.Resources.Length; i++)
