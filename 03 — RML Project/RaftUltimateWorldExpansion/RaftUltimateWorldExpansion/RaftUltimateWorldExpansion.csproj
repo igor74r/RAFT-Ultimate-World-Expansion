@@ -55,6 +55,7 @@
     <Compile Include="WorldRegionResolver.cs" />
     <Compile Include="WorldResourceDistributor.cs" />
     <Compile Include="WorldChunkPlacementPlanner.cs" />
+    <Compile Include="WorldGenerationPlanValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
