@@ -194,3 +194,14 @@ Documentation-only update. No local machine, compiler, game process, save or run
 - [ ] Keep implementation, compilation, packaging and runtime testing deferred under repository-only mode.
 
 The review is documentation-only. No local machine, compiler, game process, save or runtime state was accessed or changed.
+
+
+## v0.1.3 G0.2 output schema — repository-only update (2026-11-06)
+
+- [x] Added the normative UWE-META/1 output schema for all twelve record families.
+- [x] Defined UTF-8/LF framing, field order, escaping, sentinels, IDs, deterministic record ordering and parser validation.
+- [x] Added OS01–OS15 acceptance tests and explicit terminal status/count validation.
+- [ ] Review five open schema decisions and obtain exact target-build metadata/IL before G0 approval.
+- [ ] Keep writer/parser implementation, compilation, packaging and runtime testing deferred in repository-only mode.
+
+Documentation-only. No local machine, compiler, game process, save or runtime state was accessed or changed.
