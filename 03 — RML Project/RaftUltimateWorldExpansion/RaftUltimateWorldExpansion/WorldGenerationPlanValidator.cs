@@ -72,6 +72,8 @@ namespace RaftUltimateWorldExpansion
                     AddErrors(errors, "Resource pair " + i, resourceValidation.Errors);
 
                 }
+
+                ValidateBiomePlanCoverage(errors, catalog, biomePlans);
             }
 
             WorldChunkPlacementValidationResult chunkValidation =
@@ -82,6 +84,30 @@ namespace RaftUltimateWorldExpansion
             return new WorldGenerationPlanValidationResult(errors);
         }
 
+
+        private static void ValidateBiomePlanCoverage(
+            List<string> errors, WorldCatalogLoadResult catalog, HashSet<string> plannedBiomeIds)
+        {
+            if (catalog == null || !catalog.Success ||
+                catalog.Biomes == null || catalog.Biomes.Biomes == null ||
+                plannedBiomeIds == null)
+                return;
+
+            HashSet<string> catalogBiomeIds = new HashSet<string>(StringComparer.Ordinal);
+            for (int i = 0; i < catalog.Biomes.Biomes.Length; i++)
+            {
+                BiomeDefinition biome = catalog.Biomes.Biomes[i];
+                if (biome == null || String.IsNullOrEmpty(biome.Id))
+                    continue;
+                catalogBiomeIds.Add(biome.Id);
+                if (!plannedBiomeIds.Contains(biome.Id))
+                    errors.Add("Generation plans are missing biome '" + biome.Id + "'.");
+            }
+
+            foreach (string plannedBiomeId in plannedBiomeIds)
+                if (!catalogBiomeIds.Contains(plannedBiomeId))
+                    errors.Add("Generation plans reference unknown biome '" + plannedBiomeId + "'.");
+        }
 
         private static void ValidateIslandRegionMembership(
             List<string> errors, WorldSpawnPlan plan, WorldRegionPlan regions)
