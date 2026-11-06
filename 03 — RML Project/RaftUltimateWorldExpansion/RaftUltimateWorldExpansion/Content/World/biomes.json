@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "catalogId": "com.igor74r.raftuwe.world.biomes",
+  "catalogVersion": "0.1.0",
+  "status": "content-data-only",
+  "notes": [
+    "These are mod-owned biome definitions, not registered Raft biome types.",
+    "No game API, world mutation, spawning, save, or network behavior is implied.",
+    "Unknown runtime integration fields must be added only after the target game's contracts are verified."
+  ],
+  "biomes": [
+    {
+      "id": "tropical",
+      "displayName": "Tropical Expanse",
+      "description": "Warm shallows, coral shelves, sandy shores, and dense coastal vegetation.",
+      "climate": {
+        "temperatureBand": "warm",
+        "waterDepthBand": "shallow-to-medium",
+        "weatherTags": ["clear", "rain", "tropical-storm"]
+      },
+      "environmentTags": ["coral-reef", "sandy-beach", "mangrove", "lagoon"],
+      "hazards": ["reef-collision"],
+      "resourceTags": ["coral", "seaweed", "tropical-wood", "shell"],
+      "landmarkPool": ["reef-islet", "mangrove-cove", "abandoned-pier"],
+      "rarity": "common"
+    },
+    {
+      "id": "arctic",
+      "displayName": "Frozen Reach",
+      "description": "Cold currents, drifting ice, snow-covered rock, and sheltered frozen coves.",
+      "climate": {
+        "temperatureBand": "freezing",
+        "waterDepthBand": "medium-to-deep",
+        "weatherTags": ["snow", "fog", "ice-wind"]
+      },
+      "environmentTags": ["iceberg", "snowfield", "frozen-cove", "ice-cave"],
+      "hazards": ["cold-exposure", "slippery-ground"],
+      "resourceTags": ["ice", "hardwood", "mineral-ore", "cold-water-fish"],
+      "landmarkPool": ["glacier-island", "frozen-research-outpost", "ice-cave"],
+      "rarity": "uncommon"
+    },
+    {
+      "id": "volcanic",
+      "displayName": "Ashen Chain",
+      "description": "Volcanic islands, black-sand beaches, geothermal vents, and mineral-rich cliffs.",
+      "climate": {
+        "temperatureBand": "hot",
+        "waterDepthBand": "shallow-to-deep",
+        "weatherTags": ["ashfall", "heat-haze", "storm"]
+      },
+      "environmentTags": ["volcanic-rock", "black-sand", "lava-tube", "geothermal-vent"],
+      "hazards": ["heat-exposure", "unstable-rock", "geothermal-steam"],
+      "resourceTags": ["sulfur", "basalt", "obsidian", "geothermal-mineral"],
+      "landmarkPool": ["caldera-island", "lava-tube-entrance", "geothermal-station"],
+      "rarity": "rare"
+    },
+    {
+      "id": "deep-ocean",
+      "displayName": "The Blue Abyss",
+      "description": "Deep trenches, submerged ruins, low visibility, and isolated seafloor formations.",
+      "climate": {
+        "temperatureBand": "cold",
+        "waterDepthBand": "deep",
+        "weatherTags": ["surface-calm", "dense-fog"]
+      },
+      "environmentTags": ["abyssal-trench", "underwater-cave", "sunken-ruin", "hydrothermal-field"],
+      "hazards": ["low-visibility", "depth-pressure", "limited-oxygen"],
+      "resourceTags": ["rare-metal", "deep-sea-organic", "ancient-scrap", "thermal-crystal"],
+      "landmarkPool": ["sunken-laboratory", "abyssal-ruins", "trench-observatory"],
+      "rarity": "very-rare"
+    }
+  ]
+}
