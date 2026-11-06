@@ -20,6 +20,10 @@ namespace RaftUltimateWorldExpansion
                 transitionWidthRadians < 0f || transitionWidthRadians >= 1.57079632679f)
                 throw new ArgumentOutOfRangeException("transitionWidthRadians",
                     "Transition width must be finite and between zero and PI/2.");
+            float maximumWidth = GetMaximumNonOverlappingTransitionWidth(plan);
+            if (transitionWidthRadians > maximumWidth + 0.000001f)
+                throw new ArgumentOutOfRangeException("transitionWidthRadians",
+                    "Transition width cannot exceed half the narrowest region sector.");
 
             float radius = (float)Math.Sqrt((double)x * x + (double)z * z);
             float angle = NormalizeAngle((float)Math.Atan2(z, x));
@@ -60,6 +64,30 @@ namespace RaftUltimateWorldExpansion
             }
 
             return new WorldRegionSelection(selected, null, 0f, radius, angle, true);
+        }
+
+        public static float GetMaximumNonOverlappingTransitionWidth(WorldRegionPlan plan)
+        {
+            if (plan == null || plan.Regions == null || plan.Regions.Length == 0)
+                throw new ArgumentException("A non-empty region plan is required.", "plan");
+
+            const double fullTurn = 6.28318530718d;
+            double minimumSpan = fullTurn;
+            for (int i = 0; i < plan.Regions.Length; i++)
+            {
+                WorldRegion region = plan.Regions[i];
+                if (region == null ||
+                    Single.IsNaN(region.StartAngleRadians) || Single.IsInfinity(region.StartAngleRadians) ||
+                    Single.IsNaN(region.EndAngleRadians) || Single.IsInfinity(region.EndAngleRadians))
+                    throw new ArgumentException("Region sectors must have finite angular bounds.", "plan");
+
+                double span = (double)region.EndAngleRadians - region.StartAngleRadians;
+                if (span <= 0d) span += fullTurn;
+                if (span <= 0d || span >= fullTurn)
+                    throw new ArgumentException("Region sector angular span is invalid.", "plan");
+                if (span < minimumSpan) minimumSpan = span;
+            }
+            return (float)(minimumSpan * 0.5d);
         }
 
         private static bool ContainsAngle(float angle, float start, float end)
