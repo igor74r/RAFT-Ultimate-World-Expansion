@@ -14,6 +14,18 @@ namespace RaftUltimateWorldExpansion
     {
         private const int MaxCatalogBytes = 1024 * 1024;
 
+        public static WorldCatalogLoadResult LoadFromModDirectory(string modDirectory)
+        {
+            if (String.IsNullOrEmpty(modDirectory))
+            {
+                WorldCatalogLoadResult invalid = new WorldCatalogLoadResult();
+                invalid.Errors.Add("Mod directory is empty.");
+                return invalid;
+            }
+
+            return LoadDirectory(Path.Combine(modDirectory, "Content", "World"));
+        }
+
         public static WorldCatalogLoadResult LoadDirectory(string directory)
         {
             WorldCatalogLoadResult result = new WorldCatalogLoadResult();
@@ -84,6 +96,9 @@ namespace RaftUltimateWorldExpansion
                     continue;
                 if (item.Climate == null)
                     result.Errors.Add("Biome '" + item.Id + "' has no climate definition.");
+                if (String.IsNullOrEmpty(item.DisplayName))
+                    result.Errors.Add("Biome '" + item.Id + "' has no displayName.");
+                ValidateStringArray(item.Climate.WeatherTags, "biome " + item.Id + " climate.weatherTags", result.Errors);
                 ValidateStringArray(item.EnvironmentTags, "biome " + item.Id + " environmentTags", result.Errors);
                 ValidateStringArray(item.ResourceTags, "biome " + item.Id + " resourceTags", result.Errors);
                 ValidateStringArray(item.LandmarkPool, "biome " + item.Id + " landmarkPool", result.Errors);
@@ -94,8 +109,11 @@ namespace RaftUltimateWorldExpansion
                 ResourceDefinition item = result.Resources.Resources[i];
                 if (item == null || !AddId(resourceIds, item.Id, "resource", result.Errors))
                     continue;
+                if (String.IsNullOrEmpty(item.DisplayName) || String.IsNullOrEmpty(item.Category))
+                    result.Errors.Add("Resource '" + item.Id + "' is missing displayName or category.");
                 ValidateStringArray(item.Biomes, "resource " + item.Id + " biomes", result.Errors);
                 ValidateStringArray(item.Sources, "resource " + item.Id + " sources", result.Errors);
+                ValidateStringArray(item.Uses, "resource " + item.Id + " uses", result.Errors);
                 for (int b = 0; item.Biomes != null && b < item.Biomes.Length; b++)
                     if (!biomeIds.Contains(item.Biomes[b]))
                         result.Errors.Add("Resource '" + item.Id + "' references unknown biome '" + item.Biomes[b] + "'.");
@@ -112,6 +130,8 @@ namespace RaftUltimateWorldExpansion
                 }
                 if (!AddId(islandIds, item.Id, "island", result.Errors))
                     continue;
+                if (String.IsNullOrEmpty(item.DisplayName) || String.IsNullOrEmpty(item.Archetype))
+                    result.Errors.Add("Island '" + item.Id + "' is missing displayName or archetype.");
                 if (String.IsNullOrEmpty(item.Biome) || !biomeIds.Contains(item.Biome))
                     result.Errors.Add("Island '" + item.Id + "' references unknown biome '" + item.Biome + "'.");
                 ValidateStringArray(item.ResourceNodes, "island " + item.Id + " resourceNodes", result.Errors);
