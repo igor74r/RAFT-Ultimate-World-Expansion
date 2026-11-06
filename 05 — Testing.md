@@ -102,3 +102,28 @@ The following cases were added during the G0 cross-review. They are acceptance r
 | TD25 | Stable candidate identity tie-breaker unavailable | Bounded fallback identity and ordering uncertainty/PARTIAL; no discovery-order selection |
 
 G0 disposition: REVIEWED — APPROVAL PENDING. TD01–TD25 remain unexecuted design tests. No source implementation or runtime test is claimed.
+
+
+## v0.1.3 UWE-META/1 schema acceptance coverage — 2026-11-06
+
+The following are design requirements only; no parser, writer or fixture suite has been implemented or executed.
+
+| ID | Scenario | Expected result |
+|---|---|---|
+| OS01 | Valid stream with every record kind | Parses and validates |
+| OS02 | Missing/extra field | Reject record without positional drift |
+| OS03 | Pipe, backslash, tab, CR and LF in text | Exact round-trip after escaping |
+| OS04 | Literal `-` and `UNKNOWN` | Distinguished from sentinels |
+| OS05 | Invalid escape | Reject malformed record |
+| OS06 | Missing, duplicate or non-final SUMMARY | Stream incomplete/FAILED |
+| OS07 | Unknown record kind under v1 | Reject; do not guess schema |
+| OS08 | Counts disagree with records | Report integrity mismatch |
+| OS09 | Escaped output exceeds physical ceiling | TRUNCATED/PARTIAL or FAILED if SUMMARY unavailable |
+| OS10 | Non-invariant current culture | Numeric fields remain invariant |
+| OS11 | Same fixture scanned twice | Byte-equivalent output except explicitly variable evidence |
+| OS12 | Hostile/multiline exception message | Never serialized |
+| OS13 | Unknown protocol version | Unsupported version; no guessed parsing |
+| OS14 | Writer fails before SUMMARY | FAILED; never false COMPLETE |
+| OS15 | UTF-8 BOM or invalid byte sequence | Enforce BOM policy; reject invalid UTF-8 |
+
+Schema source: [v0.1.3 UWE-META/1 Output Schema](v0.1.3%20UWE-META-1%20Output%20Schema.md). G0 remains REVIEWED — APPROVAL PENDING. No test execution is claimed.
