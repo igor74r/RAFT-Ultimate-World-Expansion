@@ -88,6 +88,7 @@ namespace RaftUltimateWorldExpansion
 
                 ValidateBiomePlanCoverage(errors, catalog, biomePlans);
                 ValidateResourcePolicyConsistency(errors, resourcePlans);
+                ValidateGlobalIslandSpacing(errors, islandPlans);
             }
 
             WorldChunkPlacementValidationResult chunkValidation =
@@ -98,6 +99,56 @@ namespace RaftUltimateWorldExpansion
             return new WorldGenerationPlanValidationResult(errors);
         }
 
+
+        private static void ValidateGlobalIslandSpacing(
+            List<string> errors, WorldSpawnPlan[] plans)
+        {
+            if (plans == null)
+                return;
+
+            List<IslandSpawnCandidate> candidates = new List<IslandSpawnCandidate>();
+            List<float> requiredSeparations = new List<float>();
+            List<string> biomeIds = new List<string>();
+
+            for (int p = 0; p < plans.Length; p++)
+            {
+                WorldSpawnPlan plan = plans[p];
+                if (plan == null || plan.Islands == null)
+                    continue;
+                float separation = plan.MinimumSeparation;
+                if (Single.IsNaN(separation) || Single.IsInfinity(separation) || separation < 0f)
+                    continue;
+
+                for (int i = 0; i < plan.Islands.Length; i++)
+                {
+                    IslandSpawnCandidate candidate = plan.Islands[i];
+                    if (candidate == null ||
+                        Single.IsNaN(candidate.X) || Single.IsInfinity(candidate.X) ||
+                        Single.IsNaN(candidate.Z) || Single.IsInfinity(candidate.Z))
+                        continue;
+                    candidates.Add(candidate);
+                    requiredSeparations.Add(separation);
+                    biomeIds.Add(plan.BiomeId ?? String.Empty);
+                }
+            }
+
+            for (int i = 0; i < candidates.Count; i++)
+            {
+                for (int j = i + 1; j < candidates.Count; j++)
+                {
+                    if (String.Equals(biomeIds[i], biomeIds[j], StringComparison.Ordinal))
+                        continue;
+
+                    double dx = (double)candidates[i].X - candidates[j].X;
+                    double dz = (double)candidates[i].Z - candidates[j].Z;
+                    double required = Math.Max(requiredSeparations[i], requiredSeparations[j]);
+                    if (dx * dx + dz * dz + 0.0001d < required * required)
+                        errors.Add("Island candidates from biome plans '" + biomeIds[i] +
+                            "' and '" + biomeIds[j] +
+                            "' violate global minimum separation " + required + ".");
+                }
+            }
+        }
 
         private static void ValidateResourcePolicyConsistency(
             List<string> errors, WorldResourceDistributionPlan[] plans)
