@@ -54,6 +54,8 @@ public class RaftUltimateWorldExpansion : Mod
                     result.Islands.Islands.Length + ".");
 
                 WorldRegionPlan regionPlan = WorldRegionPlanner.Create(result, 0, 1000f, 5000f);
+                WorldRegionPlanValidationResult regionValidation = WorldRegionPlanValidator.Validate(regionPlan, result);
+                Log("Region map validation: " + (regionValidation.Success ? "PASS" : "FAIL") + ", errors=" + regionValidation.Errors.Count + ".");
                 Log("World region plan: seed=" + regionPlan.WorldSeed +
                     ", regions=" + regionPlan.Regions.Length +
                     " (data-only angular biome sectors; no world mutation).");
