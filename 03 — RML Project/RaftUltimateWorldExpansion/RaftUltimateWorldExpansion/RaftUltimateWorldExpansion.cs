@@ -106,7 +106,7 @@ public class RaftUltimateWorldExpansion : Mod
                     for (int e = 0; e < Math.Min(validation.Errors.Count, 4); e++)
                         Log("World spawn plan validation error[" + e + "]: " + validation.Errors[e]);
                     WorldResourceDistributionPlan resourcePlan =
-                        WorldResourceDistributor.Create(result, regionPlan, plan.Islands, 0, 3, 35f, 0.05f);
+                        WorldResourceDistributor.Create(result, regionPlan, plan.Islands, 0, 3, 35f, 0.05f, 4f);
                     WorldResourceDistributionValidationResult resourceValidation =
                         WorldResourceDistributionValidator.Validate(resourcePlan, regionPlan, plan.Islands, result, 3);
                     Log("Resource distribution: biome=" + biome.Id +
