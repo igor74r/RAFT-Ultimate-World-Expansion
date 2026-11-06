@@ -135,7 +135,10 @@ namespace RaftUltimateWorldExpansion
                                 continue;
                             double dx = (double)x - other.X;
                             double dz = (double)z - other.Z;
-                            if (dx * dx + dz * dz < minimumDistanceSquared)
+                            double distanceSquared = dx * dx + dz * dz;
+                            if ((minimumNodeSeparation > 0f &&
+                                 distanceSquared < minimumDistanceSquared) ||
+                                (minimumNodeSeparation == 0f && distanceSquared <= 0.000001d))
                             {
                                 tooClose = true;
                                 break;
@@ -542,7 +545,7 @@ namespace RaftUltimateWorldExpansion
 
             if (!Single.IsNaN(plan.MinimumNodeSeparation) &&
                 !Single.IsInfinity(plan.MinimumNodeSeparation) &&
-                plan.MinimumNodeSeparation > 0f)
+                plan.MinimumNodeSeparation >= 0f)
             {
                 double minimumSquared =
                     (double)plan.MinimumNodeSeparation * plan.MinimumNodeSeparation;
@@ -561,7 +564,11 @@ namespace RaftUltimateWorldExpansion
                             continue;
                         double dx = (double)first.X - second.X;
                         double dz = (double)first.Z - second.Z;
-                        if (dx * dx + dz * dz + 0.0001d < minimumSquared)
+                        double distanceSquared = dx * dx + dz * dz;
+                        bool violatesMinimum = plan.MinimumNodeSeparation > 0f
+                            ? distanceSquared + 0.0001d < minimumSquared
+                            : distanceSquared <= 0.000001d;
+                        if (violatesMinimum)
                             result.Errors.Add("Resource nodes " + i + " and " + j +
                                 " violate minimum separation for island slot " + first.IslandSlot + ".");
                     }
