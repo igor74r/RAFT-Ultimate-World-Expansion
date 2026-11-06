@@ -87,7 +87,7 @@ namespace RaftUltimateWorldExpansion
                 }
             }
 
-            return new WorldResourceDistributionPlan(worldSeed, nodes.ToArray());
+            return new WorldResourceDistributionPlan(worldSeed, spreadRadius, nodes.ToArray());
         }
 
         private static ResourceDefinition FindResource(ResourceDefinition[] resources, string id)
@@ -139,11 +139,14 @@ namespace RaftUltimateWorldExpansion
     public sealed class WorldResourceDistributionPlan
     {
         public int WorldSeed { get; private set; }
+        public float SpreadRadius { get; private set; }
         public WorldResourceNode[] Nodes { get; private set; }
 
-        internal WorldResourceDistributionPlan(int worldSeed, WorldResourceNode[] nodes)
+        internal WorldResourceDistributionPlan(int worldSeed, float spreadRadius,
+            WorldResourceNode[] nodes)
         {
             WorldSeed = worldSeed;
+            SpreadRadius = spreadRadius;
             Nodes = nodes;
         }
     }
@@ -219,6 +222,10 @@ namespace RaftUltimateWorldExpansion
                 return result;
             }
 
+            if (Single.IsNaN(plan.SpreadRadius) || Single.IsInfinity(plan.SpreadRadius) ||
+                plan.SpreadRadius < 0f)
+                result.Errors.Add("Resource spread radius must be finite and non-negative.");
+
             HashSet<string> resourceIds = new HashSet<string>(StringComparer.Ordinal);
             for (int i = 0; i < catalog.Resources.Resources.Length; i++)
                 if (catalog.Resources.Resources[i] != null)
@@ -281,6 +288,20 @@ namespace RaftUltimateWorldExpansion
                 if (Single.IsNaN(node.X) || Single.IsInfinity(node.X) ||
                     Single.IsNaN(node.Z) || Single.IsInfinity(node.Z))
                     result.Errors.Add("Resource node " + i + " has non-finite coordinates.");
+
+                if (owner != null && owner.Island != null &&
+                    !Single.IsNaN(node.X) && !Single.IsInfinity(node.X) &&
+                    !Single.IsNaN(node.Z) && !Single.IsInfinity(node.Z) &&
+                    !Single.IsNaN(plan.SpreadRadius) && !Single.IsInfinity(plan.SpreadRadius) &&
+                    plan.SpreadRadius >= 0f)
+                {
+                    double dx = (double)node.X - owner.X;
+                    double dz = (double)node.Z - owner.Z;
+                    double radiusSquared = (double)plan.SpreadRadius * plan.SpreadRadius;
+                    if (dx * dx + dz * dz > radiusSquared + 0.01d)
+                        result.Errors.Add("Resource node " + i +
+                            " lies outside its owning island's configured distribution radius.");
+                }
 
                 string key = node.IslandSlot.ToString() + ":" + node.ResourceId;
                 if (!unique.Add(key))
