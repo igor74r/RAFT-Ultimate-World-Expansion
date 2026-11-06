@@ -195,6 +195,13 @@ public class RaftUltimateWorldExpansion : Mod
         InspectLandmarkPipelineSurface("AssetBundleHooker", "GetLandmarksFromAssetBundleKey", "GetLandmarkFromUniqueIndex", "GetGameObjectsFromScene");
         InspectLandmarkPipelineSurface("SceneLoader", "loadedLandmarks", "GetLandmarksFromAssetBundleKey", "LoadScenes", "AddLoadedLandmark", "TrackAddressableLandmark", "InitializeLoadedLandmark", "SpawnLandmarkFromUniqueIndex");
         InspectLandmarkPipelineSurface("Landmark", "uniqueIndex", "Initialize", "OnSpawn", "OnRemove");
+        InspectTypeSurface("LandmarkData");
+        InspectTypeSurface("AsyncedLandmark");
+        InspectTypeSurface("RGD_Landmark");
+        InspectTypeSurface("RGD_ChunkPoint");
+        InspectTypeSurface("RGD_World");
+        InspectTypeSurface("Message_WorldManager_CreateLandmarks");
+        InspectTypeSurface("WorldManager");
         InspectTypeSurface("ChunkPointType");
 
         Log("World probe v0.1.2 completed. Read-only inspection only; no game state was changed.");
