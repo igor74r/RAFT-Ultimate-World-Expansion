@@ -14,6 +14,16 @@ namespace RaftUltimateWorldExpansion
             IslandSpawnCandidate[] islands, int worldSeed,
             int maxNodesPerIsland, float spreadRadius, float transitionWidthRadians)
         {
+            return Create(catalog, regions, islands, worldSeed, maxNodesPerIsland,
+                spreadRadius, transitionWidthRadians, 0f);
+        }
+
+        public static WorldResourceDistributionPlan Create(
+            WorldCatalogLoadResult catalog, WorldRegionPlan regions,
+            IslandSpawnCandidate[] islands, int worldSeed,
+            int maxNodesPerIsland, float spreadRadius, float transitionWidthRadians,
+            float minimumNodeSeparation)
+        {
             if (catalog == null || !catalog.Success)
                 throw new ArgumentException("A successfully validated catalog is required.", "catalog");
             if (islands == null)
@@ -25,6 +35,10 @@ namespace RaftUltimateWorldExpansion
             if (Single.IsNaN(transitionWidthRadians) || Single.IsInfinity(transitionWidthRadians) ||
                 transitionWidthRadians < 0f || transitionWidthRadians >= 1.57079632679f)
                 throw new ArgumentOutOfRangeException("transitionWidthRadians");
+            if (Single.IsNaN(minimumNodeSeparation) ||
+                Single.IsInfinity(minimumNodeSeparation) || minimumNodeSeparation < 0f ||
+                minimumNodeSeparation > spreadRadius * 2f)
+                throw new ArgumentOutOfRangeException("minimumNodeSeparation");
             if (regions == null || regions.Regions == null || regions.Regions.Length == 0)
                 throw new ArgumentException("A non-empty region plan is required.", "regions");
             if (regions.WorldSeed != worldSeed)
@@ -111,6 +125,25 @@ namespace RaftUltimateWorldExpansion
                         if (!nodeIslandBiomeMatches || nodeAffinity <= 0d)
                             continue;
 
+                        bool tooClose = false;
+                        double minimumDistanceSquared =
+                            (double)minimumNodeSeparation * minimumNodeSeparation;
+                        for (int existing = 0; existing < nodes.Count; existing++)
+                        {
+                            WorldResourceNode other = nodes[existing];
+                            if (other.IslandSlot != island.Slot)
+                                continue;
+                            double dx = (double)x - other.X;
+                            double dz = (double)z - other.Z;
+                            if (dx * dx + dz * dz < minimumDistanceSquared)
+                            {
+                                tooClose = true;
+                                break;
+                            }
+                        }
+                        if (tooClose)
+                            continue;
+
                         string key = island.Slot.ToString() + ":" + resource.Id;
                         if (!placements.Add(key))
                             break;
@@ -127,7 +160,8 @@ namespace RaftUltimateWorldExpansion
                 }
             }
 
-            return new WorldResourceDistributionPlan(worldSeed, spreadRadius, transitionWidthRadians, nodes.ToArray());
+            return new WorldResourceDistributionPlan(worldSeed, spreadRadius, transitionWidthRadians,
+                minimumNodeSeparation, nodes.ToArray());
         }
 
         private sealed class WeightedResourceCandidate
@@ -235,14 +269,16 @@ namespace RaftUltimateWorldExpansion
         public int WorldSeed { get; private set; }
         public float SpreadRadius { get; private set; }
         public float TransitionWidthRadians { get; private set; }
+        public float MinimumNodeSeparation { get; private set; }
         public WorldResourceNode[] Nodes { get; private set; }
 
         internal WorldResourceDistributionPlan(int worldSeed, float spreadRadius,
-            float transitionWidthRadians, WorldResourceNode[] nodes)
+            float transitionWidthRadians, float minimumNodeSeparation, WorldResourceNode[] nodes)
         {
             WorldSeed = worldSeed;
             SpreadRadius = spreadRadius;
             TransitionWidthRadians = transitionWidthRadians;
+            MinimumNodeSeparation = minimumNodeSeparation;
             Nodes = nodes;
         }
     }
@@ -346,6 +382,12 @@ namespace RaftUltimateWorldExpansion
             if (Single.IsNaN(plan.SpreadRadius) || Single.IsInfinity(plan.SpreadRadius) ||
                 plan.SpreadRadius < 0f)
                 result.Errors.Add("Resource spread radius must be finite and non-negative.");
+            if (Single.IsNaN(plan.MinimumNodeSeparation) ||
+                Single.IsInfinity(plan.MinimumNodeSeparation) ||
+                plan.MinimumNodeSeparation < 0f ||
+                (!Single.IsNaN(plan.SpreadRadius) && !Single.IsInfinity(plan.SpreadRadius) &&
+                 plan.SpreadRadius >= 0f && plan.MinimumNodeSeparation > plan.SpreadRadius * 2f))
+                result.Errors.Add("Minimum resource-node separation must be finite, non-negative, and no greater than the distribution diameter.");
             if (Single.IsNaN(plan.TransitionWidthRadians) ||
                 Single.IsInfinity(plan.TransitionWidthRadians) ||
                 plan.TransitionWidthRadians < 0f ||
@@ -497,6 +539,34 @@ namespace RaftUltimateWorldExpansion
             foreach (KeyValuePair<int, int> pair in counts)
                 if (pair.Value > maxNodesPerIsland)
                     result.Errors.Add("Island slot " + pair.Key + " exceeds its resource-node limit.");
+
+            if (!Single.IsNaN(plan.MinimumNodeSeparation) &&
+                !Single.IsInfinity(plan.MinimumNodeSeparation) &&
+                plan.MinimumNodeSeparation > 0f)
+            {
+                double minimumSquared =
+                    (double)plan.MinimumNodeSeparation * plan.MinimumNodeSeparation;
+                for (int i = 0; i < plan.Nodes.Length; i++)
+                {
+                    WorldResourceNode first = plan.Nodes[i];
+                    if (first == null || Single.IsNaN(first.X) || Single.IsInfinity(first.X) ||
+                        Single.IsNaN(first.Z) || Single.IsInfinity(first.Z))
+                        continue;
+                    for (int j = i + 1; j < plan.Nodes.Length; j++)
+                    {
+                        WorldResourceNode second = plan.Nodes[j];
+                        if (second == null || first.IslandSlot != second.IslandSlot ||
+                            Single.IsNaN(second.X) || Single.IsInfinity(second.X) ||
+                            Single.IsNaN(second.Z) || Single.IsInfinity(second.Z))
+                            continue;
+                        double dx = (double)first.X - second.X;
+                        double dz = (double)first.Z - second.Z;
+                        if (dx * dx + dz * dz + 0.0001d < minimumSquared)
+                            result.Errors.Add("Resource nodes " + i + " and " + j +
+                                " violate minimum separation for island slot " + first.IslandSlot + ".");
+                    }
+                }
+            }
             return result;
         }
     }
