@@ -49,6 +49,7 @@
     <Compile Include="WorldCatalog.cs" />
     <Compile Include="WorldBiomeResolver.cs" />
     <Compile Include="WorldSpawnPlanner.cs" />
+    <Compile Include="WorldSpawnPlanValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
