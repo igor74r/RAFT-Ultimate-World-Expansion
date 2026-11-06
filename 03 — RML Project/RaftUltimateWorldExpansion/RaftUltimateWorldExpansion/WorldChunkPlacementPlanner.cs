@@ -20,14 +20,16 @@ namespace RaftUltimateWorldExpansion
             return false;
         }
 
-        private static bool HasOwningIsland(WorldSpawnPlan[] plans, WorldResourceNode node)
+        private static bool HasOwningIsland(
+            WorldSpawnPlan[] plans, WorldResourceNode node, int resourceWorldSeed)
         {
             if (plans == null || node == null)
                 return false;
             for (int p = 0; p < plans.Length; p++)
             {
                 WorldSpawnPlan plan = plans[p];
-                if (plan == null || plan.Islands == null)
+                if (plan == null || plan.Islands == null ||
+                    plan.WorldSeed != resourceWorldSeed)
                     continue;
                 for (int i = 0; i < plan.Islands.Length; i++)
                 {
@@ -95,7 +97,7 @@ namespace RaftUltimateWorldExpansion
                         if (node.IslandSlot < 0 || String.IsNullOrEmpty(node.ResourceId) ||
                             String.IsNullOrEmpty(node.PrimaryBiomeId))
                             throw new ArgumentException("Resource nodes require valid owner, resource, and biome identities.", "resourcePlans");
-                        if (!HasOwningIsland(islandPlans, node))
+                        if (!HasOwningIsland(islandPlans, node, plan.WorldSeed))
                             throw new InvalidOperationException("Resource node '" + node.ResourceId +
                                 "' references no matching island candidate for slot " + node.IslandSlot + ".");
                         string identity = "resource:" + node.PrimaryBiomeId + ":" + node.IslandSlot + ":" + node.ResourceId;
