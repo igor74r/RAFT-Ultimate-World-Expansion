@@ -202,7 +202,8 @@ namespace RaftUltimateWorldExpansion
                 result.Errors.Add("Maximum nodes per island must be between 1 and 64.");
             if (plan == null || plan.Nodes == null || islands == null ||
                 catalog == null || !catalog.Success ||
-                catalog.Resources == null || catalog.Resources.Resources == null)
+                catalog.Resources == null || catalog.Resources.Resources == null ||
+                catalog.Biomes == null || catalog.Biomes.Biomes == null)
             {
                 result.Errors.Add("Plan, islands, and validated resource catalog are required.");
                 return result;
@@ -212,6 +213,11 @@ namespace RaftUltimateWorldExpansion
             for (int i = 0; i < catalog.Resources.Resources.Length; i++)
                 if (catalog.Resources.Resources[i] != null)
                     resourceIds.Add(catalog.Resources.Resources[i].Id);
+
+            HashSet<string> biomeIds = new HashSet<string>(StringComparer.Ordinal);
+            for (int i = 0; i < catalog.Biomes.Biomes.Length; i++)
+                if (catalog.Biomes.Biomes[i] != null)
+                    biomeIds.Add(catalog.Biomes.Biomes[i].Id);
 
             Dictionary<int, int> counts = new Dictionary<int, int>();
             HashSet<string> unique = new HashSet<string>(StringComparer.Ordinal);
@@ -239,7 +245,18 @@ namespace RaftUltimateWorldExpansion
                     result.Errors.Add("Resource node " + i + " references an unknown resource.");
                 if (String.IsNullOrEmpty(node.PrimaryBiomeId))
                     result.Errors.Add("Resource node " + i + " has no primary biome identity.");
-                else if (definition != null)
+                else if (!biomeIds.Contains(node.PrimaryBiomeId))
+                    result.Errors.Add("Resource node " + i + " references an unknown primary biome.");
+
+                if (!String.IsNullOrEmpty(node.TransitionBiomeId))
+                {
+                    if (!biomeIds.Contains(node.TransitionBiomeId))
+                        result.Errors.Add("Resource node " + i + " references an unknown transition biome.");
+                    if (String.Equals(node.PrimaryBiomeId, node.TransitionBiomeId, StringComparison.Ordinal))
+                        result.Errors.Add("Resource node " + i + " repeats its primary biome as transition biome.");
+                }
+
+                if (definition != null && !String.IsNullOrEmpty(node.PrimaryBiomeId))
                 {
                     bool primaryAllowed = ContainsResource(definition.Biomes, node.PrimaryBiomeId);
                     bool transitionAllowed = !String.IsNullOrEmpty(node.TransitionBiomeId) &&
