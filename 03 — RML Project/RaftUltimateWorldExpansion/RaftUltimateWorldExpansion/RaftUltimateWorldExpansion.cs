@@ -65,6 +65,17 @@ public class RaftUltimateWorldExpansion : Mod
                         ", candidates=" + resolution.IslandCandidates.Length +
                         ", resources=" + resolution.Resources.Length +
                         " (deterministic seed 0; no world placement).");
+
+                    WorldSpawnPlan plan = WorldSpawnPlanner.Create(result, biome.Id, 0, 3, 150f, 500f);
+                    Log("World spawn plan: biome=" + plan.BiomeId + ", seed=" + plan.WorldSeed +
+                        ", candidates=" + plan.Islands.Length + " (data-only; no game objects created).");
+                    for (int p = 0; p < plan.Islands.Length; p++)
+                    {
+                        IslandSpawnCandidate candidate = plan.Islands[p];
+                        Log("Spawn candidate[" + candidate.Slot + "]: island=" + candidate.Island.Id +
+                            ", x=" + candidate.X.ToString("F1") + ", z=" + candidate.Z.ToString("F1") +
+                            ", resourceNodes=" + candidate.ResourceNodes.Length + ".");
+                    }
                 }
                 return;
             }
