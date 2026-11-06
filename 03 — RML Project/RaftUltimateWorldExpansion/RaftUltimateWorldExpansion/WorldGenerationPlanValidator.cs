@@ -75,8 +75,62 @@ namespace RaftUltimateWorldExpansion
             WorldChunkPlacementValidationResult chunkValidation =
                 WorldChunkPlacementValidator.Validate(chunkPlan);
             AddErrors(errors, "Chunk placement", chunkValidation.Errors);
+            ValidateChunkPlanCoverage(errors, islandPlans, resourcePlans, chunkPlan);
 
             return new WorldGenerationPlanValidationResult(errors);
+        }
+
+
+        private static void ValidateChunkPlanCoverage(List<string> errors,
+            WorldSpawnPlan[] islandPlans, WorldResourceDistributionPlan[] resourcePlans,
+            WorldChunkPlacementPlan chunkPlan)
+        {
+            if (islandPlans == null || resourcePlans == null ||
+                chunkPlan == null || chunkPlan.Placements == null)
+                return;
+
+            HashSet<string> expected = new HashSet<string>(StringComparer.Ordinal);
+            for (int p = 0; p < islandPlans.Length; p++)
+            {
+                WorldSpawnPlan plan = islandPlans[p];
+                if (plan == null || plan.Islands == null) continue;
+                for (int i = 0; i < plan.Islands.Length; i++)
+                {
+                    IslandSpawnCandidate island = plan.Islands[i];
+                    if (island == null || island.Island == null) continue;
+                    expected.Add("island:" + plan.BiomeId + ":" + island.Slot);
+                }
+            }
+            for (int p = 0; p < resourcePlans.Length; p++)
+            {
+                WorldResourceDistributionPlan plan = resourcePlans[p];
+                if (plan == null || plan.Nodes == null) continue;
+                for (int i = 0; i < plan.Nodes.Length; i++)
+                {
+                    WorldResourceNode node = plan.Nodes[i];
+                    if (node == null) continue;
+                    expected.Add("resource:" + node.PrimaryBiomeId + ":" +
+                        node.IslandSlot + ":" + node.ResourceId);
+                }
+            }
+
+            HashSet<string> actual = new HashSet<string>(StringComparer.Ordinal);
+            for (int i = 0; i < chunkPlan.Placements.Length; i++)
+            {
+                WorldChunkPlacement placement = chunkPlan.Placements[i];
+                if (placement == null) continue;
+                if (String.IsNullOrEmpty(placement.Identity) || !actual.Add(placement.Identity))
+                    continue;
+                if (!expected.Contains(placement.Identity))
+                    errors.Add("Chunk placement contains an item absent from the source plans: " +
+                        placement.Identity + ".");
+            }
+
+            foreach (string identity in expected)
+                if (!actual.Contains(identity))
+                    errors.Add("Chunk placement is missing a source-plan item: " + identity + ".");
+            if (actual.Count != expected.Count)
+                errors.Add("Chunk placement coverage count does not match the source plans.");
         }
 
         private static WorldRegion FindRegion(WorldRegionPlan plan, string biomeId)
