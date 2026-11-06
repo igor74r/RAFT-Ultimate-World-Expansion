@@ -60,6 +60,8 @@ namespace RaftUltimateWorldExpansion
 
             List<WorldChunkPlacement> placements = new List<WorldChunkPlacement>();
             HashSet<string> identities = new HashSet<string>(StringComparer.Ordinal);
+            int worldSeed = 0;
+            bool hasWorldSeed = false;
 
             if (islandPlans != null)
             {
@@ -68,6 +70,15 @@ namespace RaftUltimateWorldExpansion
                     WorldSpawnPlan plan = islandPlans[p];
                     if (plan == null || plan.Islands == null)
                         throw new ArgumentException("Island plans cannot contain null plans or candidate arrays.", "islandPlans");
+                    if (!hasWorldSeed)
+                    {
+                        worldSeed = plan.WorldSeed;
+                        hasWorldSeed = true;
+                    }
+                    else if (plan.WorldSeed != worldSeed)
+                    {
+                        throw new InvalidOperationException("All island plans must use the same world seed.");
+                    }
                     for (int i = 0; i < plan.Islands.Length; i++)
                     {
                         IslandSpawnCandidate island = plan.Islands[i];
@@ -93,6 +104,8 @@ namespace RaftUltimateWorldExpansion
                     WorldResourceDistributionPlan plan = resourcePlans[p];
                     if (plan == null || plan.Nodes == null)
                         throw new ArgumentException("Resource plans cannot contain null plans or node arrays.", "resourcePlans");
+                    if (hasWorldSeed && plan.WorldSeed != worldSeed)
+                        throw new InvalidOperationException("Resource and island plans must use the same world seed.");
                     for (int i = 0; i < plan.Nodes.Length; i++)
                     {
                         WorldResourceNode node = plan.Nodes[i];
