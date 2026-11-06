@@ -183,3 +183,14 @@ This is a static source review only. No code, package, local installation, game 
 - [ ] Keep v0.1.3 implementation, compilation, packaging and runtime testing deferred in repository-only mode.
 
 Documentation-only update. No local machine, compiler, game process, save or runtime state was accessed or changed.
+
+
+## v0.1.3 G0 cross-review — repository-only update (2026-11-06)
+
+- [x] Cross-reviewed the plan/specification against the boundedness audit, resource budgets and C# 7.3/.NET Framework 4.8 constraints.
+- [x] Clarified candidate counting/output cap semantics, accessor deduplication/member accounting and enum constant accounting.
+- [x] Added regression cases TD21–TD25 to the reflection safety specification.
+- [ ] G0 formal approval remains pending; exact target-build metadata/IL is unavailable and fixture tests have not been executed.
+- [ ] Keep implementation, compilation, packaging and runtime testing deferred under repository-only mode.
+
+The review is documentation-only. No local machine, compiler, game process, save or runtime state was accessed or changed.
