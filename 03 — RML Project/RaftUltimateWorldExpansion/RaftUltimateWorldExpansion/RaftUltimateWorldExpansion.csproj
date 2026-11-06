@@ -48,6 +48,7 @@
     <Compile Include="RaftUltimateWorldExpansion.cs" />
     <Compile Include="WorldCatalog.cs" />
     <Compile Include="WorldBiomeResolver.cs" />
+    <Compile Include="WorldSpawnPlanner.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
