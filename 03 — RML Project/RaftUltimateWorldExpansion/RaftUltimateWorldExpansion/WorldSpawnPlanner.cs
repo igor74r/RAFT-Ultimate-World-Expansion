@@ -99,6 +99,11 @@ namespace RaftUltimateWorldExpansion
                 throw new ArgumentException("A region plan is required.", "regions");
             if (regions.WorldSeed != worldSeed)
                 throw new ArgumentException("Region plan seed must match the requested world seed.", "regions");
+            WorldRegionPlanValidationResult regionValidation =
+                WorldRegionPlanValidator.Validate(regions, catalog);
+            if (!regionValidation.Success)
+                throw new ArgumentException("Region plan is invalid: " +
+                    String.Join(" | ", regionValidation.Errors), "regions");
             if (islandCount < 1 || islandCount > 256)
                 throw new ArgumentOutOfRangeException("islandCount", "Island count must be between 1 and 256.");
             if (Single.IsNaN(minRadius) || Single.IsInfinity(minRadius) ||
@@ -175,7 +180,7 @@ namespace RaftUltimateWorldExpansion
                 }
                 if (!success)
                     throw new InvalidOperationException("Unable to place island slot " +
-                        selected.Slot + " inside biome region '" + biomeId +
+                        i + " inside biome region '" + biomeId +
                         "' while preserving minimum separation.");
             }
 
