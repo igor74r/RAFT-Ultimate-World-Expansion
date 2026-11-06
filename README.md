@@ -46,6 +46,7 @@ The RML project source and Core source are under their respective directories. T
 
 - [v0.1.3 Metadata Probe Implementation Plan](01%20%E2%80%94%20Research/v0.1.3%20Metadata%20Probe%20Implementation%20Plan.md)
 - [v0.1.3 Type Discovery and Reflection Safety Specification](01%20%E2%80%94%20Research/v0.1.3%20Type%20Discovery%20and%20Reflection%20Safety%20Specification.md)
+- [v0.1.3 UWE-META/1 Output Schema](01%20%E2%80%94%20Research/v0.1.3%20UWE-META-1%20Output%20Schema.md)
 
 
 Diagnostic source review: `01 — Research/v0.1.2 Diagnostic Boundedness Audit.md`.
