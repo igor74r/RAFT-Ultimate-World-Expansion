@@ -87,3 +87,18 @@ This section supersedes earlier v0.1.2 test rows that say the candidate was not 
 - Current repository-only continuation: no local files, process state, game installation, or package hashes were rechecked; no compilation or game launch was performed.
 
 Do not interpret historical file-staging evidence as a successful RML load or runtime probe.
+
+
+## v0.1.3 design-review regression coverage — 2026-11-06
+
+The following cases were added during the G0 cross-review. They are acceptance requirements only; no fixture harness or tests have been executed.
+
+| ID | Scenario | Expected result |
+|---|---|---|
+| TD21 | More than 8 matching candidates across assemblies | All candidates examined/counted where possible; at most 8 deterministic identities emitted; TRUNCATED/PARTIAL; no resolution |
+| TD22 | Property/event accessors also appear in declared method enumeration | Accessors embedded only in PROPERTY/EVENT records; no duplicate METHOD records; property/event counted once |
+| TD23 | Enum constants are also represented by literal fields | Constants emitted only in ENUM records and charged only to enum budget |
+| TD24 | Assembly inspection cap prevents complete candidate inventory | Observed count separated from total UNKNOWN; PARTIAL; no false NOT_FOUND/unique resolution |
+| TD25 | Stable candidate identity tie-breaker unavailable | Bounded fallback identity and ordering uncertainty/PARTIAL; no discovery-order selection |
+
+G0 disposition: REVIEWED — APPROVAL PENDING. TD01–TD25 remain unexecuted design tests. No source implementation or runtime test is claimed.
