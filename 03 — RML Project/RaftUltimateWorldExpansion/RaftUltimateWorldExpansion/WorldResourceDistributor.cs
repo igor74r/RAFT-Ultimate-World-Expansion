@@ -172,16 +172,29 @@ namespace RaftUltimateWorldExpansion
 
     public static class WorldResourceDistributionValidator
     {
+        private static bool ContainsResource(string[] values, string expected)
+        {
+            if (values == null || String.IsNullOrEmpty(expected))
+                return false;
+            for (int i = 0; i < values.Length; i++)
+                if (String.Equals(values[i], expected, StringComparison.Ordinal))
+                    return true;
+            return false;
+        }
+
         public static WorldResourceDistributionValidationResult Validate(
             WorldResourceDistributionPlan plan, IslandSpawnCandidate[] islands,
             WorldCatalogLoadResult catalog, int maxNodesPerIsland)
         {
             WorldResourceDistributionValidationResult result =
                 new WorldResourceDistributionValidationResult();
+            if (maxNodesPerIsland < 1 || maxNodesPerIsland > 64)
+                result.Errors.Add("Maximum nodes per island must be between 1 and 64.");
             if (plan == null || plan.Nodes == null || islands == null ||
-                catalog == null || !catalog.Success)
+                catalog == null || !catalog.Success ||
+                catalog.Resources == null || catalog.Resources.Resources == null)
             {
-                result.Errors.Add("Plan, islands, and validated catalog are required.");
+                result.Errors.Add("Plan, islands, and validated resource catalog are required.");
                 return result;
             }
 
@@ -200,12 +213,14 @@ namespace RaftUltimateWorldExpansion
                     result.Errors.Add("Resource node " + i + " is null.");
                     continue;
                 }
-                bool islandFound = false;
+                IslandSpawnCandidate owner = null;
                 for (int islandIndex = 0; islandIndex < islands.Length; islandIndex++)
                     if (islands[islandIndex] != null && islands[islandIndex].Slot == node.IslandSlot)
-                    { islandFound = true; break; }
-                if (!islandFound)
+                    { owner = islands[islandIndex]; break; }
+                if (owner == null)
                     result.Errors.Add("Resource node " + i + " references an unknown island slot.");
+                else if (!ContainsResource(owner.ResourceNodes, node.ResourceId))
+                    result.Errors.Add("Resource node " + i + " is not declared by its owning island.");
                 if (!resourceIds.Contains(node.ResourceId))
                     result.Errors.Add("Resource node " + i + " references an unknown resource.");
                 if (Single.IsNaN(node.X) || Single.IsInfinity(node.X) ||
