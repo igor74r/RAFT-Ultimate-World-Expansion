@@ -191,9 +191,10 @@ public class RaftUltimateWorldExpansion : Mod
         InspectTypeSurface("SO_ChunkSpawnRuleAsset");
         InspectTypeSurface("AssetBundleManager");
         InspectTypeSurface("AssetBundleHooker");
-        InspectLandmarkPipelineSurface("AssetBundleManager", "LoadAssetBundle", "AddLandmarksToHooker", "OnLoadGame", "StartSceneLoading", "LoadSpecificScene", "LoadScenePaths", "GetGameObjectsFromScene", "UnloadBundle");
+        InspectLandmarkPipelineSurface("AssetBundleManager", "assetBundleTag", "fileDirectory", "bundleLandmark", "asyncedLandmarks", "LoadAssetBundle", "AddLandmarksToHooker", "OnLoadGame", "StartSceneLoading", "LoadSpecificScene", "LoadScenePaths", "GetGameObjectsFromScene", "UnloadBundle");
         InspectLandmarkPipelineSurface("AssetBundleHooker", "GetLandmarksFromAssetBundleKey", "GetLandmarkFromUniqueIndex", "GetGameObjectsFromScene");
-        InspectLandmarkPipelineSurface("SceneLoader", "GetLandmarksFromAssetBundleKey", "LoadScenes", "AddLoadedLandmark", "TrackAddressableLandmark", "InitializeLoadedLandmark", "SpawnLandmarkFromUniqueIndex");
+        InspectLandmarkPipelineSurface("SceneLoader", "loadedLandmarks", "GetLandmarksFromAssetBundleKey", "LoadScenes", "AddLoadedLandmark", "TrackAddressableLandmark", "InitializeLoadedLandmark", "SpawnLandmarkFromUniqueIndex");
+        InspectLandmarkPipelineSurface("Landmark", "uniqueIndex", "Initialize", "OnSpawn", "OnRemove");
         InspectTypeSurface("ChunkPointType");
 
         Log("World probe v0.1.2 completed. Read-only inspection only; no game state was changed.");
