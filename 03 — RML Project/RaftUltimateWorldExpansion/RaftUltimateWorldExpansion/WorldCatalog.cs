@@ -70,6 +70,9 @@ namespace RaftUltimateWorldExpansion
             ValidateHeader("biomes", result.Biomes.SchemaVersion, result.Biomes.Biomes, result.Errors);
             ValidateHeader("resources", result.Resources.SchemaVersion, result.Resources.Resources, result.Errors);
             ValidateHeader("islands", result.Islands.SchemaVersion, result.Islands.Islands, result.Errors);
+            if (result.Biomes.Biomes == null || result.Resources.Resources == null ||
+                result.Islands.Islands == null)
+                return;
 
             HashSet<string> biomeIds = new HashSet<string>(StringComparer.Ordinal);
             HashSet<string> resourceIds = new HashSet<string>(StringComparer.Ordinal);
