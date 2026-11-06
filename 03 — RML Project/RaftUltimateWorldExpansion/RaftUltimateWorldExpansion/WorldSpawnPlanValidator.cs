@@ -23,6 +23,9 @@ namespace RaftUltimateWorldExpansion
                 errors.Add("Spawn plan has no biome ID.");
             if (plan.Islands == null || plan.Islands.Length == 0)
                 errors.Add("Spawn plan contains no island candidates.");
+            if (Single.IsNaN(plan.MinimumSeparation) || Single.IsInfinity(plan.MinimumSeparation) ||
+                plan.MinimumSeparation < 0f)
+                errors.Add("Spawn plan minimum separation is invalid.");
             if (Single.IsNaN(minRadius) || Single.IsInfinity(minRadius) ||
                 Single.IsNaN(maxRadius) || Single.IsInfinity(maxRadius) ||
                 minRadius < 0f || maxRadius <= minRadius)
@@ -78,6 +81,31 @@ namespace RaftUltimateWorldExpansion
                             if (candidate.Island != null &&
                                 !Contains(candidate.Island.ResourceNodes, id))
                                 errors.Add("Candidate " + i + " includes a resource not declared by its island: " + id + ".");
+                        }
+                    }
+                }
+
+                if (!Single.IsNaN(plan.MinimumSeparation) &&
+                    !Single.IsInfinity(plan.MinimumSeparation) && plan.MinimumSeparation >= 0f)
+                {
+                    double minimumSquared = (double)plan.MinimumSeparation * plan.MinimumSeparation;
+                    for (int a = 0; a < plan.Islands.Length; a++)
+                    {
+                        IslandSpawnCandidate first = plan.Islands[a];
+                        if (first == null || Single.IsNaN(first.X) || Single.IsInfinity(first.X) ||
+                            Single.IsNaN(first.Z) || Single.IsInfinity(first.Z))
+                            continue;
+                        for (int b = a + 1; b < plan.Islands.Length; b++)
+                        {
+                            IslandSpawnCandidate second = plan.Islands[b];
+                            if (second == null || Single.IsNaN(second.X) || Single.IsInfinity(second.X) ||
+                                Single.IsNaN(second.Z) || Single.IsInfinity(second.Z))
+                                continue;
+                            double dx = (double)first.X - second.X;
+                            double dz = (double)first.Z - second.Z;
+                            if (dx * dx + dz * dz < minimumSquared - 0.01d)
+                                errors.Add("Candidates " + a + " and " + b +
+                                    " violate minimum separation " + plan.MinimumSeparation + ".");
                         }
                     }
                 }
