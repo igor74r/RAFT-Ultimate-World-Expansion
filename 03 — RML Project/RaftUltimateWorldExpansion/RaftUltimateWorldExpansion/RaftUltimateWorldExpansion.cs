@@ -127,7 +127,7 @@ public class RaftUltimateWorldExpansion : Mod
                         WorldGenerationPlanValidator.Validate(result, regionPlan,
                             new WorldSpawnPlan[] { plan },
                             new WorldResourceDistributionPlan[] { resourcePlan },
-                            chunkPlan);
+                            chunkPlan, 3);
                     Log("Complete generation validation: " +
                         (generationValidation.Success ? "PASS" : "FAIL") +
                         ", errors=" + generationValidation.Errors.Count + ".");
