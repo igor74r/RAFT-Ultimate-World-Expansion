@@ -14,6 +14,7 @@ public class RaftUltimateWorldExpansion : Mod
 {
     private bool initialized;
     private bool worldProbeCompleted;
+    private bool worldCatalogLoadCompleted;
 
     private const int MaxDictionaryKeys = 8;
     private const int MaxChunkPointsPerKey = 12;
@@ -29,6 +30,44 @@ public class RaftUltimateWorldExpansion : Mod
         JsonModInfo info = GetModInfo();
         Log("Core initialized: " + info.name + " v" + info.version);
         Log("World diagnostics mode: READ-ONLY v0.1.2.");
+        LoadWorldCatalogs();
+    }
+
+    private void LoadWorldCatalogs()
+    {
+        if (worldCatalogLoadCompleted)
+            return;
+
+        worldCatalogLoadCompleted = true;
+        Log("World catalog load started (read-only content validation).");
+
+        try
+        {
+            RaftUltimateWorldExpansion.WorldCatalogLoadResult result =
+                RaftUltimateWorldExpansion.WorldCatalog.LoadFromEmbeddedFiles(GetEmbeddedFileBytes);
+
+            if (result.Success)
+            {
+                Log("World catalogs loaded and validated: biomes=" +
+                    result.Biomes.Biomes.Length + ", resources=" +
+                    result.Resources.Resources.Length + ", islands=" +
+                    result.Islands.Islands.Length + ".");
+                return;
+            }
+
+            Log("World catalog validation FAILED; catalogs will not be used. errors=" +
+                result.Errors.Count + ".");
+            int count = Math.Min(result.Errors.Count, 8);
+            for (int i = 0; i < count; i++)
+                Log("World catalog error[" + i + "]: " + result.Errors[i]);
+            if (result.Errors.Count > count)
+                Log("World catalog errors truncated in log.");
+        }
+        catch (Exception ex)
+        {
+            Log("World catalog load failed safely: " +
+                ex.GetType().Name + ": " + ex.Message);
+        }
     }
 
     public override void WorldEvent_WorldLoaded()
