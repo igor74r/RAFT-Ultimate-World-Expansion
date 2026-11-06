@@ -1,0 +1,218 @@
+{
+  "schemaVersion": 1,
+  "catalogId": "com.igor74r.raftuwe.world.islands",
+  "catalogVersion": "0.1.0",
+  "status": "content-data-only",
+  "notes": [
+    "Island archetypes are content blueprints, not spawnable Raft prefabs.",
+    "Composition values are relative design weights, not measured game-world coordinates.",
+    "Landmark integration, spawn rules, and multiplayer authority remain unimplemented."
+  ],
+  "islands": [
+    {
+      "id": "reef-islet",
+      "biome": "tropical",
+      "displayName": "Reef Islet",
+      "archetype": "small-island",
+      "rarity": "common",
+      "composition": {
+        "shoreline": "sandy-ring",
+        "interior": "low-palms",
+        "underwater": "coral-shelf"
+      },
+      "features": [
+        "beached-skiff",
+        "tidal-pool",
+        "reef-cavities"
+      ],
+      "resourceNodes": [
+        "coral",
+        "seaweed",
+        "shell"
+      ],
+      "encounterTags": [
+        "reef-fish",
+        "shore-crab"
+      ]
+    },
+    {
+      "id": "mangrove-cove",
+      "biome": "tropical",
+      "displayName": "Mangrove Cove",
+      "archetype": "coastal-cove",
+      "rarity": "uncommon",
+      "composition": {
+        "shoreline": "mudflat-and-sand",
+        "interior": "dense-mangrove",
+        "underwater": "shallow-lagoon"
+      },
+      "features": [
+        "root-tunnels",
+        "hidden-lagoon",
+        "driftwood-cache"
+      ],
+      "resourceNodes": [
+        "seaweed",
+        "tropical-wood",
+        "shell"
+      ],
+      "encounterTags": [
+        "lagoon-fish"
+      ]
+    },
+    {
+      "id": "glacier-island",
+      "biome": "arctic",
+      "displayName": "Glacier Island",
+      "archetype": "large-island",
+      "rarity": "uncommon",
+      "composition": {
+        "shoreline": "ice-and-rock",
+        "interior": "snow-ridge",
+        "underwater": "ice-shelf"
+      },
+      "features": [
+        "glacier-crack",
+        "wind-shelter",
+        "frozen-camp"
+      ],
+      "resourceNodes": [
+        "ice",
+        "hardwood",
+        "mineral-ore"
+      ],
+      "encounterTags": [
+        "cold-water-fish",
+        "arctic-wildlife"
+      ]
+    },
+    {
+      "id": "ice-cave",
+      "biome": "arctic",
+      "displayName": "Blue-Ice Cavern",
+      "archetype": "cave-landmark",
+      "rarity": "rare",
+      "composition": {
+        "shoreline": "rocky-inlet",
+        "interior": "glacial-cavern",
+        "underwater": "submerged-ice-tunnel"
+      },
+      "features": [
+        "ice-chamber",
+        "collapsed-passage",
+        "mineral-pocket"
+      ],
+      "resourceNodes": [
+        "ice",
+        "mineral-ore"
+      ],
+      "encounterTags": [
+        "cave-wildlife"
+      ]
+    },
+    {
+      "id": "caldera-island",
+      "biome": "volcanic",
+      "displayName": "Caldera Island",
+      "archetype": "large-island",
+      "rarity": "rare",
+      "composition": {
+        "shoreline": "black-sand",
+        "interior": "crater-rim",
+        "underwater": "basalt-slope"
+      },
+      "features": [
+        "dormant-crater",
+        "lava-tube-mouth",
+        "steam-vents"
+      ],
+      "resourceNodes": [
+        "sulfur",
+        "basalt",
+        "obsidian"
+      ],
+      "encounterTags": [
+        "heat-hazard",
+        "unstable-rock"
+      ]
+    },
+    {
+      "id": "geothermal-station",
+      "biome": "volcanic",
+      "displayName": "Geothermal Station",
+      "archetype": "industrial-landmark",
+      "rarity": "very-rare",
+      "composition": {
+        "shoreline": "basalt-platform",
+        "interior": "abandoned-facility",
+        "underwater": "thermal-outflow"
+      },
+      "features": [
+        "control-room",
+        "cooling-pipes",
+        "sealed-storage"
+      ],
+      "resourceNodes": [
+        "geothermal-mineral",
+        "sulfur",
+        "basalt"
+      ],
+      "encounterTags": [
+        "geothermal-steam",
+        "environmental-puzzle"
+      ]
+    },
+    {
+      "id": "sunken-laboratory",
+      "biome": "deep-ocean",
+      "displayName": "Sunken Laboratory",
+      "archetype": "underwater-landmark",
+      "rarity": "very-rare",
+      "composition": {
+        "shoreline": "none",
+        "interior": "flooded-research-complex",
+        "underwater": "deep-trench-wall"
+      },
+      "features": [
+        "airlock-remains",
+        "research-vault",
+        "broken-submersible"
+      ],
+      "resourceNodes": [
+        "rare-metal",
+        "deep-sea-organic",
+        "ancient-scrap"
+      ],
+      "encounterTags": [
+        "low-visibility",
+        "oxygen-management"
+      ]
+    },
+    {
+      "id": "abyssal-ruins",
+      "biome": "deep-ocean",
+      "displayName": "Abyssal Ruins",
+      "archetype": "underwater-ruin",
+      "rarity": "very-rare",
+      "composition": {
+        "shoreline": "none",
+        "interior": "collapsed-ruin",
+        "underwater": "trench-floor"
+      },
+      "features": [
+        "stone-arches",
+        "sealed-vault",
+        "hydrothermal-garden"
+      ],
+      "resourceNodes": [
+        "rare-metal",
+        "ancient-scrap",
+        "thermal-crystal"
+      ],
+      "encounterTags": [
+        "depth-pressure",
+        "low-visibility"
+      ]
+    }
+  ]
+}
