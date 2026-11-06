@@ -17,7 +17,20 @@ namespace RaftUltimateWorldExpansion
             WorldResourceDistributionPlan[] resourcePlans,
             WorldChunkPlacementPlan chunkPlan)
         {
+            return Validate(catalog, regionPlan, islandPlans, resourcePlans, chunkPlan, 64);
+        }
+
+        public static WorldGenerationPlanValidationResult Validate(
+            WorldCatalogLoadResult catalog,
+            WorldRegionPlan regionPlan,
+            WorldSpawnPlan[] islandPlans,
+            WorldResourceDistributionPlan[] resourcePlans,
+            WorldChunkPlacementPlan chunkPlan,
+            int maxResourceNodesPerIsland)
+        {
             List<string> errors = new List<string>();
+            if (maxResourceNodesPerIsland < 1 || maxResourceNodesPerIsland > 64)
+                errors.Add("Maximum resource nodes per island must be between 1 and 64.");
             if (catalog == null || !catalog.Success)
                 errors.Add("A successfully validated world catalog is required.");
             if (regionPlan == null)
@@ -68,7 +81,7 @@ namespace RaftUltimateWorldExpansion
 
                     WorldResourceDistributionValidationResult resourceValidation =
                         WorldResourceDistributionValidator.Validate(resources,
-                            regionPlan, islands.Islands, catalog, 64);
+                            regionPlan, islands.Islands, catalog, maxResourceNodesPerIsland);
                     AddErrors(errors, "Resource pair " + i, resourceValidation.Errors);
 
                 }
