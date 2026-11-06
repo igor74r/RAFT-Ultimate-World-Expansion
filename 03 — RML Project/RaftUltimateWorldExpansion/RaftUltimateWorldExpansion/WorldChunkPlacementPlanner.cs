@@ -54,7 +54,7 @@ namespace RaftUltimateWorldExpansion
                         WorldResourceNode node = plan.Nodes[i];
                         if (node == null)
                             throw new ArgumentException("Resource plans cannot contain null nodes.", "resourcePlans");
-                        string identity = "resource:" + node.IslandSlot + ":" + node.ResourceId;
+                        string identity = "resource:" + node.PrimaryBiomeId + ":" + node.IslandSlot + ":" + node.ResourceId;
                         if (!identities.Add(identity))
                             throw new InvalidOperationException("Duplicate placement identity: " + identity);
                         placements.Add(CreatePlacement(identity, WorldPlacementKind.Resource,
