@@ -67,10 +67,9 @@ namespace RaftUltimateWorldExpansion
 
                     WorldResourceDistributionValidationResult resourceValidation =
                         WorldResourceDistributionValidator.Validate(resources,
-                            islands.Islands, catalog, 64);
+                            regionPlan, islands.Islands, catalog, 64);
                     AddErrors(errors, "Resource pair " + i, resourceValidation.Errors);
 
-                    ValidateResourceRegionMembership(errors, regionPlan, resources, i);
                 }
             }
 
@@ -82,48 +81,6 @@ namespace RaftUltimateWorldExpansion
             return new WorldGenerationPlanValidationResult(errors);
         }
 
-
-        private static void ValidateResourceRegionMembership(List<string> errors,
-            WorldRegionPlan regionPlan, WorldResourceDistributionPlan resourcePlan, int pairIndex)
-        {
-            if (regionPlan == null || resourcePlan == null || resourcePlan.Nodes == null)
-                return;
-            for (int i = 0; i < resourcePlan.Nodes.Length; i++)
-            {
-                WorldResourceNode node = resourcePlan.Nodes[i];
-                if (node == null || Single.IsNaN(node.X) || Single.IsInfinity(node.X) ||
-                    Single.IsNaN(node.Z) || Single.IsInfinity(node.Z))
-                    continue;
-                WorldRegionSelection selection;
-                try
-                {
-                    selection = WorldRegionResolver.Resolve(regionPlan, node.X, node.Z,
-                        resourcePlan.TransitionWidthRadians);
-                }
-                catch (Exception ex)
-                {
-                    errors.Add("Resource pair " + pairIndex + " node " + i +
-                        " could not be resolved against the regional map: " +
-                        ex.GetType().Name + ".");
-                    continue;
-                }
-                if (!selection.IsInsideRegion)
-                {
-                    errors.Add("Resource pair " + pairIndex + " node " + i +
-                        " lies outside every configured world region.");
-                    continue;
-                }
-                string expectedTransitionBiomeId = selection.IsTransition
-                    ? selection.TransitionBiomeId : null;
-                bool primaryMatches = String.Equals(selection.PrimaryBiomeId,
-                    node.PrimaryBiomeId, StringComparison.Ordinal);
-                bool transitionMatches = String.Equals(expectedTransitionBiomeId,
-                    node.TransitionBiomeId, StringComparison.Ordinal);
-                if (!primaryMatches || !transitionMatches)
-                    errors.Add("Resource pair " + pairIndex + " node " + i +
-                        " biome context does not exactly match its resolved world region.");
-            }
-        }
 
         private sealed class ExpectedPlacement
         {
