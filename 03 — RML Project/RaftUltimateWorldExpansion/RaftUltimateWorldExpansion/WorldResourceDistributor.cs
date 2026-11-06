@@ -236,14 +236,16 @@ namespace RaftUltimateWorldExpansion
         }
 
         public static WorldResourceDistributionValidationResult Validate(
-            WorldResourceDistributionPlan plan, IslandSpawnCandidate[] islands,
-            WorldCatalogLoadResult catalog, int maxNodesPerIsland)
+            WorldResourceDistributionPlan plan, WorldRegionPlan regions,
+            IslandSpawnCandidate[] islands, WorldCatalogLoadResult catalog,
+            int maxNodesPerIsland)
         {
             WorldResourceDistributionValidationResult result =
                 new WorldResourceDistributionValidationResult();
             if (maxNodesPerIsland < 1 || maxNodesPerIsland > 64)
                 result.Errors.Add("Maximum nodes per island must be between 1 and 64.");
-            if (plan == null || plan.Nodes == null || islands == null ||
+            if (plan == null || plan.Nodes == null || regions == null ||
+                regions.Regions == null || islands == null ||
                 catalog == null || !catalog.Success ||
                 catalog.Resources == null || catalog.Resources.Resources == null ||
                 catalog.Biomes == null || catalog.Biomes.Biomes == null)
@@ -260,6 +262,8 @@ namespace RaftUltimateWorldExpansion
                 plan.TransitionWidthRadians < 0f ||
                 plan.TransitionWidthRadians >= 1.57079632679f)
                 result.Errors.Add("Resource transition width must be finite and between zero and PI/2.");
+            if (regions != null && regions.WorldSeed != plan.WorldSeed)
+                result.Errors.Add("Resource plan and regional layout must use the same world seed.");
 
             HashSet<string> resourceIds = new HashSet<string>(StringComparer.Ordinal);
             for (int i = 0; i < catalog.Resources.Resources.Length; i++)
@@ -320,9 +324,35 @@ namespace RaftUltimateWorldExpansion
                         !String.Equals(owner.Island.Biome, node.TransitionBiomeId, StringComparison.Ordinal))
                         result.Errors.Add("Resource node " + i + " biome context does not match its owning island.");
                 }
-                if (Single.IsNaN(node.X) || Single.IsInfinity(node.X) ||
-                    Single.IsNaN(node.Z) || Single.IsInfinity(node.Z))
+                bool finiteCoordinates = !Single.IsNaN(node.X) && !Single.IsInfinity(node.X) &&
+                    !Single.IsNaN(node.Z) && !Single.IsInfinity(node.Z);
+                if (!finiteCoordinates)
                     result.Errors.Add("Resource node " + i + " has non-finite coordinates.");
+                else if (regions != null && regions.Regions != null &&
+                    !Single.IsNaN(plan.TransitionWidthRadians) &&
+                    !Single.IsInfinity(plan.TransitionWidthRadians) &&
+                    plan.TransitionWidthRadians >= 0f &&
+                    plan.TransitionWidthRadians < 1.57079632679f)
+                {
+                    try
+                    {
+                        WorldRegionSelection resolved = WorldRegionResolver.Resolve(
+                            regions, node.X, node.Z, plan.TransitionWidthRadians);
+                        string expectedTransition = resolved.IsTransition
+                            ? resolved.TransitionBiomeId : null;
+                        if (!resolved.IsInsideRegion ||
+                            !String.Equals(resolved.PrimaryBiomeId, node.PrimaryBiomeId, StringComparison.Ordinal) ||
+                            !String.Equals(expectedTransition, node.TransitionBiomeId, StringComparison.Ordinal))
+                            result.Errors.Add("Resource node " + i +
+                                " biome context does not exactly match its resolved world position.");
+                    }
+                    catch (Exception ex)
+                    {
+                        result.Errors.Add("Resource node " + i +
+                            " could not be resolved against the regional map: " +
+                            ex.GetType().Name + ".");
+                    }
+                }
 
                 if (owner != null && owner.Island != null &&
                     !Single.IsNaN(node.X) && !Single.IsInfinity(node.X) &&
