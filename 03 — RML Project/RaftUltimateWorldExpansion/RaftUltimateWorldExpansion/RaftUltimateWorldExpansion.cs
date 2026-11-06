@@ -123,6 +123,17 @@ public class RaftUltimateWorldExpansion : Mod
                         auditReferenceChunkSize);
                     WorldChunkPlacementValidationResult chunkValidation =
                         WorldChunkPlacementValidator.Validate(chunkPlan);
+                    WorldGenerationPlanValidationResult generationValidation =
+                        WorldGenerationPlanValidator.Validate(result, regionPlan,
+                            new WorldSpawnPlan[] { plan },
+                            new WorldResourceDistributionPlan[] { resourcePlan },
+                            chunkPlan);
+                    Log("Complete generation validation: " +
+                        (generationValidation.Success ? "PASS" : "FAIL") +
+                        ", errors=" + generationValidation.Errors.Count + ".");
+                    for (int ge = 0; ge < Math.Min(generationValidation.Errors.Count, 4); ge++)
+                        Log("Generation validation error[" + ge + "]: " +
+                            generationValidation.Errors[ge]);
                     Log("Chunk coordinate plan: biome=" + biome.Id +
                         ", placements=" + chunkPlan.Placements.Length +
                         ", validation=" + (chunkValidation.Success ? "PASS" : "FAIL") +
