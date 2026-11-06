@@ -160,3 +160,13 @@ The final candidate was rebuilt after enabling bounded field inspection for each
 - Defined framing, UTF-8/LF encoding, escaping, null/unknown sentinels, positional layouts for RUN/ASSEMBLY/TYPE/FIELD/PROPERTY/EVENT/METHOD/CTOR/ENUM/ERROR/TRUNCATED/SUMMARY, deterministic ordering, parser checks and terminal status rules.
 - Added schema acceptance tests OS01–OS15 and resolved five schema design decisions in the normative schema section. Formal G0 approval remains pending; exact target-build metadata/IL is absent and TD01–TD25 / OS01–OS15 have not been executed.
 - Documentation only; no C# source, parser/writer, build, package, local installation, game process, save or runtime state was changed.
+
+## v0.1.3 G0.3 consistency repairs — 2026-11-06
+
+- Normalized UWE-META/1 character accounting: both logical unescaped and final escaped serialized UTF-16 payload ceilings apply.
+- Made diagnostic ordering deterministic and independent of encounter sequence.
+- Clarified global 512-record accounting, including RUN, ERROR, TRUNCATED and SUMMARY, plus the additional 32-ERROR ceiling.
+- Corrected OS03 backslash wording and OS09 serialized UTF-16 character-limit wording.
+- Aligned the Reflection Safety Specification and Metadata Probe Implementation Plan with bounded top-eight candidate retention and the common output budgets.
+- Updated Roadmap and Changelog to show the five schema design decisions resolved while formal G0 approval remains pending.
+- Re-fetched and verified all five changed documents. Documentation only; no C# implementation, fixture execution, build, package, installation or game runtime activity occurred.
