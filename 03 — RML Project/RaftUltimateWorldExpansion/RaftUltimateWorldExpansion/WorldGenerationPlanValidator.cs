@@ -97,7 +97,8 @@ namespace RaftUltimateWorldExpansion
                 WorldRegionSelection selection;
                 try
                 {
-                    selection = WorldRegionResolver.Resolve(regionPlan, node.X, node.Z, 0f);
+                    selection = WorldRegionResolver.Resolve(regionPlan, node.X, node.Z,
+                        resourcePlan.TransitionWidthRadians);
                 }
                 catch (Exception ex)
                 {
