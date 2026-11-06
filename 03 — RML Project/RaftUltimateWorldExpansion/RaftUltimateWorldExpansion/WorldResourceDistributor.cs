@@ -77,16 +77,41 @@ namespace RaftUltimateWorldExpansion
                     ResourceDefinition resource = eligible[selected];
                     eligible.RemoveAt(selected);
 
-                    float angle = NextUnit(ref state) * 6.28318530718f;
-                    float radius = spreadRadius * (float)Math.Sqrt(NextUnit(ref state));
-                    float x = island.X + (float)Math.Cos(angle) * radius;
-                    float z = island.Z + (float)Math.Sin(angle) * radius;
-                    string key = island.Slot.ToString() + ":" + resource.Id;
-                    if (!placements.Add(key))
-                        continue;
+                    bool placed = false;
+                    for (int attempt = 0; attempt < 24; attempt++)
+                    {
+                        float angle = NextUnit(ref state) * 6.28318530718f;
+                        float radius = spreadRadius * (float)Math.Sqrt(NextUnit(ref state));
+                        float x = island.X + (float)Math.Cos(angle) * radius;
+                        float z = island.Z + (float)Math.Sin(angle) * radius;
+                        WorldRegionSelection nodeRegion = WorldRegionResolver.Resolve(
+                            regions, x, z, transitionWidthRadians);
+                        if (!nodeRegion.IsInsideRegion ||
+                            String.IsNullOrEmpty(nodeRegion.PrimaryBiomeId))
+                            continue;
 
-                    nodes.Add(new WorldResourceNode(island.Slot, resource.Id, x, z,
-                        region.PrimaryBiomeId, region.IsTransition ? region.TransitionBiomeId : null));
+                        bool nodePrimaryAllowed = Contains(resource.Biomes, nodeRegion.PrimaryBiomeId);
+                        bool nodeTransitionAllowed = nodeRegion.IsTransition &&
+                            Contains(resource.Biomes, nodeRegion.TransitionBiomeId);
+                        bool nodeIslandBiomeMatches =
+                            String.Equals(island.Island.Biome, nodeRegion.PrimaryBiomeId, StringComparison.Ordinal) ||
+                            (nodeRegion.IsTransition &&
+                             String.Equals(island.Island.Biome, nodeRegion.TransitionBiomeId, StringComparison.Ordinal));
+                        if (!nodeIslandBiomeMatches || (!nodePrimaryAllowed && !nodeTransitionAllowed))
+                            continue;
+
+                        string key = island.Slot.ToString() + ":" + resource.Id;
+                        if (!placements.Add(key))
+                            break;
+
+                        nodes.Add(new WorldResourceNode(island.Slot, resource.Id, x, z,
+                            nodeRegion.PrimaryBiomeId,
+                            nodeRegion.IsTransition ? nodeRegion.TransitionBiomeId : null));
+                        placed = true;
+                        break;
+                    }
+                    if (!placed)
+                        continue;
                 }
             }
 
