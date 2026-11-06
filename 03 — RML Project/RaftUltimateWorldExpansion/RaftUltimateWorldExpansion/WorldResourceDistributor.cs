@@ -54,7 +54,12 @@ namespace RaftUltimateWorldExpansion
                 if (!region.IsInsideRegion || String.IsNullOrEmpty(region.PrimaryBiomeId))
                     continue;
 
-                List<ResourceDefinition> eligible = new List<ResourceDefinition>();
+                List<WeightedResourceCandidate> eligible = new List<WeightedResourceCandidate>();
+                bool islandBiomeMatches = String.Equals(island.Island.Biome, region.PrimaryBiomeId, StringComparison.Ordinal) ||
+                    (region.IsTransition && String.Equals(island.Island.Biome, region.TransitionBiomeId, StringComparison.Ordinal));
+                if (!islandBiomeMatches)
+                    continue;
+
                 for (int n = 0; n < island.ResourceNodes.Length; n++)
                 {
                     ResourceDefinition resource = FindResource(catalog.Resources.Resources, island.ResourceNodes[n]);
@@ -63,18 +68,23 @@ namespace RaftUltimateWorldExpansion
                     bool primary = Contains(resource.Biomes, region.PrimaryBiomeId);
                     bool transition = region.IsTransition &&
                         Contains(resource.Biomes, region.TransitionBiomeId);
-                    bool islandBiomeMatches = String.Equals(island.Island.Biome, region.PrimaryBiomeId, StringComparison.Ordinal) ||
-                        (region.IsTransition && String.Equals(island.Island.Biome, region.TransitionBiomeId, StringComparison.Ordinal));
-                    if (islandBiomeMatches && (primary || transition))
-                        eligible.Add(resource);
+                    double weight = 0d;
+                    if (primary)
+                        weight += region.IsTransition ? 1d - region.TransitionWeight : 1d;
+                    if (transition)
+                        weight += region.TransitionWeight;
+                    if (weight > 0d)
+                        eligible.Add(new WeightedResourceCandidate(resource, weight));
                 }
 
                 uint state = MakeSeed(worldSeed, island.Slot, island.SelectionSeed);
                 int count = Math.Min(maxNodesPerIsland, eligible.Count);
                 for (int n = 0; n < count; n++)
                 {
-                    int selected = (int)(Next(ref state) % (uint)eligible.Count);
-                    ResourceDefinition resource = eligible[selected];
+                    int selected = SelectWeightedIndex(eligible, ref state);
+                    if (selected < 0)
+                        break;
+                    ResourceDefinition resource = eligible[selected].Resource;
                     eligible.RemoveAt(selected);
 
                     bool placed = false;
@@ -117,6 +127,39 @@ namespace RaftUltimateWorldExpansion
             }
 
             return new WorldResourceDistributionPlan(worldSeed, spreadRadius, transitionWidthRadians, nodes.ToArray());
+        }
+
+        private sealed class WeightedResourceCandidate
+        {
+            public ResourceDefinition Resource { get; private set; }
+            public double Weight { get; private set; }
+
+            public WeightedResourceCandidate(ResourceDefinition resource, double weight)
+            {
+                Resource = resource;
+                Weight = weight;
+            }
+        }
+
+        private static int SelectWeightedIndex(List<WeightedResourceCandidate> candidates, ref uint state)
+        {
+            if (candidates == null || candidates.Count == 0)
+                return -1;
+
+            double totalWeight = 0d;
+            for (int i = 0; i < candidates.Count; i++)
+                totalWeight += candidates[i].Weight;
+            if (totalWeight <= 0d || Double.IsNaN(totalWeight) || Double.IsInfinity(totalWeight))
+                return -1;
+
+            double target = NextUnit(ref state) * totalWeight;
+            for (int i = 0; i < candidates.Count; i++)
+            {
+                target -= candidates[i].Weight;
+                if (target < 0d)
+                    return i;
+            }
+            return candidates.Count - 1;
         }
 
         private static ResourceDefinition FindResource(ResourceDefinition[] resources, string id)
