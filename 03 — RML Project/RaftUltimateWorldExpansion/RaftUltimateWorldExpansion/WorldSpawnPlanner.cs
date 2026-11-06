@@ -93,8 +93,19 @@ namespace RaftUltimateWorldExpansion
             string biomeId, int worldSeed, int islandCount,
             float minRadius, float maxRadius, float minSeparation)
         {
+            if (catalog == null || !catalog.Success)
+                throw new ArgumentException("A successfully validated world catalog is required.", "catalog");
             if (regions == null || regions.Regions == null)
                 throw new ArgumentException("A region plan is required.", "regions");
+            if (regions.WorldSeed != worldSeed)
+                throw new ArgumentException("Region plan seed must match the requested world seed.", "regions");
+            if (islandCount < 1 || islandCount > 256)
+                throw new ArgumentOutOfRangeException("islandCount", "Island count must be between 1 and 256.");
+            if (Single.IsNaN(minRadius) || Single.IsInfinity(minRadius) ||
+                Single.IsNaN(maxRadius) || Single.IsInfinity(maxRadius) ||
+                minRadius < 0f || maxRadius <= minRadius)
+                throw new ArgumentOutOfRangeException("minRadius",
+                    "Radius bounds must be finite, non-negative, and maxRadius must exceed minRadius.");
 
             WorldRegion target = null;
             for (int i = 0; i < regions.Regions.Length; i++)
@@ -115,17 +126,28 @@ namespace RaftUltimateWorldExpansion
             if (Single.IsNaN(minSeparation) || Single.IsInfinity(minSeparation) || minSeparation < 0f)
                 throw new ArgumentOutOfRangeException("minSeparation");
 
-            WorldSpawnPlan selectionPlan = Create(catalog, biomeId, worldSeed,
-                islandCount, minRadius, maxRadius, minSeparation);
+            IslandDefinition[] selectedIslands = new IslandDefinition[islandCount];
+            string[][] selectedResources = new string[islandCount][];
+            int[] selectionSeeds = new int[islandCount];
+            uint selectionState = MakeSeed(biomeId, worldSeed);
+            for (int i = 0; i < islandCount; i++)
+            {
+                int slotSeed = unchecked((int)Next(ref selectionState));
+                BiomeResolution resolution = WorldBiomeResolver.Resolve(catalog, biomeId, slotSeed);
+                selectedIslands[i] = resolution.SelectedIsland;
+                selectedResources[i] = FilterIslandResources(
+                    resolution.SelectedIsland, resolution.Resources);
+                selectionSeeds[i] = slotSeed;
+            }
+
             List<IslandSpawnCandidate> placed = new List<IslandSpawnCandidate>(islandCount);
             uint state = MakeSeed(biomeId, worldSeed ^ 0x5F3759DF);
             float span = target.EndAngleRadians - target.StartAngleRadians;
             if (span <= 0f) span += 6.28318530718f;
             double minDistanceSquared = (double)minSeparation * minSeparation;
 
-            for (int i = 0; i < selectionPlan.Islands.Length; i++)
+            for (int i = 0; i < islandCount; i++)
             {
-                IslandSpawnCandidate selected = selectionPlan.Islands[i];
                 bool success = false;
                 for (int attempt = 0; attempt < 512 && !success; attempt++)
                 {
@@ -146,8 +168,8 @@ namespace RaftUltimateWorldExpansion
                     }
                     if (separated)
                     {
-                        placed.Add(new IslandSpawnCandidate(selected.Slot, selected.Island,
-                            x, z, selected.ResourceNodes, selected.SelectionSeed));
+                        placed.Add(new IslandSpawnCandidate(i, selectedIslands[i],
+                            x, z, selectedResources[i], selectionSeeds[i]));
                         success = true;
                     }
                 }
