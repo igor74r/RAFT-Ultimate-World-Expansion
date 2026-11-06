@@ -98,6 +98,7 @@ namespace RaftUltimateWorldExpansion
                         result.Errors.Add("Resource '" + item.Id + "' references unknown biome '" + item.Biomes[b] + "'.");
             }
 
+            HashSet<string> islandIds = new HashSet<string>(StringComparer.Ordinal);
             for (int i = 0; i < result.Islands.Islands.Length; i++)
             {
                 IslandDefinition item = result.Islands.Islands[i];
@@ -106,8 +107,8 @@ namespace RaftUltimateWorldExpansion
                     result.Errors.Add("Island entry " + i + " is null.");
                     continue;
                 }
-                if (String.IsNullOrEmpty(item.Id))
-                    result.Errors.Add("Island entry " + i + " has no id.");
+                if (!AddId(islandIds, item.Id, "island", result.Errors))
+                    continue;
                 if (String.IsNullOrEmpty(item.Biome) || !biomeIds.Contains(item.Biome))
                     result.Errors.Add("Island '" + item.Id + "' references unknown biome '" + item.Biome + "'.");
                 ValidateStringArray(item.ResourceNodes, "island " + item.Id + " resourceNodes", result.Errors);
