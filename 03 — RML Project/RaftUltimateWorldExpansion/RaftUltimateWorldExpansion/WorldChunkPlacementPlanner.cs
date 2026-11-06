@@ -73,6 +73,10 @@ namespace RaftUltimateWorldExpansion
                         IslandSpawnCandidate island = plan.Islands[i];
                         if (island == null || island.Island == null)
                             throw new ArgumentException("Island plans cannot contain null candidates.", "islandPlans");
+                        if (String.IsNullOrEmpty(plan.BiomeId) || island.Slot < 0 ||
+                            !String.Equals(plan.BiomeId, island.Island.Biome, StringComparison.Ordinal))
+                            throw new InvalidOperationException("Island candidate slot " + island.Slot +
+                                " has an invalid slot or a biome that does not match its spawn plan.");
                         string identity = "island:" + plan.BiomeId + ":" + island.Slot;
                         if (!identities.Add(identity))
                             throw new InvalidOperationException("Duplicate placement identity: " + identity);
