@@ -10,6 +10,44 @@ namespace RaftUltimateWorldExpansion
     /// </summary>
     public static class WorldChunkPlacementPlanner
     {
+        private static bool ContainsResource(string[] resources, string expected)
+        {
+            if (resources == null || String.IsNullOrEmpty(expected))
+                return false;
+            for (int i = 0; i < resources.Length; i++)
+                if (String.Equals(resources[i], expected, StringComparison.Ordinal))
+                    return true;
+            return false;
+        }
+
+        private static bool HasOwningIsland(WorldSpawnPlan[] plans, WorldResourceNode node)
+        {
+            if (plans == null || node == null)
+                return false;
+            for (int p = 0; p < plans.Length; p++)
+            {
+                WorldSpawnPlan plan = plans[p];
+                if (plan == null || plan.Islands == null)
+                    continue;
+                for (int i = 0; i < plan.Islands.Length; i++)
+                {
+                    IslandSpawnCandidate island = plan.Islands[i];
+                    if (island == null || island.Island == null ||
+                        island.Slot != node.IslandSlot ||
+                        !ContainsResource(island.ResourceNodes, node.ResourceId))
+                        continue;
+                    bool primaryMatch = String.Equals(island.Island.Biome,
+                        node.PrimaryBiomeId, StringComparison.Ordinal);
+                    bool transitionMatch = !String.IsNullOrEmpty(node.TransitionBiomeId) &&
+                        String.Equals(island.Island.Biome,
+                            node.TransitionBiomeId, StringComparison.Ordinal);
+                    if (primaryMatch || transitionMatch)
+                        return true;
+                }
+            }
+            return false;
+        }
+
         public static WorldChunkPlacementPlan Create(
             WorldSpawnPlan[] islandPlans,
             WorldResourceDistributionPlan[] resourcePlans,
@@ -54,6 +92,12 @@ namespace RaftUltimateWorldExpansion
                         WorldResourceNode node = plan.Nodes[i];
                         if (node == null)
                             throw new ArgumentException("Resource plans cannot contain null nodes.", "resourcePlans");
+                        if (node.IslandSlot < 0 || String.IsNullOrEmpty(node.ResourceId) ||
+                            String.IsNullOrEmpty(node.PrimaryBiomeId))
+                            throw new ArgumentException("Resource nodes require valid owner, resource, and biome identities.", "resourcePlans");
+                        if (!HasOwningIsland(islandPlans, node))
+                            throw new InvalidOperationException("Resource node '" + node.ResourceId +
+                                "' references no matching island candidate for slot " + node.IslandSlot + ".");
                         string identity = "resource:" + node.PrimaryBiomeId + ":" + node.IslandSlot + ":" + node.ResourceId;
                         if (!identities.Add(identity))
                             throw new InvalidOperationException("Duplicate placement identity: " + identity);
