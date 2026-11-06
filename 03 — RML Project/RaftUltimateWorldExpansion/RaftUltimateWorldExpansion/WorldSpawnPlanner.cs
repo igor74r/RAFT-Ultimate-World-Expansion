@@ -88,6 +88,78 @@ namespace RaftUltimateWorldExpansion
             return new WorldSpawnPlan(biomeId, worldSeed, minSeparation, candidates.ToArray());
         }
 
+        public static WorldSpawnPlan CreateInRegions(
+            WorldCatalogLoadResult catalog, WorldRegionPlan regions,
+            string biomeId, int worldSeed, int islandCount,
+            float minRadius, float maxRadius, float minSeparation)
+        {
+            if (regions == null || regions.Regions == null)
+                throw new ArgumentException("A region plan is required.", "regions");
+
+            WorldRegion target = null;
+            for (int i = 0; i < regions.Regions.Length; i++)
+                if (regions.Regions[i] != null &&
+                    String.Equals(regions.Regions[i].BiomeId, biomeId, StringComparison.Ordinal))
+                {
+                    target = regions.Regions[i];
+                    break;
+                }
+            if (target == null)
+                throw new ArgumentException("No world region exists for biome: " + biomeId, "biomeId");
+            if (minRadius < target.InnerRadius || maxRadius > target.OuterRadius ||
+                Single.IsNaN(minRadius) || Single.IsInfinity(minRadius) ||
+                Single.IsNaN(maxRadius) || Single.IsInfinity(maxRadius) ||
+                maxRadius <= minRadius)
+                throw new ArgumentOutOfRangeException("minRadius",
+                    "Island radius bounds must fit inside the selected biome region.");
+            if (Single.IsNaN(minSeparation) || Single.IsInfinity(minSeparation) || minSeparation < 0f)
+                throw new ArgumentOutOfRangeException("minSeparation");
+
+            WorldSpawnPlan selectionPlan = Create(catalog, biomeId, worldSeed,
+                islandCount, minRadius, maxRadius, minSeparation);
+            List<IslandSpawnCandidate> placed = new List<IslandSpawnCandidate>(islandCount);
+            uint state = MakeSeed(biomeId, worldSeed ^ 0x5F3759DF);
+            float span = target.EndAngleRadians - target.StartAngleRadians;
+            if (span <= 0f) span += 6.28318530718f;
+            double minDistanceSquared = (double)minSeparation * minSeparation;
+
+            for (int i = 0; i < selectionPlan.Islands.Length; i++)
+            {
+                IslandSpawnCandidate selected = selectionPlan.Islands[i];
+                bool success = false;
+                for (int attempt = 0; attempt < 512 && !success; attempt++)
+                {
+                    float angle = target.StartAngleRadians + NextUnit(ref state) * span;
+                    float radius = minRadius + NextUnit(ref state) * (maxRadius - minRadius);
+                    float x = (float)Math.Cos(angle) * radius;
+                    float z = (float)Math.Sin(angle) * radius;
+                    bool separated = true;
+                    for (int previous = 0; previous < placed.Count; previous++)
+                    {
+                        double dx = (double)x - placed[previous].X;
+                        double dz = (double)z - placed[previous].Z;
+                        if (dx * dx + dz * dz < minDistanceSquared)
+                        {
+                            separated = false;
+                            break;
+                        }
+                    }
+                    if (separated)
+                    {
+                        placed.Add(new IslandSpawnCandidate(selected.Slot, selected.Island,
+                            x, z, selected.ResourceNodes, selected.SelectionSeed));
+                        success = true;
+                    }
+                }
+                if (!success)
+                    throw new InvalidOperationException("Unable to place island slot " +
+                        selected.Slot + " inside biome region '" + biomeId +
+                        "' while preserving minimum separation.");
+            }
+
+            return new WorldSpawnPlan(biomeId, worldSeed, minSeparation, placed.ToArray());
+        }
+
         private static string[] FilterIslandResources(
             IslandDefinition island, ResourceDefinition[] available)
         {
