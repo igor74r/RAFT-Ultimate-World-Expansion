@@ -50,6 +50,7 @@
     <Compile Include="WorldBiomeResolver.cs" />
     <Compile Include="WorldSpawnPlanner.cs" />
     <Compile Include="WorldSpawnPlanValidator.cs" />
+    <Compile Include="WorldRegionPlanner.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
