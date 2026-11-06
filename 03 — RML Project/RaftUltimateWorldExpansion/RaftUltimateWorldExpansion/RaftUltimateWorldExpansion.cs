@@ -96,7 +96,7 @@ public class RaftUltimateWorldExpansion : Mod
                         ", resources=" + resolution.Resources.Length +
                         " (deterministic seed 0; no world placement).");
 
-                    WorldSpawnPlan plan = WorldSpawnPlanner.Create(result, biome.Id, 0, 3, 1100f, 4500f);
+                    WorldSpawnPlan plan = WorldSpawnPlanner.CreateInRegions(result, regionPlan, biome.Id, 0, 3, 1100f, 4500f, 150f);
                     Log("World spawn plan: biome=" + plan.BiomeId + ", seed=" + plan.WorldSeed +
                         ", candidates=" + plan.Islands.Length + " (data-only; no game objects created).");
                     WorldSpawnPlanValidationResult validation =
