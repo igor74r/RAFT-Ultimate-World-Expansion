@@ -142,3 +142,13 @@ The final candidate was rebuilt after enabling bounded field inspection for each
 - Specified deterministic type/member identity, metadata-only inventory, explicit side-effect prohibitions, bounded failure isolation, terminal status semantics, and acceptance tests TD01–TD20.
 - Linked the specification from README and Roadmap.
 - Design/documentation only: no C# source, build, package, local installation, game process, save, or runtime state was changed.
+
+
+## v0.1.3 G0 cross-review clarifications — 2026-11-06
+
+- Cross-reviewed the metadata probe plan, reflection safety specification, boundedness audit, resource budgets and C# 7.3/.NET Framework 4.8 project constraints.
+- Clarified bounded complete candidate counting versus the eight-identity output cap; no resolution after truncation.
+- Prevented duplicate accessor METHOD records and double-counting of property/event members.
+- Prevented enum constants from being duplicated as FIELD records or counted against the shared member budget.
+- Added regression cases TD21–TD25 and recorded G0 as REVIEWED — APPROVAL PENDING, not approved.
+- Documentation only; no C# source, build, package, local installation, game process, save or runtime state was changed.
