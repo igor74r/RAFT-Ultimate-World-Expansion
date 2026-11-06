@@ -6,6 +6,13 @@ The current world content is split into three JSON catalogs:
 - `resources.json` — resource identity, biome associations, sources, and intended uses.
 - `islands.json` — island/landmark archetypes and their biome/resource references.
 
+## RML package copy
+
+The three JSON files are mirrored into the RML project at
+`03 — RML Project/RaftUltimateWorldExpansion/RaftUltimateWorldExpansion/Content/World/`.
+The project file includes them as content and copies them to the build output. Keep the
+repository catalog and packaged copy synchronized when editing world definitions.
+
 ## Runtime loader
 
 The RML project includes a standalone C# loader at:
@@ -25,7 +32,7 @@ if (!result.Success)
 // result.Biomes, result.Resources, and result.Islands are validated catalogs.
 ```
 
-The caller must supply the directory containing all three JSON files. The loader does not guess the mod installation path, access Unity/Raft APIs, spawn objects, or modify world/save/network state.
+The caller may use `WorldCatalog.LoadFromModDirectory(modDirectory)` to resolve `Content/World`, or supply the exact catalog directory to `LoadDirectory(directory)`. The loader does not guess the mod installation path, access Unity/Raft APIs, spawn objects, or modify world/save/network state.
 
 ## Validation behavior
 
