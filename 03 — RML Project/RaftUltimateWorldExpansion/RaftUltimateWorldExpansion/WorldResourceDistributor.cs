@@ -106,7 +106,8 @@ namespace RaftUltimateWorldExpansion
 
                         nodes.Add(new WorldResourceNode(island.Slot, resource.Id, x, z,
                             nodeRegion.PrimaryBiomeId,
-                            nodeRegion.IsTransition ? nodeRegion.TransitionBiomeId : null));
+                            nodeRegion.IsTransition ? nodeRegion.TransitionBiomeId : null,
+                            nodeRegion.TransitionWeight));
                         placed = true;
                         break;
                     }
@@ -189,9 +190,10 @@ namespace RaftUltimateWorldExpansion
         public float Z { get; private set; }
         public string PrimaryBiomeId { get; private set; }
         public string TransitionBiomeId { get; private set; }
+        public float TransitionWeight { get; private set; }
 
         internal WorldResourceNode(int islandSlot, string resourceId, float x, float z,
-            string primaryBiomeId, string transitionBiomeId)
+            string primaryBiomeId, string transitionBiomeId, float transitionWeight)
         {
             IslandSlot = islandSlot;
             ResourceId = resourceId;
@@ -199,6 +201,7 @@ namespace RaftUltimateWorldExpansion
             Z = z;
             PrimaryBiomeId = primaryBiomeId;
             TransitionBiomeId = transitionBiomeId;
+            TransitionWeight = transitionWeight;
         }
     }
 
@@ -324,6 +327,10 @@ namespace RaftUltimateWorldExpansion
                         !String.Equals(owner.Island.Biome, node.TransitionBiomeId, StringComparison.Ordinal))
                         result.Errors.Add("Resource node " + i + " biome context does not match its owning island.");
                 }
+                if (Single.IsNaN(node.TransitionWeight) || Single.IsInfinity(node.TransitionWeight) ||
+                    node.TransitionWeight < 0f || node.TransitionWeight > 1f)
+                    result.Errors.Add("Resource node " + i + " has a transition weight outside [0, 1].");
+
                 bool finiteCoordinates = !Single.IsNaN(node.X) && !Single.IsInfinity(node.X) &&
                     !Single.IsNaN(node.Z) && !Single.IsInfinity(node.Z);
                 if (!finiteCoordinates)
@@ -342,9 +349,10 @@ namespace RaftUltimateWorldExpansion
                             ? resolved.TransitionBiomeId : null;
                         if (!resolved.IsInsideRegion ||
                             !String.Equals(resolved.PrimaryBiomeId, node.PrimaryBiomeId, StringComparison.Ordinal) ||
-                            !String.Equals(expectedTransition, node.TransitionBiomeId, StringComparison.Ordinal))
+                            !String.Equals(expectedTransition, node.TransitionBiomeId, StringComparison.Ordinal) ||
+                            Math.Abs((double)resolved.TransitionWeight - node.TransitionWeight) > 0.0001d)
                             result.Errors.Add("Resource node " + i +
-                                " biome context does not exactly match its resolved world position.");
+                                " biome context or transition weight does not exactly match its resolved world position.");
                     }
                     catch (Exception ex)
                     {
