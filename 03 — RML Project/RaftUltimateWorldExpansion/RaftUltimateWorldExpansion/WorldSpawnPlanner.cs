@@ -17,6 +17,18 @@ namespace RaftUltimateWorldExpansion
             float minRadius,
             float maxRadius)
         {
+            return Create(catalog, biomeId, worldSeed, islandCount, minRadius, maxRadius, 100f);
+        }
+
+        public static WorldSpawnPlan Create(
+            WorldCatalogLoadResult catalog,
+            string biomeId,
+            int worldSeed,
+            int islandCount,
+            float minRadius,
+            float maxRadius,
+            float minSeparation)
+        {
             if (catalog == null || !catalog.Success)
                 throw new ArgumentException("A successfully validated world catalog is required.", "catalog");
             if (islandCount < 1 || islandCount > 256)
@@ -26,27 +38,54 @@ namespace RaftUltimateWorldExpansion
                 minRadius < 0f || maxRadius <= minRadius)
                 throw new ArgumentOutOfRangeException("minRadius", "Radius bounds must be finite, non-negative, and maxRadius must exceed minRadius.");
 
+            if (Single.IsNaN(minSeparation) || Single.IsInfinity(minSeparation) || minSeparation < 0f)
+                throw new ArgumentOutOfRangeException("minSeparation", "Minimum separation must be finite and non-negative.");
+
             List<IslandSpawnCandidate> candidates = new List<IslandSpawnCandidate>(islandCount);
             uint state = MakeSeed(biomeId, worldSeed);
+            double minSeparationSquared = (double)minSeparation * minSeparation;
 
             for (int i = 0; i < islandCount; i++)
             {
                 int slotSeed = unchecked((int)Next(ref state));
                 BiomeResolution resolution = WorldBiomeResolver.Resolve(catalog, biomeId, slotSeed);
-                float angle = NextUnit(ref state) * 6.28318530718f;
-                float radius = minRadius + NextUnit(ref state) * (maxRadius - minRadius);
+                bool placed = false;
 
-                string[] nodes = FilterIslandResources(resolution.SelectedIsland, resolution.Resources);
-                candidates.Add(new IslandSpawnCandidate(
-                    i,
-                    resolution.SelectedIsland,
-                    (float)Math.Cos(angle) * radius,
-                    (float)Math.Sin(angle) * radius,
-                    nodes,
-                    slotSeed));
+                for (int attempt = 0; attempt < 128 && !placed; attempt++)
+                {
+                    float angle = NextUnit(ref state) * 6.28318530718f;
+                    float radius = minRadius + NextUnit(ref state) * (maxRadius - minRadius);
+                    float x = (float)Math.Cos(angle) * radius;
+                    float z = (float)Math.Sin(angle) * radius;
+                    bool separated = true;
+
+                    for (int previous = 0; previous < candidates.Count; previous++)
+                    {
+                        double dx = (double)x - candidates[previous].X;
+                        double dz = (double)z - candidates[previous].Z;
+                        if (dx * dx + dz * dz < minSeparationSquared)
+                        {
+                            separated = false;
+                            break;
+                        }
+                    }
+
+                    if (separated)
+                    {
+                        string[] nodes = FilterIslandResources(resolution.SelectedIsland, resolution.Resources);
+                        candidates.Add(new IslandSpawnCandidate(i, resolution.SelectedIsland,
+                            x, z, nodes, slotSeed));
+                        placed = true;
+                    }
+                }
+
+                if (!placed)
+                    throw new InvalidOperationException("Unable to place island slot " + i +
+                        " with minimum separation " + minSeparation +
+                        " after 128 deterministic attempts. Increase maxRadius or reduce islandCount/minSeparation.");
             }
 
-            return new WorldSpawnPlan(biomeId, worldSeed, candidates.ToArray());
+            return new WorldSpawnPlan(biomeId, worldSeed, minSeparation, candidates.ToArray());
         }
 
         private static string[] FilterIslandResources(
@@ -110,12 +149,15 @@ namespace RaftUltimateWorldExpansion
     {
         public string BiomeId { get; private set; }
         public int WorldSeed { get; private set; }
+        public float MinimumSeparation { get; private set; }
         public IslandSpawnCandidate[] Islands { get; private set; }
 
-        internal WorldSpawnPlan(string biomeId, int worldSeed, IslandSpawnCandidate[] islands)
+        internal WorldSpawnPlan(string biomeId, int worldSeed, float minimumSeparation,
+            IslandSpawnCandidate[] islands)
         {
             BiomeId = biomeId;
             WorldSeed = worldSeed;
+            MinimumSeparation = minimumSeparation;
             Islands = islands;
         }
     }
