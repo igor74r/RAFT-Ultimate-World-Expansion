@@ -54,13 +54,13 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="modinfo.json" />
-    <None Include="Content\\World\\biomes.json">
+    <None Include="Content\World\biomes.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\\World\\resources.json">
+    <None Include="Content\World\resources.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Content\\World\\islands.json">
+    <None Include="Content\World\islands.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
