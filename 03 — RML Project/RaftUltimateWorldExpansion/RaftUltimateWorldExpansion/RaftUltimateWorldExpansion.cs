@@ -116,6 +116,20 @@ public class RaftUltimateWorldExpansion : Mod
                         " (deterministic data-only placements).");
                     for (int re = 0; re < Math.Min(resourceValidation.Errors.Count, 4); re++)
                         Log("Resource distribution error[" + re + "]: " + resourceValidation.Errors[re]);
+                    const float auditReferenceChunkSize = 1000f;
+                    WorldChunkPlacementPlan chunkPlan = WorldChunkPlacementPlanner.Create(
+                        new WorldSpawnPlan[] { plan },
+                        new WorldResourceDistributionPlan[] { resourcePlan },
+                        auditReferenceChunkSize);
+                    WorldChunkPlacementValidationResult chunkValidation =
+                        WorldChunkPlacementValidator.Validate(chunkPlan);
+                    Log("Chunk coordinate plan: biome=" + biome.Id +
+                        ", placements=" + chunkPlan.Placements.Length +
+                        ", validation=" + (chunkValidation.Success ? "PASS" : "FAIL") +
+                        ", referenceChunkSize=" + auditReferenceChunkSize +
+                        " (prior v0.1.1 runtime observation; not read from live ChunkManager; data-only).");
+                    for (int ce = 0; ce < Math.Min(chunkValidation.Errors.Count, 4); ce++)
+                        Log("Chunk placement error[" + ce + "]: " + chunkValidation.Errors[ce]);
                     for (int p = 0; p < plan.Islands.Length; p++)
                     {
                         IslandSpawnCandidate candidate = plan.Islands[p];
