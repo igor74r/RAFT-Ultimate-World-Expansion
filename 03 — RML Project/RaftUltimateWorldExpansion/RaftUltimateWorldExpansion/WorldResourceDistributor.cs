@@ -182,6 +182,16 @@ namespace RaftUltimateWorldExpansion
             return false;
         }
 
+        private static ResourceDefinition FindResource(ResourceDefinition[] values, string id)
+        {
+            if (values == null || String.IsNullOrEmpty(id))
+                return null;
+            for (int i = 0; i < values.Length; i++)
+                if (values[i] != null && String.Equals(values[i].Id, id, StringComparison.Ordinal))
+                    return values[i];
+            return null;
+        }
+
         public static WorldResourceDistributionValidationResult Validate(
             WorldResourceDistributionPlan plan, IslandSpawnCandidate[] islands,
             WorldCatalogLoadResult catalog, int maxNodesPerIsland)
@@ -217,12 +227,30 @@ namespace RaftUltimateWorldExpansion
                 for (int islandIndex = 0; islandIndex < islands.Length; islandIndex++)
                     if (islands[islandIndex] != null && islands[islandIndex].Slot == node.IslandSlot)
                     { owner = islands[islandIndex]; break; }
+                if (node.IslandSlot < 0)
+                    result.Errors.Add("Resource node " + i + " has a negative island slot.");
                 if (owner == null)
                     result.Errors.Add("Resource node " + i + " references an unknown island slot.");
                 else if (!ContainsResource(owner.ResourceNodes, node.ResourceId))
                     result.Errors.Add("Resource node " + i + " is not declared by its owning island.");
-                if (!resourceIds.Contains(node.ResourceId))
+
+                ResourceDefinition definition = FindResource(catalog.Resources.Resources, node.ResourceId);
+                if (definition == null)
                     result.Errors.Add("Resource node " + i + " references an unknown resource.");
+                if (String.IsNullOrEmpty(node.PrimaryBiomeId))
+                    result.Errors.Add("Resource node " + i + " has no primary biome identity.");
+                else if (definition != null)
+                {
+                    bool primaryAllowed = ContainsResource(definition.Biomes, node.PrimaryBiomeId);
+                    bool transitionAllowed = !String.IsNullOrEmpty(node.TransitionBiomeId) &&
+                        ContainsResource(definition.Biomes, node.TransitionBiomeId);
+                    if (!primaryAllowed && !transitionAllowed)
+                        result.Errors.Add("Resource node " + i + " is not allowed in its recorded biome context.");
+                    if (owner != null && owner.Island != null &&
+                        !String.Equals(owner.Island.Biome, node.PrimaryBiomeId, StringComparison.Ordinal) &&
+                        !String.Equals(owner.Island.Biome, node.TransitionBiomeId, StringComparison.Ordinal))
+                        result.Errors.Add("Resource node " + i + " biome context does not match its owning island.");
+                }
                 if (Single.IsNaN(node.X) || Single.IsInfinity(node.X) ||
                     Single.IsNaN(node.Z) || Single.IsInfinity(node.Z))
                     result.Errors.Add("Resource node " + i + " has non-finite coordinates.");
