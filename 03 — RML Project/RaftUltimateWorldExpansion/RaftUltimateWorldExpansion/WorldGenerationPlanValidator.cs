@@ -87,6 +87,7 @@ namespace RaftUltimateWorldExpansion
                 }
 
                 ValidateBiomePlanCoverage(errors, catalog, biomePlans);
+                ValidateResourcePolicyConsistency(errors, resourcePlans);
             }
 
             WorldChunkPlacementValidationResult chunkValidation =
@@ -97,6 +98,43 @@ namespace RaftUltimateWorldExpansion
             return new WorldGenerationPlanValidationResult(errors);
         }
 
+
+        private static void ValidateResourcePolicyConsistency(
+            List<string> errors, WorldResourceDistributionPlan[] plans)
+        {
+            if (plans == null || plans.Length < 2)
+                return;
+
+            WorldResourceDistributionPlan baseline = plans[0];
+            if (baseline == null)
+                return;
+
+            for (int i = 1; i < plans.Length; i++)
+            {
+                WorldResourceDistributionPlan current = plans[i];
+                if (current == null)
+                    continue;
+
+                if (Single.IsNaN(baseline.SpreadRadius) || Single.IsInfinity(baseline.SpreadRadius) ||
+                    Single.IsNaN(current.SpreadRadius) || Single.IsInfinity(current.SpreadRadius) ||
+                    Math.Abs((double)baseline.SpreadRadius - current.SpreadRadius) > 0.0001d)
+                    errors.Add("Resource plans do not use a consistent spread radius.");
+
+                if (Single.IsNaN(baseline.TransitionWidthRadians) ||
+                    Single.IsInfinity(baseline.TransitionWidthRadians) ||
+                    Single.IsNaN(current.TransitionWidthRadians) ||
+                    Single.IsInfinity(current.TransitionWidthRadians) ||
+                    Math.Abs((double)baseline.TransitionWidthRadians - current.TransitionWidthRadians) > 0.000001d)
+                    errors.Add("Resource plans do not use a consistent biome transition width.");
+
+                if (Single.IsNaN(baseline.MinimumNodeSeparation) ||
+                    Single.IsInfinity(baseline.MinimumNodeSeparation) ||
+                    Single.IsNaN(current.MinimumNodeSeparation) ||
+                    Single.IsInfinity(current.MinimumNodeSeparation) ||
+                    Math.Abs((double)baseline.MinimumNodeSeparation - current.MinimumNodeSeparation) > 0.0001d)
+                    errors.Add("Resource plans do not use a consistent minimum node separation.");
+            }
+        }
 
         private static void ValidateBiomePlanCoverage(
             List<string> errors, WorldCatalogLoadResult catalog, HashSet<string> plannedBiomeIds)
