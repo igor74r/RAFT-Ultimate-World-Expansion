@@ -14,6 +14,51 @@ namespace RaftUltimateWorldExpansion
     {
         private const int MaxCatalogBytes = 1024 * 1024;
 
+        public static WorldCatalogLoadResult LoadFromEmbeddedFiles(Func<string, byte[]> readFile)
+        {
+            WorldCatalogLoadResult result = new WorldCatalogLoadResult();
+            if (readFile == null)
+            {
+                result.Errors.Add("Embedded file reader is null.");
+                return result;
+            }
+
+            try
+            {
+                result.Biomes = ReadEmbedded<BiomeCatalog>(
+                    "Content/World/biomes.json", readFile);
+                result.Resources = ReadEmbedded<ResourceCatalog>(
+                    "Content/World/resources.json", readFile);
+                result.Islands = ReadEmbedded<IslandCatalog>(
+                    "Content/World/islands.json", readFile);
+                Validate(result);
+            }
+            catch (Exception ex)
+            {
+                result.Errors.Add(ex.GetType().Name + ": " + ex.Message);
+            }
+
+            result.Success = result.Errors.Count == 0;
+            return result;
+        }
+
+        private static T ReadEmbedded<T>(string embeddedPath, Func<string, byte[]> readFile)
+            where T : class
+        {
+            byte[] bytes = readFile(embeddedPath);
+            if (bytes == null || bytes.Length == 0 || bytes.Length > MaxCatalogBytes)
+                throw new InvalidDataException("Embedded catalog is missing, empty, or too large: " + embeddedPath);
+
+            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
+            using (MemoryStream stream = new MemoryStream(bytes, false))
+            {
+                T value = serializer.ReadObject(stream) as T;
+                if (value == null)
+                    throw new InvalidDataException("Embedded catalog root is invalid: " + embeddedPath);
+                return value;
+            }
+        }
+
         public static WorldCatalogLoadResult LoadFromModDirectory(string modDirectory)
         {
             if (String.IsNullOrEmpty(modDirectory))
