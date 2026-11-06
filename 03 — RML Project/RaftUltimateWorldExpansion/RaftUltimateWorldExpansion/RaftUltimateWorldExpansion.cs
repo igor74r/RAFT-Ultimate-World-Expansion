@@ -191,6 +191,9 @@ public class RaftUltimateWorldExpansion : Mod
         InspectTypeSurface("SO_ChunkSpawnRuleAsset");
         InspectTypeSurface("AssetBundleManager");
         InspectTypeSurface("AssetBundleHooker");
+        InspectLandmarkPipelineSurface("AssetBundleManager", "LoadAssetBundle", "AddLandmarksToHooker", "OnLoadGame", "StartSceneLoading", "LoadSpecificScene", "LoadScenePaths", "GetGameObjectsFromScene", "UnloadBundle");
+        InspectLandmarkPipelineSurface("AssetBundleHooker", "GetLandmarksFromAssetBundleKey", "GetLandmarkFromUniqueIndex", "GetGameObjectsFromScene");
+        InspectLandmarkPipelineSurface("SceneLoader", "GetLandmarksFromAssetBundleKey", "LoadScenes", "AddLoadedLandmark", "TrackAddressableLandmark", "InitializeLoadedLandmark", "SpawnLandmarkFromUniqueIndex");
         InspectTypeSurface("ChunkPointType");
 
         Log("World probe v0.1.2 completed. Read-only inspection only; no game state was changed.");
@@ -506,6 +509,69 @@ public class RaftUltimateWorldExpansion : Mod
         catch (Exception ex)
         {
             Log("Type surface failed: " + typeName + ": " +
+                ex.GetType().Name + ": " + ex.Message);
+        }
+    }
+
+    // Captures exact runtime metadata for the Landmark pipeline without invoking game methods.
+    private void InspectLandmarkPipelineSurface(string typeName, params string[] memberNames)
+    {
+        try
+        {
+            Type type = FindLoadedType(typeName);
+            if (type == null)
+            {
+                Log("Landmark metadata: type not found: " + typeName);
+                return;
+            }
+
+            Log("Landmark metadata: type=" + type.FullName + ", assembly=" +
+                type.Assembly.FullName + ", base=" +
+                (type.BaseType == null ? "none" : type.BaseType.FullName));
+
+            const BindingFlags flags = BindingFlags.Instance | BindingFlags.Static |
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly;
+            for (int i = 0; i < memberNames.Length; i++)
+            {
+                string memberName = memberNames[i];
+                FieldInfo field = type.GetField(memberName, flags);
+                if (field != null)
+                {
+                    Log("Landmark field: " + typeName + "." + field.Name +
+                        " : " + field.FieldType.FullName +
+                        (field.IsStatic ? " [static]" : " [instance]") +
+                        " [" + field.Attributes + "]");
+                }
+
+                MethodInfo[] methods = type.GetMethods(flags);
+                int matches = 0;
+                for (int m = 0; m < methods.Length; m++)
+                {
+                    MethodInfo method = methods[m];
+                    if (!String.Equals(method.Name, memberName, StringComparison.Ordinal))
+                        continue;
+
+                    ParameterInfo[] parameters = method.GetParameters();
+                    string signature = method.ReturnType.FullName + " " + method.Name + "(";
+                    for (int p = 0; p < parameters.Length; p++)
+                    {
+                        if (p > 0) signature += ", ";
+                        signature += parameters[p].ParameterType.FullName + " " + parameters[p].Name;
+                    }
+                    signature += ")";
+                    Log("Landmark method: " + typeName + "." + signature +
+                        (method.IsStatic ? " [static]" : " [instance]") +
+                        " [" + method.Attributes + "]");
+                    matches++;
+                }
+
+                if (field == null && matches == 0)
+                    Log("Landmark metadata: member not found: " + typeName + "." + memberName);
+            }
+        }
+        catch (Exception ex)
+        {
+            Log("Landmark metadata inspection failed: " + typeName + ": " +
                 ex.GetType().Name + ": " + ex.Message);
         }
     }
