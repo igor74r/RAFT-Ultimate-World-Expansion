@@ -353,6 +353,25 @@ namespace RaftUltimateWorldExpansion
                 result.Errors.Add("Resource transition width must be finite and between zero and PI/2.");
             if (regions != null && regions.WorldSeed != plan.WorldSeed)
                 result.Errors.Add("Resource plan and regional layout must use the same world seed.");
+            if (regions != null && regions.Regions != null &&
+                !Single.IsNaN(plan.TransitionWidthRadians) &&
+                !Single.IsInfinity(plan.TransitionWidthRadians) &&
+                plan.TransitionWidthRadians >= 0f &&
+                plan.TransitionWidthRadians < 1.57079632679f)
+            {
+                try
+                {
+                    float maximumWidth =
+                        WorldRegionResolver.GetMaximumNonOverlappingTransitionWidth(regions);
+                    if (plan.TransitionWidthRadians > maximumWidth + 0.000001f)
+                        result.Errors.Add("Resource transition width overlaps neighboring transition bands.");
+                }
+                catch (Exception ex)
+                {
+                    result.Errors.Add("Resource transition width could not be checked against region sectors: " +
+                        ex.GetType().Name + ".");
+                }
+            }
 
             HashSet<string> resourceIds = new HashSet<string>(StringComparer.Ordinal);
             for (int i = 0; i < catalog.Resources.Resources.Length; i++)
