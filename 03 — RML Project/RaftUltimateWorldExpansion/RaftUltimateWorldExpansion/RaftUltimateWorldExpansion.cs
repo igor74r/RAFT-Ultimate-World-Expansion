@@ -96,7 +96,7 @@ public class RaftUltimateWorldExpansion : Mod
                         ", resources=" + resolution.Resources.Length +
                         " (deterministic seed 0; no world placement).");
 
-                    WorldSpawnPlan plan = WorldSpawnPlanner.Create(result, biome.Id, 0, 3, 150f, 500f);
+                    WorldSpawnPlan plan = WorldSpawnPlanner.Create(result, biome.Id, 0, 3, 1100f, 4500f);
                     Log("World spawn plan: biome=" + plan.BiomeId + ", seed=" + plan.WorldSeed +
                         ", candidates=" + plan.Islands.Length + " (data-only; no game objects created).");
                     WorldSpawnPlanValidationResult validation =
@@ -105,6 +105,17 @@ public class RaftUltimateWorldExpansion : Mod
                         ", errors=" + validation.Errors.Count + ".");
                     for (int e = 0; e < Math.Min(validation.Errors.Count, 4); e++)
                         Log("World spawn plan validation error[" + e + "]: " + validation.Errors[e]);
+                    WorldResourceDistributionPlan resourcePlan =
+                        WorldResourceDistributor.Create(result, regionPlan, plan.Islands, 0, 3, 35f, 0.05f);
+                    WorldResourceDistributionValidationResult resourceValidation =
+                        WorldResourceDistributionValidator.Validate(resourcePlan, plan.Islands, result, 3);
+                    Log("Resource distribution: biome=" + biome.Id +
+                        ", nodes=" + resourcePlan.Nodes.Length +
+                        ", validation=" + (resourceValidation.Success ? "PASS" : "FAIL") +
+                        ", errors=" + resourceValidation.Errors.Count +
+                        " (deterministic data-only placements).");
+                    for (int re = 0; re < Math.Min(resourceValidation.Errors.Count, 4); re++)
+                        Log("Resource distribution error[" + re + "]: " + resourceValidation.Errors[re]);
                     for (int p = 0; p < plan.Islands.Length; p++)
                     {
                         IslandSpawnCandidate candidate = plan.Islands[p];
