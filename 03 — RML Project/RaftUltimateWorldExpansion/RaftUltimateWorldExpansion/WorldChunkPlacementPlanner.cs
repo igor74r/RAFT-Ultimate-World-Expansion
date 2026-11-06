@@ -106,6 +106,24 @@ namespace RaftUltimateWorldExpansion
             ChunkSize = chunkSize;
             Placements = placements;
         }
+
+        /// <summary>
+        /// Returns placements assigned to one chunk, preserving deterministic plan order.
+        /// </summary>
+        public WorldChunkPlacement[] GetChunk(int chunkX, int chunkZ)
+        {
+            if (Placements == null)
+                return new WorldChunkPlacement[0];
+
+            List<WorldChunkPlacement> matches = new List<WorldChunkPlacement>();
+            for (int i = 0; i < Placements.Length; i++)
+            {
+                WorldChunkPlacement placement = Placements[i];
+                if (placement != null && placement.ChunkX == chunkX && placement.ChunkZ == chunkZ)
+                    matches.Add(placement);
+            }
+            return matches.ToArray();
+        }
     }
 
     public sealed class WorldChunkPlacement
@@ -175,6 +193,9 @@ namespace RaftUltimateWorldExpansion
                     errors.Add("Placement " + i + " has an empty or duplicate identity.");
                 if (String.IsNullOrEmpty(placement.DefinitionId) || placement.OwnerIslandSlot < 0)
                     errors.Add("Placement " + i + " has invalid ownership or definition identity.");
+                if (placement.Kind != WorldPlacementKind.Island &&
+                    placement.Kind != WorldPlacementKind.Resource)
+                    errors.Add("Placement " + i + " has an unknown placement kind.");
                 if (Single.IsNaN(placement.WorldX) || Single.IsInfinity(placement.WorldX) ||
                     Single.IsNaN(placement.WorldZ) || Single.IsInfinity(placement.WorldZ) ||
                     Single.IsNaN(placement.LocalX) || Single.IsInfinity(placement.LocalX) ||
@@ -193,6 +214,14 @@ namespace RaftUltimateWorldExpansion
                     int expectedZ = (int)Math.Floor((double)placement.WorldZ / plan.ChunkSize);
                     if (expectedX != placement.ChunkX || expectedZ != placement.ChunkZ)
                         errors.Add("Placement " + i + " has inconsistent chunk indices.");
+                    else
+                    {
+                        double reconstructedX = (double)placement.ChunkX * plan.ChunkSize + placement.LocalX;
+                        double reconstructedZ = (double)placement.ChunkZ * plan.ChunkSize + placement.LocalZ;
+                        if (Math.Abs(reconstructedX - placement.WorldX) > 0.02d ||
+                            Math.Abs(reconstructedZ - placement.WorldZ) > 0.02d)
+                            errors.Add("Placement " + i + " cannot be reconstructed from its chunk address.");
+                    }
                 }
             }
             return new WorldChunkPlacementValidationResult(errors);
