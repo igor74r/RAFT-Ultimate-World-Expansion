@@ -152,3 +152,11 @@ The final candidate was rebuilt after enabling bounded field inspection for each
 - Prevented enum constants from being duplicated as FIELD records or counted against the shared member budget.
 - Added regression cases TD21–TD25 and recorded G0 as REVIEWED — APPROVAL PENDING, not approved.
 - Documentation only; no C# source, build, package, local installation, game process, save or runtime state was changed.
+
+
+## v0.1.3 UWE-META/1 output schema — 2026-11-06
+
+- Added `01 — Research/v0.1.3 UWE-META-1 Output Schema.md` as the normative protocol specification.
+- Defined framing, UTF-8/LF encoding, escaping, null/unknown sentinels, positional layouts for RUN/ASSEMBLY/TYPE/FIELD/PROPERTY/EVENT/METHOD/CTOR/ENUM/ERROR/TRUNCATED/SUMMARY, deterministic ordering, parser checks and terminal status rules.
+- Added schema acceptance tests OS01–OS15 and documented five open G0 review decisions.
+- Documentation only; no C# source, parser/writer, build, package, local installation, game process, save or runtime state was changed.
