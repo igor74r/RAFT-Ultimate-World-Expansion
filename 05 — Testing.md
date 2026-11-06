@@ -142,3 +142,19 @@ Schema source: [v0.1.3 UWE-META/1 Output Schema](v0.1.3%20UWE-META-1%20Output%20
 | In-game catalog log | NOT RUN | No new package loaded in Raft |
 
 The startup path is read-only and does not invoke world mutation, save, or network APIs.
+
+
+## Deterministic biome resolver — 2026-11-06
+
+| Check | Result | Evidence |
+|---|---|---|
+| Resolver source created | PASS (repository check) | WorldBiomeResolver.cs added as a Unity/Raft-independent content resolver |
+| Project compile inclusion | PASS (static check) | WorldBiomeResolver.cs included in the RML .csproj |
+| Startup diagnostic hook | PASS (source check) | Validated catalogs are resolved once per biome with deterministic seed 0 |
+| Tropical mapping | PASS (JSON fixture check) | 2 island candidates; 4 biome resources; seed 0 selects mangrove-cove |
+| Arctic mapping | PASS (JSON fixture check) | 2 island candidates; 4 biome resources; seed 0 selects ice-cave |
+| Volcanic mapping | PASS (JSON fixture check) | 2 island candidates; 4 biome resources; seed 0 selects caldera-island |
+| Deep-ocean mapping | PASS (JSON fixture check) | 2 island candidates; 4 biome resources; seed 0 selects sunken-laboratory |
+| C# compile / in-game run | NOT RUN | Repository-only workflow; resolver has not been compiled or executed in Raft |
+
+Resolver scope: select a mod-owned biome, intersect its landmark pool with island definitions for that biome, collect resources associated with that biome, and select one island deterministically from biome ID + seed. This is a content planning result only; it does not place islands, alter ChunkManager, or claim to use the actual Raft world seed.
