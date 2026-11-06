@@ -52,6 +52,20 @@ public class RaftUltimateWorldExpansion : Mod
                     result.Biomes.Biomes.Length + ", resources=" +
                     result.Resources.Resources.Length + ", islands=" +
                     result.Islands.Islands.Length + ".");
+
+                for (int i = 0; i < result.Biomes.Biomes.Length; i++)
+                {
+                    BiomeDefinition biome = result.Biomes.Biomes[i];
+                    if (biome == null)
+                        continue;
+
+                    BiomeResolution resolution = WorldBiomeResolver.Resolve(result, biome.Id, 0);
+                    Log("Biome resolver check: " + biome.Id +
+                        " -> island=" + resolution.SelectedIsland.Id +
+                        ", candidates=" + resolution.IslandCandidates.Length +
+                        ", resources=" + resolution.Resources.Length +
+                        " (deterministic seed 0; no world placement).");
+                }
                 return;
             }
 
