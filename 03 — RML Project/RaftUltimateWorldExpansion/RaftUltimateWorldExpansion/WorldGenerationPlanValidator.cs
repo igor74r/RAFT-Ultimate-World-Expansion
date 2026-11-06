@@ -63,6 +63,7 @@ namespace RaftUltimateWorldExpansion
                             WorldSpawnPlanValidator.Validate(islands,
                                 matchingRegion.InnerRadius, matchingRegion.OuterRadius);
                         AddErrors(errors, "Island pair " + i, spawnValidation.Errors);
+                        ValidateIslandRegionMembership(errors, islands, regionPlan);
                     }
 
                     WorldResourceDistributionValidationResult resourceValidation =
@@ -81,6 +82,40 @@ namespace RaftUltimateWorldExpansion
             return new WorldGenerationPlanValidationResult(errors);
         }
 
+
+        private static void ValidateIslandRegionMembership(
+            List<string> errors, WorldSpawnPlan plan, WorldRegionPlan regions)
+        {
+            if (plan == null || plan.Islands == null || regions == null)
+                return;
+
+            for (int i = 0; i < plan.Islands.Length; i++)
+            {
+                IslandSpawnCandidate island = plan.Islands[i];
+                if (island == null || island.Island == null ||
+                    Single.IsNaN(island.X) || Single.IsInfinity(island.X) ||
+                    Single.IsNaN(island.Z) || Single.IsInfinity(island.Z))
+                    continue;
+
+                WorldRegionSelection resolved;
+                try
+                {
+                    resolved = WorldRegionResolver.Resolve(regions, island.X, island.Z, 0f);
+                }
+                catch (Exception ex)
+                {
+                    errors.Add("Island pair " + plan.BiomeId + " candidate " +
+                        island.Slot + " could not be resolved against the regional map: " +
+                        ex.GetType().Name + ".");
+                    continue;
+                }
+
+                if (!resolved.IsInsideRegion ||
+                    !String.Equals(resolved.PrimaryBiomeId, plan.BiomeId, StringComparison.Ordinal))
+                    errors.Add("Island pair " + plan.BiomeId + " candidate " +
+                        island.Slot + " is outside its assigned biome sector.");
+            }
+        }
 
         private sealed class ExpectedPlacement
         {
