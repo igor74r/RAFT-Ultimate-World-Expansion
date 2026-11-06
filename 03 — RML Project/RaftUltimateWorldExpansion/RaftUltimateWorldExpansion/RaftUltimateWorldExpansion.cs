@@ -1,7 +1,6 @@
-[Reading 404 lines from start (total: 404 lines, 0 remaining)]
-
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using HMLLibrary;
@@ -83,6 +82,11 @@ public class RaftUltimateWorldExpansion : Mod
                         ", transition=" + sample.IsTransition + ".");
                 }
 
+                const float auditReferenceChunkSize = 1000f;
+                List<WorldSpawnPlan> allIslandPlans = new List<WorldSpawnPlan>();
+                List<WorldResourceDistributionPlan> allResourcePlans = new List<WorldResourceDistributionPlan>();
+                List<WorldChunkPlacement> allChunkPlacements = new List<WorldChunkPlacement>();
+
                 for (int i = 0; i < result.Biomes.Biomes.Length; i++)
                 {
                     BiomeDefinition biome = result.Biomes.Biomes[i];
@@ -116,24 +120,15 @@ public class RaftUltimateWorldExpansion : Mod
                         " (deterministic data-only placements).");
                     for (int re = 0; re < Math.Min(resourceValidation.Errors.Count, 4); re++)
                         Log("Resource distribution error[" + re + "]: " + resourceValidation.Errors[re]);
-                    const float auditReferenceChunkSize = 1000f;
                     WorldChunkPlacementPlan chunkPlan = WorldChunkPlacementPlanner.Create(
                         new WorldSpawnPlan[] { plan },
                         new WorldResourceDistributionPlan[] { resourcePlan },
                         auditReferenceChunkSize);
                     WorldChunkPlacementValidationResult chunkValidation =
                         WorldChunkPlacementValidator.Validate(chunkPlan);
-                    WorldGenerationPlanValidationResult generationValidation =
-                        WorldGenerationPlanValidator.Validate(result, regionPlan,
-                            new WorldSpawnPlan[] { plan },
-                            new WorldResourceDistributionPlan[] { resourcePlan },
-                            chunkPlan, 3);
-                    Log("Complete generation validation: " +
-                        (generationValidation.Success ? "PASS" : "FAIL") +
-                        ", errors=" + generationValidation.Errors.Count + ".");
-                    for (int ge = 0; ge < Math.Min(generationValidation.Errors.Count, 4); ge++)
-                        Log("Generation validation error[" + ge + "]: " +
-                            generationValidation.Errors[ge]);
+                    allIslandPlans.Add(plan);
+                    allResourcePlans.Add(resourcePlan);
+                    allChunkPlacements.AddRange(chunkPlan.Placements);
                     Log("Chunk coordinate plan: biome=" + biome.Id +
                         ", placements=" + chunkPlan.Placements.Length +
                         ", validation=" + (chunkValidation.Success ? "PASS" : "FAIL") +
@@ -149,6 +144,21 @@ public class RaftUltimateWorldExpansion : Mod
                             ", resourceNodes=" + candidate.ResourceNodes.Length + ".");
                     }
                 }
+
+                WorldChunkPlacementPlan completeChunkPlan = new WorldChunkPlacementPlan(
+                    auditReferenceChunkSize, allChunkPlacements.ToArray());
+                WorldGenerationPlanValidationResult generationValidation =
+                    WorldGenerationPlanValidator.Validate(result, regionPlan,
+                        allIslandPlans.ToArray(), allResourcePlans.ToArray(),
+                        completeChunkPlan, 3);
+                Log("Complete cross-biome generation validation: " +
+                    (generationValidation.Success ? "PASS" : "FAIL") +
+                    ", biomePlans=" + allIslandPlans.Count +
+                    ", placements=" + completeChunkPlan.Placements.Length +
+                    ", errors=" + generationValidation.Errors.Count + ".");
+                for (int ge = 0; ge < Math.Min(generationValidation.Errors.Count, 8); ge++)
+                    Log("Generation validation error[" + ge + "]: " +
+                        generationValidation.Errors[ge]);
                 return;
             }
 
