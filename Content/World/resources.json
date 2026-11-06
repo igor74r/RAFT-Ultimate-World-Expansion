@@ -1,0 +1,259 @@
+{
+  "schemaVersion": 1,
+  "catalogId": "com.igor74r.raftuwe.world.resources",
+  "catalogVersion": "0.1.0",
+  "status": "content-data-only",
+  "notes": [
+    "Resource identities and biome associations are design data only.",
+    "No item IDs, crafting recipes, pickup prefabs, or runtime registration are claimed."
+  ],
+  "resources": [
+    {
+      "id": "coral",
+      "displayName": "Coral Fragment",
+      "category": "marine-material",
+      "biomes": [
+        "tropical"
+      ],
+      "sources": [
+        "reef-node"
+      ],
+      "uses": [
+        "decoration",
+        "future-crafting"
+      ],
+      "rarity": "common"
+    },
+    {
+      "id": "seaweed",
+      "displayName": "Dense Seaweed",
+      "category": "marine-plant",
+      "biomes": [
+        "tropical"
+      ],
+      "sources": [
+        "shallow-water-gathering"
+      ],
+      "uses": [
+        "food-processing",
+        "future-crafting"
+      ],
+      "rarity": "common"
+    },
+    {
+      "id": "tropical-wood",
+      "displayName": "Tropical Hardwood",
+      "category": "wood",
+      "biomes": [
+        "tropical"
+      ],
+      "sources": [
+        "coastal-tree"
+      ],
+      "uses": [
+        "building",
+        "future-crafting"
+      ],
+      "rarity": "uncommon"
+    },
+    {
+      "id": "shell",
+      "displayName": "Reef Shell",
+      "category": "marine-material",
+      "biomes": [
+        "tropical"
+      ],
+      "sources": [
+        "beach-debris"
+      ],
+      "uses": [
+        "decoration",
+        "future-crafting"
+      ],
+      "rarity": "common"
+    },
+    {
+      "id": "ice",
+      "displayName": "Glacial Ice",
+      "category": "mineral",
+      "biomes": [
+        "arctic"
+      ],
+      "sources": [
+        "iceberg-node"
+      ],
+      "uses": [
+        "future-crafting"
+      ],
+      "rarity": "common"
+    },
+    {
+      "id": "hardwood",
+      "displayName": "Cold-Grown Hardwood",
+      "category": "wood",
+      "biomes": [
+        "arctic"
+      ],
+      "sources": [
+        "snowline-tree"
+      ],
+      "uses": [
+        "building",
+        "future-crafting"
+      ],
+      "rarity": "uncommon"
+    },
+    {
+      "id": "mineral-ore",
+      "displayName": "Frostbound Ore",
+      "category": "ore",
+      "biomes": [
+        "arctic"
+      ],
+      "sources": [
+        "rock-vein"
+      ],
+      "uses": [
+        "future-smelting"
+      ],
+      "rarity": "uncommon"
+    },
+    {
+      "id": "cold-water-fish",
+      "displayName": "Cold-Water Fish",
+      "category": "food",
+      "biomes": [
+        "arctic"
+      ],
+      "sources": [
+        "cold-water-fishing"
+      ],
+      "uses": [
+        "food"
+      ],
+      "rarity": "common"
+    },
+    {
+      "id": "sulfur",
+      "displayName": "Sulfur",
+      "category": "mineral",
+      "biomes": [
+        "volcanic"
+      ],
+      "sources": [
+        "sulfur-vent"
+      ],
+      "uses": [
+        "future-crafting"
+      ],
+      "rarity": "uncommon"
+    },
+    {
+      "id": "basalt",
+      "displayName": "Basalt",
+      "category": "stone",
+      "biomes": [
+        "volcanic"
+      ],
+      "sources": [
+        "basalt-outcrop"
+      ],
+      "uses": [
+        "building",
+        "future-crafting"
+      ],
+      "rarity": "common"
+    },
+    {
+      "id": "obsidian",
+      "displayName": "Obsidian",
+      "category": "stone",
+      "biomes": [
+        "volcanic"
+      ],
+      "sources": [
+        "lava-tube-deposit"
+      ],
+      "uses": [
+        "future-crafting"
+      ],
+      "rarity": "rare"
+    },
+    {
+      "id": "geothermal-mineral",
+      "displayName": "Geothermal Crystal",
+      "category": "mineral",
+      "biomes": [
+        "volcanic"
+      ],
+      "sources": [
+        "geothermal-field"
+      ],
+      "uses": [
+        "future-crafting"
+      ],
+      "rarity": "rare"
+    },
+    {
+      "id": "rare-metal",
+      "displayName": "Abyssal Metal",
+      "category": "ore",
+      "biomes": [
+        "deep-ocean"
+      ],
+      "sources": [
+        "abyssal-deposit"
+      ],
+      "uses": [
+        "future-smelting"
+      ],
+      "rarity": "very-rare"
+    },
+    {
+      "id": "deep-sea-organic",
+      "displayName": "Deep-Sea Organic Matter",
+      "category": "organic",
+      "biomes": [
+        "deep-ocean"
+      ],
+      "sources": [
+        "hydrothermal-field"
+      ],
+      "uses": [
+        "future-research"
+      ],
+      "rarity": "rare"
+    },
+    {
+      "id": "ancient-scrap",
+      "displayName": "Ancient Alloy Scrap",
+      "category": "salvage",
+      "biomes": [
+        "deep-ocean"
+      ],
+      "sources": [
+        "sunken-ruin"
+      ],
+      "uses": [
+        "future-crafting",
+        "future-research"
+      ],
+      "rarity": "very-rare"
+    },
+    {
+      "id": "thermal-crystal",
+      "displayName": "Thermal Crystal",
+      "category": "mineral",
+      "biomes": [
+        "deep-ocean"
+      ],
+      "sources": [
+        "hydrothermal-field"
+      ],
+      "uses": [
+        "future-energy-system"
+      ],
+      "rarity": "very-rare"
+    }
+  ]
+}
