@@ -108,7 +108,7 @@ public class RaftUltimateWorldExpansion : Mod
                     WorldResourceDistributionPlan resourcePlan =
                         WorldResourceDistributor.Create(result, regionPlan, plan.Islands, 0, 3, 35f, 0.05f);
                     WorldResourceDistributionValidationResult resourceValidation =
-                        WorldResourceDistributionValidator.Validate(resourcePlan, plan.Islands, result, 3);
+                        WorldResourceDistributionValidator.Validate(resourcePlan, regionPlan, plan.Islands, result, 3);
                     Log("Resource distribution: biome=" + biome.Id +
                         ", nodes=" + resourcePlan.Nodes.Length +
                         ", validation=" + (resourceValidation.Success ? "PASS" : "FAIL") +
