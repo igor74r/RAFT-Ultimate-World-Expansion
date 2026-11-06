@@ -68,6 +68,32 @@ namespace RaftUltimateWorldExpansion
 
             if (actual.Count != expected.Count)
                 errors.Add("Region plan does not cover every catalog biome.");
+
+            if (plan.Regions.Length >= 2)
+            {
+                double totalAngle = 0d;
+                for (int i = 0; i < plan.Regions.Length; i++)
+                {
+                    WorldRegion current = plan.Regions[i];
+                    WorldRegion next = plan.Regions[(i + 1) % plan.Regions.Length];
+                    if (current == null || next == null)
+                        continue;
+
+                    double span = (double)current.EndAngleRadians - current.StartAngleRadians;
+                    if (span <= 0d) span += fullTurn;
+                    totalAngle += span;
+
+                    double boundaryGap = (double)next.StartAngleRadians - current.EndAngleRadians;
+                    if (boundaryGap < 0d) boundaryGap += fullTurn;
+                    if (boundaryGap > 0.0001d && fullTurn - boundaryGap > 0.0001d)
+                        errors.Add("Region sectors are not contiguous at boundary " + i + ".");
+                    if (current.NextBiomeId != next.BiomeId ||
+                        next.PreviousBiomeId != current.BiomeId)
+                        errors.Add("Region biome adjacency is inconsistent at boundary " + i + ".");
+                }
+                if (Math.Abs(totalAngle - fullTurn) > 0.001d)
+                    errors.Add("Region sectors do not cover exactly one full turn.");
+            }
             return new WorldRegionPlanValidationResult(errors);
         }
 
