@@ -95,10 +95,18 @@ namespace RaftUltimateWorldExpansion
                 if (item == null || !AddId(biomeIds, item.Id, "biome", result.Errors))
                     continue;
                 if (item.Climate == null)
+                {
                     result.Errors.Add("Biome '" + item.Id + "' has no climate definition.");
+                }
+                else
+                {
+                    if (String.IsNullOrEmpty(item.Climate.TemperatureBand) ||
+                        String.IsNullOrEmpty(item.Climate.WaterDepthBand))
+                        result.Errors.Add("Biome '" + item.Id + "' has incomplete climate bands.");
+                    ValidateStringArray(item.Climate.WeatherTags, "biome " + item.Id + " climate.weatherTags", result.Errors);
+                }
                 if (String.IsNullOrEmpty(item.DisplayName))
                     result.Errors.Add("Biome '" + item.Id + "' has no displayName.");
-                ValidateStringArray(item.Climate.WeatherTags, "biome " + item.Id + " climate.weatherTags", result.Errors);
                 ValidateStringArray(item.EnvironmentTags, "biome " + item.Id + " environmentTags", result.Errors);
                 ValidateStringArray(item.ResourceTags, "biome " + item.Id + " resourceTags", result.Errors);
                 ValidateStringArray(item.LandmarkPool, "biome " + item.Id + " landmarkPool", result.Errors);
