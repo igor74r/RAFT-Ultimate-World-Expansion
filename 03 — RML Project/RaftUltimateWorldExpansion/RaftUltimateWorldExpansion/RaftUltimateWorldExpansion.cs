@@ -69,6 +69,12 @@ public class RaftUltimateWorldExpansion : Mod
                     WorldSpawnPlan plan = WorldSpawnPlanner.Create(result, biome.Id, 0, 3, 150f, 500f);
                     Log("World spawn plan: biome=" + plan.BiomeId + ", seed=" + plan.WorldSeed +
                         ", candidates=" + plan.Islands.Length + " (data-only; no game objects created).");
+                    WorldSpawnPlanValidationResult validation =
+                        WorldSpawnPlanValidator.Validate(plan, 150f, 500f);
+                    Log("World spawn plan validation: " + (validation.Success ? "PASS" : "FAIL") +
+                        ", errors=" + validation.Errors.Count + ".");
+                    for (int e = 0; e < Math.Min(validation.Errors.Count, 4); e++)
+                        Log("World spawn plan validation error[" + e + "]: " + validation.Errors[e]);
                     for (int p = 0; p < plan.Islands.Length; p++)
                     {
                         IslandSpawnCandidate candidate = plan.Islands[p];
