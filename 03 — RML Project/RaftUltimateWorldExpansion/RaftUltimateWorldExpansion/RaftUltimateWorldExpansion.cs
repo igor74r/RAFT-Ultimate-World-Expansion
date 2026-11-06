@@ -53,6 +53,18 @@ public class RaftUltimateWorldExpansion : Mod
                     result.Resources.Resources.Length + ", islands=" +
                     result.Islands.Islands.Length + ".");
 
+                WorldRegionPlan regionPlan = WorldRegionPlanner.Create(result, 0, 1000f, 5000f);
+                Log("World region plan: seed=" + regionPlan.WorldSeed +
+                    ", regions=" + regionPlan.Regions.Length +
+                    " (data-only angular biome sectors; no world mutation).");
+                for (int regionIndex = 0; regionIndex < regionPlan.Regions.Length; regionIndex++)
+                {
+                    WorldRegion region = regionPlan.Regions[regionIndex];
+                    Log("World region[" + region.Index + "]: biome=" + region.BiomeId +
+                        ", radius=" + region.InnerRadius + "-" + region.OuterRadius +
+                        ", neighbors=" + region.PreviousBiomeId + "/" + region.NextBiomeId + ".");
+                }
+
                 for (int i = 0; i < result.Biomes.Biomes.Length; i++)
                 {
                     BiomeDefinition biome = result.Biomes.Biomes[i];
