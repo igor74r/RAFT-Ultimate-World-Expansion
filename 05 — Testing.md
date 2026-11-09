@@ -177,3 +177,15 @@ Resolver scope: select a mod-owned biome, intersect its landmark pool with islan
 - M13–M14: corresponding writer/accounting and deterministic-retention implementation requirements.
 
 These are design acceptance cases only. No UWE-META/1 writer, parser, fixture harness, or v0.1.3 runtime probe has been implemented or executed.
+
+## CI run evidence — 2026-11-09
+
+- PR: #1, documentation review branch.
+- Workflow run: `42664478361` — **completed / success**.
+- Job: `data-generation-tests`.
+- Environment: `ubuntu-latest`, .NET SDK `8.0.427`.
+- Result from the job log: `PASS: 69 assertions`.
+- The setup, checkout, SDK setup and deterministic generation test step all completed successfully.
+
+This is a verified pass for the content-only world-generation self-test project. It is not a C# build of the RML mod project and does not prove game loading, Unity integration, custom Landmark placement, persistence, or multiplayer. The workflow emitted a Node.js 20 deprecation warning from the GitHub actions runtime; it did not fail the job.
+
