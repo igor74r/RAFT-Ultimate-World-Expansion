@@ -11,8 +11,10 @@
 - v0.1.2 build/package and file staging: **historical reports; not freshly verified**
 - v0.1.2 in-game load/probe: **not confirmed**
 - v0.1.3: **not implemented**; metadata-only research scope documented
+- v0.1.3 G0.3.1: SUMMARY self-accounting and deterministic ERROR retention clarified at design level; formal G0 approval remains pending
 - Custom island/world generation: **not implemented**
-- Current work: repository-only static research and documentation; no local build or game launch
+- World-generation data-only CI: PASS on both PR #1 runs; latest run 42664628650 passed 69 assertions. This is not an in-game/RML integration test
+- Current work: repository-only G0.3.1 output-budget design review; no local build or game launch
 
 ## Project documentation
 
@@ -47,6 +49,7 @@ The RML project source and Core source are under their respective directories. T
 - [v0.1.3 Metadata Probe Implementation Plan](01%20%E2%80%94%20Research/v0.1.3%20Metadata%20Probe%20Implementation%20Plan.md)
 - [v0.1.3 Type Discovery and Reflection Safety Specification](01%20%E2%80%94%20Research/v0.1.3%20Type%20Discovery%20and%20Reflection%20Safety%20Specification.md)
 - [v0.1.3 UWE-META/1 Output Schema](01%20%E2%80%94%20Research/v0.1.3%20UWE-META-1%20Output%20Schema.md)
+- [v0.1.3 G0.3.1 Output Budget Reservation Protocol](01%20%E2%80%94%20Research/v0.1.3%20G0.3.1%20Output%20Budget%20Reservation%20Protocol.md)
 - [World Biome Catalog](Content/World/biomes.json) — four biome definitions.
 - [World Resource Catalog](Content/World/resources.json) — 16 resource identities and biome/source tags.
 - [Island Archetype Catalog](Content/World/islands.json) — eight island and landmark blueprints.

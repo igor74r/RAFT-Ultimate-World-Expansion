@@ -1,6 +1,3 @@
-[Reading 48 lines from start (total: 48 lines, 0 remaining)]
-
-
 
 ## Current issue status reconciliation — 2026-11-06
 This section supersedes stale statuses in the original table above.
@@ -50,3 +47,12 @@ This section supersedes stale statuses in the original table above.
 The later installation record supersedes older paragraphs in this file that say the installed package is still the lifecycle-only build or that Raft.exe was running during staging. The user closed Raft; the prior installed package was backed up; v0.1.2 was copied into the Raft mods directory and its SHA-256 matched the verified candidate. Current truth: v0.1.2 is staged/installed at file level; no v0.1.2 in-game load has yet been observed. User requested continuation without launching the game, so current work remains static/offline research and code review.
 
 [executed on device: DESKTOP-3MKBODB (8088b63f-2a05-4f71-a7a4-ad740486ff11)]
+
+
+## Repository-only continuation — 2026-11-09
+
+- **ISSUE-018 — SUMMARY self-accounting:** the schema counts the serialized SUMMARY payload in `characters_emitted`, which is self-referential. **Resolved at design level** with a bounded fixed-point calculation; writer/parser fixture coverage remains pending.
+- **ISSUE-019 — ERROR cap determinism:** retaining the first 32 encountered diagnostics could make output depend on reflection enumeration order. **Resolved at design level** with deterministic top-32 retention and post-sort sequence assignment; fixture coverage remains pending.
+- **ISSUE-020 — Local validation environment unavailable:** no Desktop Commander device is connected and the local Obsidian vault/game installation cannot be inspected in this run. **Open.** Required evidence is a connected authorized development device or a supplied exact target-build metadata/IL dump. Do not claim local compilation, installation, or runtime validation until then.
+
+Existing custom Landmark, AssetBundle, custom ChunkPointType, persistence, multiplayer and asset-workflow blockers remain open.

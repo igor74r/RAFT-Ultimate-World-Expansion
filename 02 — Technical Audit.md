@@ -1,22 +1,21 @@
-# Authoritative repository-only status — 2026-11-06
+# Authoritative repository-only status — 2026-11-09
 
-This block supersedes conflicting older status paragraphs below. Older build and installation records are historical reports, not fresh verification.
+This block supersedes conflicting older status paragraphs below. Historical build and installation reports are not fresh verification.
 
 - v0.1.1: read-only runtime probe confirmed by user-provided F10 output on Raft 1.1.01 / Steam 22312909 / RML 2.8.10.
-- v0.1.2: source is in GitHub. Strict compile, package integrity and file staging were reported in earlier local sessions; none were re-run in the current repository-only workflow.
+- v0.1.2: source is in GitHub. Strict compile, package integrity and file staging were reported in earlier local sessions; none were re-run in this workflow.
 - v0.1.2 in-game load and probe: not confirmed.
-- v0.1.3: not implemented; only a metadata-only research scope is documented.
+- v0.1.3: not implemented; metadata-only design scope only.
+- G0.3.1: budget reservation proposal cross-reviewed; SUMMARY self-accounting and deterministic ERROR retention corrections are documented, but G0 is not approved.
 - Custom Landmark registration, AssetBundle integration, placement, persistence and multiplayer: unproven/not implemented.
-- No local machine, build, installation, game process, save or runtime state was accessed or changed during the current work.
+- No Desktop Commander device or local Obsidian vault was accessible. This run used the GitHub repository and its mirrored Markdown project notes only.
+- No local build, installation, package hash verification, game process, save or runtime state was accessed or changed.
 
-See `01 — Roadmap.md` for the single current project status and `01 — Research/v0.1.2 Diagnostic Source Review.md` for the proposed next diagnostic scope.
+See `01 — Roadmap.md` for the current project status and the v0.1.3 research notes for the design gates.
 
 ---
 
-[Reading 60 lines from start (total: 60 lines, 0 remaining)]
-
-
-
+---
 ## Current verified project state — 2026-11-06 reconciliation
 The diagnostic source-based mod was loaded by RML 2.8.10 on Raft 1.1.01 / Steam build 22312909. User screenshots confirmed the mod's Start log, World loaded log, and World save event log on a subsequent save. This verifies only the diagnostic lifecycle callbacks for this configuration.
 
@@ -89,3 +88,20 @@ This section supersedes contradictory earlier status paragraphs in this file:
 - Custom AssetBundle registration, custom Landmark registration, custom ChunkPointType support, persistence, and multiplayer remain unproven.
 
 **Operating boundary:** current work is GitHub-repository-only. Do not claim fresh local build, installation, package hash verification, or runtime testing unless new evidence is supplied.
+
+
+## API and toolchain source check — 2026-11-09
+
+### Confirmed from official/public primary sources
+- The [RaftModLoader download page](https://www.raftmodding.com/Download) lists launcher **2.8.10** for **Raft Update 1.1** and states that the loader supports the official Steam release on Windows 10. This confirms the published loader/update pairing, not the current state of the user's local installation.
+- The [Raft Mod API Mod class reference](https://api.raftmodding.com/modding-api/mod) documents lifecycle callbacks including `WorldEvent_WorldLoaded` and `WorldEvent_WorldSaved`, plus `GetEmbeddedFileBytes`. The page is marked as last updated two years ago; it is useful API surface documentation, not proof of exact current-build registration semantics or call order.
+- The [mod-project tutorial](https://api.raftmodding.com/modding-tutorials/how-to-create-a-mod-project) specifies Unity 2019.3.5f1 for its documented project workflow. Because the tutorial is old, this value must not be treated as verified evidence of the installed game's runtime Unity version or as proof that a current AssetBundle pipeline is compatible.
+- The [Harmony basics guide](https://api.raftmodding.com/modding-tutorials/harmony-basics) demonstrates method patching. It does not identify a safe custom Landmark registration target; no Harmony patch is approved by this audit.
+- The [Raft modding guidelines](https://www.raft-game.com/modding-guidelines.html) require permission before incorporating third-party work and prohibit sharing the game itself. New assets must be original or appropriately licensed.
+
+### Audit disposition
+The public documentation supports continuing with the existing RML mod project and lifecycle/read-only diagnostic path. It does **not** prove custom Landmark registration, custom ChunkPointType extension, custom AssetBundle registration, safe placement, save migration, or host-authoritative multiplayer. The project must continue to treat those paths as blocked pending exact target-build metadata and IL/call-site evidence.
+
+The repository's data-only world-generation self-test workflow passed on both PR #1 runs; the latest is run 42664628650: 69 assertions under .NET SDK 8.0.427. This does not validate the RML entry point, Unity/Raft runtime APIs, AssetBundles, or live world integration.
+
+The v0.1.3 G0.3.1 review is a documentation correction only. No RML API call, Harmony patch, AssetBundle operation, game mutation, C# source change, build, package, installation, or runtime test was performed.
