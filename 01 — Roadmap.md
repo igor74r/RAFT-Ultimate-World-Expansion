@@ -1,41 +1,53 @@
-# Authoritative current status — 2026-11-06
+# Authoritative current status — 2026-11-09
 
-This section is the single current status summary. Older entries below are retained as historical session records and must not be read as current instructions or status when they conflict with this section.
+This block is the single current status summary. Older entries below are historical session records and must not be read as current instructions or status when they conflict with this block.
 
 ## Operating mode
-- Repository-only. No local Windows access, compilation, package installation, or Raft launch unless the user explicitly changes this constraint.
-- All local build/staging/runtime facts below are historical reports from earlier sessions, not fresh verification in this session.
+- Repository-only. No local Windows access, compilation, package installation, or Raft launch in this run.
+- The repository's Markdown notes are the available Obsidian-style project notes. The local Obsidian vault itself is not accessible.
+- No Desktop Commander device is connected. Do not claim fresh local inspection, build, installation, or runtime testing.
 
 ## Version and test evidence
 | Item | Current status | Evidence boundary |
 |---|---|---|
 | v0.1.1 lifecycle/read-only probe | Runtime-confirmed PASS | User-provided F10 output; Raft 1.1.01 / Steam 22312909 / RML 2.8.10 |
-| v0.1.2 source | Present in repository | Source review only |
+| v0.1.2 source | Present in repository | Static source review only |
 | v0.1.2 strict compile/package | Historically reported PASS | Prior local report; not rerun |
 | v0.1.2 file staging | Historically reported SHA match | Prior local report; not rechecked on device |
 | v0.1.2 in-game load/probe | NOT CONFIRMED | No v0.1.2 runtime output recorded |
-| v0.1.3 | NOT IMPLEMENTED | Research requirements only |
+| v0.1.3 | NOT IMPLEMENTED | Metadata-only design documents only |
+| v0.1.3 G0.3.1 output-budget review | DESIGN REVIEWED WITH CORRECTIONS | SUMMARY self-accounting and deterministic ERROR retention clarified; fixture tests unexecuted |
 | Custom Landmark/AssetBundle registration | NOT PROVEN | No verified call graph or IL evidence |
 | Custom placement, persistence, multiplayer | NOT IMPLEMENTED / NOT TESTED | Contracts unresolved |
+
+## Current phase
+**PHASE 0 — Research / G0 design review.** The minimum RML lifecycle diagnostic exists and v0.1.1 was runtime-confirmed. The v0.1.2 candidate remains unconfirmed in-game. The current work is still a safe metadata-only diagnostic design; custom world generation is not ready for game integration.
 
 ## Current research deliverables
 - First Landmark Prototype Specification — design only.
 - Landmark API Evidence Matrix — partial evidence transcribed from prior audit notes; not a fresh assembly inspection.
-- v0.1.2 Diagnostic Source Review — source-level limitations and proposed v0.1.3 metadata-only scope.
-- v0.1.3 Type Discovery and Reflection Safety Specification — design-only contract for candidate identity, ambiguity, exception isolation, member metadata, safety and regression tests.
+- v0.1.2 Diagnostic Source Review and Boundedness Audit.
+- v0.1.3 Metadata Probe Implementation Plan, Type Discovery and Reflection Safety Specification, and UWE-META/1 schema.
+- G0.3.1 Output Budget Reservation Protocol — reviewed with corrections for self-referential SUMMARY accounting and deterministic bounded ERROR selection.
 
 ## Immediate next milestone
-[x] Added `01 — Research/v0.1.3 Metadata Probe Implementation Plan.md` with metadata-only scope, safety checklist, acceptance tests M01–M12 and release gates G0–G5. [ ] Review the design and obtain target-build metadata/IL before any C# implementation. Do not build/package v0.1.3 while operating repository-only.
+- [x] Cross-review the G0.3.1 reserve arithmetic and output ordering.
+- [x] Define a bounded fixed-point calculation for SUMMARY.characters_emitted, including the SUMMARY record itself.
+- [x] Define deterministic top-32 ERROR retention and assign ERROR.sequence only after sorting.
+- [x] Add design acceptance cases BR11–BR12, OS16–OS17, and M13–M14.
+- [ ] Obtain exact target-build metadata/IL for Landmark, LandmarkData, AsyncedLandmark, SceneLoader, AssetBundleManager, AssetBundleHooker, ChunkManager, ChunkPoint, and ChunkPointType.
+- [ ] Execute fixture/parser acceptance tests TD01–TD27, OS01–OS17 and BR01–BR12; these are design requirements, not executed tests.
+- [ ] Complete formal G0 approval before any v0.1.3 C# implementation, build, package, installation, or runtime test.
+
+## CI boundary
+- `.github/workflows/world-generation-self-tests.yml` runs the content-only deterministic world-generation self-test project on pushes, pull requests, and manual dispatch.
+- That workflow does not validate RML loading, Unity AssetBundles, live world mutation, persistence, or multiplayer.
+- A CI result must be tied to a specific workflow run; a configured workflow is not itself a passing test.
 
 ## World-generation implementation gate
 No registration adapter, custom numeric Landmark ID, custom ChunkPointType, AssetBundle load, scene instantiation, world mutation, save write, or network message is approved until manager ownership, call order, key format, identity allocation and host authority are established from exact target-build evidence.
 
 ---
-
-[Reading 64 lines from start (total: 64 lines, 0 remaining)]
-
-
-
 ## Current project status reconciliation — 2026-11-06
 This status block supersedes earlier pending checklists above where they conflict.
 - PHASE 0 compatibility for the tested setup: PASS at diagnostic entry-point/lifecycle level (Raft 1.1.01, Steam build 22312909, RML 2.8.10).
@@ -218,3 +230,15 @@ Documentation-only. No local machine, compiler, game process, save or runtime st
 - [ ] Obtain exact target-build metadata/IL and execute required fixture/parser acceptance tests before G0 approval.
 
 Documentation-only. No implementation, local build, package, installation or game execution was performed.
+
+
+## G0.3.1 output-budget cross-review — 2026-11-09
+
+- [x] Reviewed the fixed reserve of two terminal records and 4,096 UTF-16 code units in each logical/escaped budget.
+- [x] Corrected SUMMARY self-accounting: `characters_emitted` includes the final escaped SUMMARY payload, so the writer must solve the bounded fixed-point equation after all preceding records are fixed.
+- [x] Corrected ERROR selection: retain a deterministic top-32 set by stable diagnostic identity, not the first 32 encountered; assign sequence after sorting.
+- [x] Added BR11–BR12 and OS16–OS17 / M13–M14 design acceptance cases.
+- [ ] Run the fixture/parser tests; none of the new design cases has been executed.
+- [ ] Formal G0 approval remains pending until exact target-build metadata/IL and required fixture evidence are available.
+
+Documentation-only. No local machine, Obsidian vault, compiler, game process, save, package, or installed game files were accessed.
