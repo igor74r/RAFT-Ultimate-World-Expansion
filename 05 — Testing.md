@@ -1,6 +1,3 @@
-[Reading 73 lines from start (total: 73 lines, 0 remaining)]
-
-
 
 ## Read-only World probe build — 2026-11-06
 | Check | Result | Evidence |
@@ -158,3 +155,25 @@ The startup path is read-only and does not invoke world mutation, save, or netwo
 | C# compile / in-game run | NOT RUN | Repository-only workflow; resolver has not been compiled or executed in Raft |
 
 Resolver scope: select a mod-owned biome, intersect its landmark pool with island definitions for that biome, collect resources associated with that biome, and select one island deterministically from biome ID + seed. This is a content planning result only; it does not place islands, alter ChunkManager, or claim to use the actual Raft world seed.
+
+
+## Repository CI and data-only world-generation self-tests — 2026-11-09
+
+- Workflow: `.github/workflows/world-generation-self-tests.yml`.
+- Triggers: push to `main`, pull request to `main`, and manual dispatch.
+- Runner/toolchain: `ubuntu-latest`, .NET SDK 8.0.x.
+- Command: `dotnet run --project tests/WorldGeneration.SelfTests/WorldGeneration.SelfTests.csproj --configuration Release`.
+- The self-test project compiles the Unity/Raft-independent catalog, biome resolver, region planner/validator, region resolver, and spawn planner/validator source files.
+- Covered scenarios include catalog loading/validation, deterministic region generation for a fixed seed, deterministic island/resource selection and coordinates, structural plan validation, seed mismatch rejection, and the 256-island input ceiling.
+
+**Scope limitation:** these tests exercise content-only planning code. They do not prove RML package loading, Unity compatibility, AssetBundle loading, actual island placement, save/reload, or multiplayer authority.
+
+## v0.1.3 output-budget design acceptance — 2026-11-09
+
+- BR11: SUMMARY self-accounting fixed point, including the SUMMARY record itself and terminal TRUNCATED when present; parser and writer must agree at decimal digit boundaries.
+- BR12: more than 32 ERROR descriptors under permuted discovery order produce the same deterministic retained top-32 set and post-sort sequence.
+- OS16: `SUMMARY.characters_emitted` includes its own final escaped record payload and matches independent parser recomputation.
+- OS17: ERROR sequence values are assigned after deterministic sorting; shuffled discovery order does not change the serialized diagnostic set.
+- M13–M14: corresponding writer/accounting and deterministic-retention implementation requirements.
+
+These are design acceptance cases only. No UWE-META/1 writer, parser, fixture harness, or v0.1.3 runtime probe has been implemented or executed.
