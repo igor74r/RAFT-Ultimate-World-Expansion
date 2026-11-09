@@ -13,7 +13,8 @@
 - v0.1.3: **not implemented**; metadata-only research scope documented
 - v0.1.3 G0.3.1: SUMMARY self-accounting and deterministic ERROR retention clarified at design level; formal G0 approval remains pending
 - Custom island/world generation: **not implemented**
-- Current work: repository-only G0.3.1 output-budget design review and data-only world-generation self-tests; no local build or game launch
+- World-generation data-only CI: PASS in PR #1 (69 assertions); this is not an in-game/RML integration test
+- Current work: repository-only G0.3.1 output-budget design review; no local build or game launch
 
 ## Project documentation
 
