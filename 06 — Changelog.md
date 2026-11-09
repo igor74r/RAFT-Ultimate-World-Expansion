@@ -179,3 +179,12 @@ The final candidate was rebuilt after enabling bounded field inspection for each
 - Updated README, Roadmap, Technical Audit, Testing and Known Issues.
 
 Documentation/design only. No C# source, build, package, installation, local Obsidian vault, game process, save or runtime state was changed.
+
+## World-generation CI verification — 2026-11-09
+
+- PR #1 triggered workflow run `42664478361`.
+- Job `data-generation-tests` completed successfully on .NET SDK 8.0.427.
+- Job log reports `PASS: 69 assertions`.
+- This verifies the content-only catalog/biome/region/spawn planning self-tests; it does not validate RML loading or live Raft integration.
+- A Node.js 20 deprecation warning was emitted by the GitHub Actions runtime; no test failure resulted.
+
