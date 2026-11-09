@@ -102,4 +102,6 @@ This section supersedes contradictory earlier status paragraphs in this file:
 ### Audit disposition
 The public documentation supports continuing with the existing RML mod project and lifecycle/read-only diagnostic path. It does **not** prove custom Landmark registration, custom ChunkPointType extension, custom AssetBundle registration, safe placement, save migration, or host-authoritative multiplayer. The project must continue to treat those paths as blocked pending exact target-build metadata and IL/call-site evidence.
 
+The repository's data-only world-generation self-test workflow passed on PR #1 (run 42664478361): 69 assertions under .NET SDK 8.0.427. This does not validate the RML entry point, Unity/Raft runtime APIs, AssetBundles, or live world integration.
+
 The v0.1.3 G0.3.1 review is a documentation correction only. No RML API call, Harmony patch, AssetBundle operation, game mutation, C# source change, build, package, installation, or runtime test was performed.
