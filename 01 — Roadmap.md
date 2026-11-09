@@ -42,7 +42,8 @@ This block is the single current status summary. Older entries below are histori
 ## CI boundary
 - `.github/workflows/world-generation-self-tests.yml` runs the content-only deterministic world-generation self-test project on pushes, pull requests, and manual dispatch.
 - That workflow does not validate RML loading, Unity AssetBundles, live world mutation, persistence, or multiplayer.
-- A CI result must be tied to a specific workflow run; a configured workflow is not itself a passing test.
+- PR #1 workflow run 42664478361: **PASS**, job `data-generation-tests`, 69 assertions, .NET SDK 8.0.427.
+- This result covers content-only world-generation tests; it does not validate RML loading, Unity AssetBundles, live world mutation, persistence, or multiplayer.
 
 ## World-generation implementation gate
 No registration adapter, custom numeric Landmark ID, custom ChunkPointType, AssetBundle load, scene instantiation, world mutation, save write, or network message is approved until manager ownership, call order, key format, identity allocation and host authority are established from exact target-build evidence.
