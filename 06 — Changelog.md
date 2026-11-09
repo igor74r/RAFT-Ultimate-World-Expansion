@@ -1,6 +1,3 @@
-[Reading 53 lines from start (total: 53 lines, 0 remaining)]
-
-
 
 ### Read-only World probe source and package — 2026-11-06
 - Created documentation/project backup at 05 — Releases/backup-docs-20261106-worldgen-audit and backup-rml-project-20261106-pre-worldprobe before edits.
@@ -170,3 +167,15 @@ The final candidate was rebuilt after enabling bounded field inspection for each
 - Aligned the Reflection Safety Specification and Metadata Probe Implementation Plan with bounded top-eight candidate retention and the common output budgets.
 - Updated Roadmap and Changelog to show the five schema design decisions resolved while formal G0 approval remains pending.
 - Re-fetched and verified all five changed documents. Documentation only; no C# implementation, fixture execution, build, package, installation or game runtime activity occurred.
+
+
+## G0.3.1 output-budget protocol cross-review — 2026-11-09
+
+- Cross-reviewed the terminal reserve against the UWE-META/1 512-record and 48,000 UTF-16-code-unit ceilings.
+- Specified fixed-point calculation for `SUMMARY.characters_emitted`, because the field counts the SUMMARY record that contains the field.
+- Replaced encounter-order ERROR buffering with deterministic bounded top-32 retention; ERROR.sequence is assigned after sorting.
+- Added design acceptance cases BR11–BR12, OS16–OS17 and M13–M14 across the protocol, schema, plan and reflection-safety notes.
+- Checked current public RaftModLoader documentation: launcher 2.8.10 is listed for Raft Update 1.1; lifecycle callbacks and embedded-file access are documented, but custom Landmark/AssetBundle registration remains unproven.
+- Updated README, Roadmap, Technical Audit, Testing and Known Issues.
+
+Documentation/design only. No C# source, build, package, installation, local Obsidian vault, game process, save or runtime state was changed.
