@@ -189,3 +189,7 @@ These are design acceptance cases only. No UWE-META/1 writer, parser, fixture ha
 
 This is a verified pass for the content-only world-generation self-test project. It is not a C# build of the RML mod project and does not prove game loading, Unity integration, custom Landmark placement, persistence, or multiplayer. The workflow emitted a Node.js 20 deprecation warning from the GitHub actions runtime; it did not fail the job.
 
+## Latest PR-head CI verification — 2026-11-09
+
+After the documentation branch was updated, workflow run `42664628650` (run number 5) completed successfully. The `data-generation-tests` job reports `PASS: 69 assertions` on .NET SDK 8.0.427. This is the latest PR-head result and supersedes the earlier passing run for the initial PR revision. It still covers only the data-only world-generation self-test project.
+
