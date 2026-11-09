@@ -188,3 +188,9 @@ Documentation/design only. No C# source, build, package, installation, local Obs
 - This verifies the content-only catalog/biome/region/spawn planning self-tests; it does not validate RML loading or live Raft integration.
 - A Node.js 20 deprecation warning was emitted by the GitHub Actions runtime; no test failure resulted.
 
+## Latest PR-head CI rerun — 2026-11-09
+
+- Workflow run `42664628650` (run number 5) completed with conclusion `success`.
+- `data-generation-tests` reports `PASS: 69 assertions` on .NET SDK 8.0.427.
+- This run validates the final documentation PR head's existing data-only world-generation tests; it does not execute UWE-META/1 design cases or load the mod in Raft.
+
