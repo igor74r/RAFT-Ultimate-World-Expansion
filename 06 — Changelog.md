@@ -194,3 +194,14 @@ Documentation/design only. No C# source, build, package, installation, local Obs
 - `data-generation-tests` reports `PASS: 69 assertions` on .NET SDK 8.0.427.
 - This run validates the final documentation PR head's existing data-only world-generation tests; it does not execute UWE-META/1 design cases or load the mod in Raft.
 
+## G0.3.2 / G0.3.3 diagnostic protocol reconciliation — 2026-11-16
+
+- Re-read the current repository status and all primary project notes; confirmed that PHASE 0 / G0 review remains unfinished and v0.1.3 has not been implemented.
+- Cross-reviewed G0.3.2 against the actual UWE-META/1 ERROR/TRUNCATED/SUMMARY grammar and found that the audit's suggested `error_code` / occurrence-ordinal wording did not match the schema fields.
+- Added G0.3.3 as a non-normative proposal: canonical ERROR key is `(scope, stable parent metadata identity, operation, exception_type, recoverable)`; identical descriptors are a bounded multiset and need no occurrence ordinal.
+- Specified separate ERROR-cap overflow and output-cap omission flags, bounded collection/canonicalization/serialization phases, independent logical/escaped reserve charging, fixed primary truncation-reason precedence, committed-stream SUMMARY counters and writer-failure semantics.
+- Added G033-T01–G033-T10 as design acceptance cases; none has been executed.
+- Updated the Implementation Plan, Reflection Safety Specification, UWE-META/1 design note, Roadmap, Technical Audit, Testing, Known Issues and README. Added cross-references to the G0.3.2 audit and G0.3.1 proposal.
+- Rechecked the latest main CI run `42664948843`: `data-generation-tests` passed 69 assertions on .NET SDK 8.0.427. This does not test the diagnostic protocol or RML mod.
+- No RaftModLoader API changes were made, so no new API compatibility claim was introduced. The last official API-source audit remains the 2026-11-09 record.
+- Documentation/design only. No C# source, build, package, local Obsidian vault, Desktop Commander device, game process, save, installed mod or runtime state was accessed or changed.
