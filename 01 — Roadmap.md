@@ -1,49 +1,54 @@
-# Authoritative current status — 2026-11-09
+# Authoritative current status — 2026-11-16
 
 This block is the single current status summary. Older entries below are historical session records and must not be read as current instructions or status when they conflict with this block.
 
 ## Operating mode
-- Repository-only. No local Windows access, compilation, package installation, or Raft launch in this run.
-- The repository's Markdown notes are the available Obsidian-style project notes. The local Obsidian vault itself is not accessible.
-- No Desktop Commander device is connected. Do not claim fresh local inspection, build, installation, or runtime testing.
+- Repository-only. No local Windows project, compilation, package installation, or Raft launch was available in this run.
+- The GitHub repository contains the available Obsidian-style Markdown project notes. The local Obsidian vault is not accessible.
+- Desktop Commander device discovery was checked on 2026-11-16; no devices are connected.
+- Do not claim fresh local inspection, build, installation, package hash verification, or runtime testing.
 
 ## Version and test evidence
 | Item | Current status | Evidence boundary |
 |---|---|---|
 | v0.1.1 lifecycle/read-only probe | Runtime-confirmed PASS | User-provided F10 output; Raft 1.1.01 / Steam 22312909 / RML 2.8.10 |
 | v0.1.2 source | Present in repository | Static source review only |
-| v0.1.2 strict compile/package | Historically reported PASS | Prior local report; not rerun |
-| v0.1.2 file staging | Historically reported SHA match | Prior local report; not rechecked on device |
+| v0.1.2 strict compile/package and file staging | Historically reported PASS | Prior local reports; not re-run or rechecked on device |
 | v0.1.2 in-game load/probe | NOT CONFIRMED | No v0.1.2 runtime output recorded |
-| v0.1.3 | NOT IMPLEMENTED | Metadata-only design documents only |
-| v0.1.3 G0.3.1 output-budget review | DESIGN REVIEWED WITH CORRECTIONS | SUMMARY self-accounting and deterministic ERROR retention clarified; fixture tests unexecuted |
+| v0.1.3 | NOT IMPLEMENTED | Metadata-only design documents; no writer/parser |
+| G0.3.2 audit | REVIEW COMPLETE — AMENDMENTS REQUIRED | Seven design findings; no implementation/tests |
+| G0.3.3 reconciliation | PROPOSED — REVIEW REQUIRED | Canonical ERROR key, bounded multiset, two-phase output and failure semantics documented; not normative |
+| Formal G0 approval | PENDING | Exact target-build metadata/IL and executable fixture evidence are unavailable |
 | Custom Landmark/AssetBundle registration | NOT PROVEN | No verified call graph or IL evidence |
 | Custom placement, persistence, multiplayer | NOT IMPLEMENTED / NOT TESTED | Contracts unresolved |
 
 ## Current phase
-**PHASE 0 — Research / G0 design review.** The minimum RML lifecycle diagnostic exists and v0.1.1 was runtime-confirmed. The v0.1.2 candidate remains unconfirmed in-game. The current work is still a safe metadata-only diagnostic design; custom world generation is not ready for game integration.
+**PHASE 0 — Research / G0 design review.** v0.1.1 is the only read-only probe with runtime confirmation. v0.1.2 build/package/staging reports remain historical and its in-game load is unconfirmed. v0.1.3 is design-only. No custom world-generation path is approved for game integration.
 
 ## Current research deliverables
-- First Landmark Prototype Specification — design only.
-- Landmark API Evidence Matrix — partial evidence transcribed from prior audit notes; not a fresh assembly inspection.
+- First Landmark Prototype Specification and Landmark API Evidence Matrix — research/design only.
 - v0.1.2 Diagnostic Source Review and Boundedness Audit.
 - v0.1.3 Metadata Probe Implementation Plan, Type Discovery and Reflection Safety Specification, and UWE-META/1 schema.
-- G0.3.1 Output Budget Reservation Protocol — reviewed with corrections for self-referential SUMMARY accounting and deterministic bounded ERROR selection.
+- G0.3.1 Output Budget Reservation Protocol — design proposal.
+- G0.3.2 Diagnostic Overflow and Determinism Audit — seven findings.
+- G0.3.3 Diagnostic Protocol Reconciliation — proposed resolution; not formally adopted.
 
 ## Immediate next milestone
-- [x] Cross-review the G0.3.1 reserve arithmetic and output ordering.
-- [x] Define a bounded fixed-point calculation for SUMMARY.characters_emitted, including the SUMMARY record itself.
-- [x] Define deterministic top-32 ERROR retention and assign ERROR.sequence only after sorting.
-- [x] Add design acceptance cases BR11–BR12, OS16–OS17, and M13–M14.
-- [ ] Obtain exact target-build metadata/IL for Landmark, LandmarkData, AsyncedLandmark, SceneLoader, AssetBundleManager, AssetBundleHooker, ChunkManager, ChunkPoint, and ChunkPointType.
-- [ ] Execute fixture/parser acceptance tests TD01–TD27, OS01–OS17 and BR01–BR12; these are design requirements, not executed tests.
-- [ ] Complete formal G0 approval before any v0.1.3 C# implementation, build, package, installation, or runtime test.
+- [x] Reconcile the G0.3.2 diagnostic-key wording with the actual UWE-META/1 ERROR fields.
+- [x] Specify duplicate ERROR descriptors as a bounded multiset without an invented occurrence ordinal.
+- [x] Separate ERROR-cap overflow from retained diagnostics omitted by output capacity.
+- [x] Specify bounded collection, canonical sorting/ID assignment and schema-ordered serialization as separate stages.
+- [x] Clarify independent logical/escaped reserve accounting, one-reason truncation precedence, committed-stream counters and writer-failure semantics.
+- [x] Add G033-T01–G033-T10 as design acceptance cases.
+- [ ] Obtain exact target-build metadata/IL for Landmark, LandmarkData, AsyncedLandmark, SceneLoader, AssetBundleManager, AssetBundleHooker, ChunkManager, ChunkPoint and ChunkPointType.
+- [ ] Complete formal G0 review; only then authorize the v0.1.3 implementation/fixture workflow.
+- [ ] Execute the existing TD/OS/BR/G033 fixture acceptance cases after the implementation gate is approved. None of these protocol fixtures has been executed.
 
 ## CI boundary
-- `.github/workflows/world-generation-self-tests.yml` runs the content-only deterministic world-generation self-test project on pushes, pull requests, and manual dispatch.
-- That workflow does not validate RML loading, Unity AssetBundles, live world mutation, persistence, or multiplayer.
-- PR #1 workflow runs 42664478361 and 42664628650: **PASS**; latest run 42664628650, job `data-generation-tests`, 69 assertions, .NET SDK 8.0.427.
-- This result covers content-only world-generation tests; it does not validate RML loading, Unity AssetBundles, live world mutation, persistence, or multiplayer.
+- Latest main-branch workflow run: `42664948843`, commit `e91df3754eedee2f84bfe2c1c74626deb86cf232`, conclusion **success**.
+- Job `data-generation-tests` completed successfully on .NET SDK 8.0.427; log reports **PASS: 69 assertions**.
+- This workflow tests only the content/data world-generation self-tests. It does not compile the RML mod, validate Unity/Raft integration, load v0.1.2, test UWE-META/1, or prove Landmark registration.
+- The GitHub Actions log emitted a Node.js 20 deprecation warning; it did not fail the job.
 
 ## World-generation implementation gate
 No registration adapter, custom numeric Landmark ID, custom ChunkPointType, AssetBundle load, scene instantiation, world mutation, save write, or network message is approved until manager ownership, call order, key format, identity allocation and host authority are established from exact target-build evidence.
