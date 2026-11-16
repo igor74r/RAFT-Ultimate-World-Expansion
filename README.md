@@ -10,11 +10,12 @@
 - v0.1.1 read-only probe: **runtime confirmed**
 - v0.1.2 build/package and file staging: **historical reports; not freshly verified**
 - v0.1.2 in-game load/probe: **not confirmed**
-- v0.1.3: **not implemented**; metadata-only research scope documented
-- v0.1.3 G0.3.1: SUMMARY self-accounting and deterministic ERROR retention clarified at design level; formal G0 approval remains pending
+- v0.1.3: **not implemented**; metadata-only design scope only
+- G0.3.2: diagnostic overflow/determinism audit completed; seven design amendments identified
+- G0.3.3: schema-aligned reconciliation proposal drafted; **not normative**, formal G0 approval pending
 - Custom island/world generation: **not implemented**
-- World-generation data-only CI: PASS on both PR #1 runs; latest run 42664628650 passed 69 assertions. This is not an in-game/RML integration test
-- Current work: repository-only G0.3.1 output-budget design review; no local build or game launch
+- Latest main CI run 42664948843: **PASS**, 69 data-only assertions on .NET SDK 8.0.427; not an RML/game integration test
+- Current work: repository-only G0 design reconciliation; no local build or game launch
 
 ## Project documentation
 
@@ -50,6 +51,8 @@ The RML project source and Core source are under their respective directories. T
 - [v0.1.3 Type Discovery and Reflection Safety Specification](01%20%E2%80%94%20Research/v0.1.3%20Type%20Discovery%20and%20Reflection%20Safety%20Specification.md)
 - [v0.1.3 UWE-META/1 Output Schema](01%20%E2%80%94%20Research/v0.1.3%20UWE-META-1%20Output%20Schema.md)
 - [v0.1.3 G0.3.1 Output Budget Reservation Protocol](01%20%E2%80%94%20Research/v0.1.3%20G0.3.1%20Output%20Budget%20Reservation%20Protocol.md)
+- [v0.1.3 G0.3.2 Diagnostic Overflow and Determinism Audit](01%20%E2%80%94%20Research/v0.1.3%20G0.3.2%20Diagnostic%20Overflow%20and%20Determinism%20Audit.md)
+- [v0.1.3 G0.3.3 Diagnostic Protocol Reconciliation](01%20%E2%80%94%20Research/v0.1.3%20G0.3.3%20Diagnostic%20Protocol%20Reconciliation.md) — proposed, not approved
 - [World Biome Catalog](Content/World/biomes.json) — four biome definitions.
 - [World Resource Catalog](Content/World/resources.json) — 16 resource identities and biome/source tags.
 - [Island Archetype Catalog](Content/World/islands.json) — eight island and landmark blueprints.
