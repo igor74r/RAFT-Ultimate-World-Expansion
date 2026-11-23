@@ -193,3 +193,21 @@ This is a verified pass for the content-only world-generation self-test project.
 
 After the documentation branch was updated, workflow run `42664628650` (run number 5) completed successfully. The `data-generation-tests` job reports `PASS: 69 assertions` on .NET SDK 8.0.427. This is the latest PR-head result and supersedes the earlier passing run for the initial PR revision. It still covers only the data-only world-generation self-test project.
 
+## G0.3.3 diagnostic protocol reconciliation — design tests only — 2026-11-16
+
+The following cases were added from the G0.3.2 audit and G0.3.3 reconciliation. They are acceptance requirements, not executed tests. No UWE-META/1 writer, parser or fixture harness currently exists.
+
+| ID | Scenario | Expected result | Status |
+|---|---|---|---|
+| G033-T01 | Forty distinct ERROR descriptors discovered in shuffled orders | Same retained top-32 set and serialized order | NOT RUN |
+| G033-T02 | More than 32 byte-identical ERROR descriptors | Retain 32 copies; overflow TRUE; no occurrence ordinal | NOT RUN |
+| G033-T03 | Stable parent identity unavailable | Explicit UNKNOWN; ordering_uncertain TRUE; PARTIAL; no arrival-order fallback | NOT RUN |
+| G033-T04 | Diagnostics differ only by exception type or recoverable flag | Canonical key distinguishes them; deterministic order | NOT RUN |
+| G033-T05 | ERROR-cap overflow and output-cap omission separately and together | errors_overflow TRUE for either; errors_emitted counts committed records only | NOT RUN |
+| G033-T06 | Inventory consumes all ordinary output capacity | Inventory order preserved; omitted ERRORs not counted; terminal TRUNCATED uses reserve | NOT RUN |
+| G033-T07 | Logical and escaped character budgets reach reserve boundaries at different points | Both domains enforced independently | NOT RUN |
+| G033-T08 | Multiple truncation causes arrive in different discovery orders | Same primary reason by fixed precedence; truncations counts committed TRUNCATED records | NOT RUN |
+| G033-T09 | Writer fails midway through a record | Partial record not committed; FAILED; no false SUMMARY | NOT RUN |
+| G033-T10 | Parser recounts fixture containing SUMMARY and terminal TRUNCATED | Record/error/truncation counts and escaped-character fixed point match | NOT RUN |
+
+These tests remain blocked behind formal G0 approval and creation of the explicitly authorized offline fixture implementation. They do not validate Raft or RML APIs.

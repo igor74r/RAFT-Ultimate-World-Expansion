@@ -1,13 +1,16 @@
-# Authoritative repository-only status — 2026-11-09
+# Authoritative repository-only status — 2026-11-16
 
 This block supersedes conflicting older status paragraphs below. Historical build and installation reports are not fresh verification.
 
 - v0.1.1: read-only runtime probe confirmed by user-provided F10 output on Raft 1.1.01 / Steam 22312909 / RML 2.8.10.
-- v0.1.2: source is in GitHub. Strict compile, package integrity and file staging were reported in earlier local sessions; none were re-run in this workflow.
+- v0.1.2: source is in GitHub; strict compile/package and file staging were reported historically, but were not re-run or rechecked in this run.
 - v0.1.2 in-game load and probe: not confirmed.
 - v0.1.3: not implemented; metadata-only design scope only.
-- G0.3.1: budget reservation proposal cross-reviewed; SUMMARY self-accounting and deterministic ERROR retention corrections are documented, but G0 is not approved.
+- G0.3.2: seven diagnostic overflow/determinism findings reviewed.
+- G0.3.3: proposed reconciliation documents the schema-backed ERROR key, duplicate multiset behavior, independent overflow flags, two-phase collection/serialization, reserve accounting, truncation precedence, committed-stream counters and writer-failure semantics. It is not normative and does not approve G0.
+- Formal G0 approval: pending exact target-build metadata/IL and executable fixture evidence.
 - Custom Landmark registration, AssetBundle integration, placement, persistence and multiplayer: unproven/not implemented.
+- The latest main CI run `42664948843` passed `data-generation-tests` with 69 assertions on .NET SDK 8.0.427. This is data-only validation, not an RML build or game test.
 - No Desktop Commander device or local Obsidian vault was accessible. This run used the GitHub repository and its mirrored Markdown project notes only.
 - No local build, installation, package hash verification, game process, save or runtime state was accessed or changed.
 

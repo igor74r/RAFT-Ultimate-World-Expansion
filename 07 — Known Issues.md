@@ -56,3 +56,11 @@ The later installation record supersedes older paragraphs in this file that say 
 - **ISSUE-020 — Local validation environment unavailable:** no Desktop Commander device is connected and the local Obsidian vault/game installation cannot be inspected in this run. **Open.** Required evidence is a connected authorized development device or a supplied exact target-build metadata/IL dump. Do not claim local compilation, installation, or runtime validation until then.
 
 Existing custom Landmark, AssetBundle, custom ChunkPointType, persistence, multiplayer and asset-workflow blockers remain open.
+
+## Repository-only continuation — 2026-11-16
+
+- **ISSUE-021 — G0.3.2 diagnostic key/schema mismatch:** the audit wording suggested an error-code component and deterministic occurrence ordinal that are not fields in the UWE-META/1 ERROR record. **Resolved at proposal level** in G0.3.3 using the schema-backed canonical key `(scope, stable parent metadata identity, operation, exception_type, recoverable)` and bounded multiset handling for identical descriptors. No new schema field is introduced. Fixture verification remains pending.
+- **G0.3.2 overflow/serialization findings:** separate ERROR-cap overflow from output-cap omission; specify two-phase bounded collection/serialization; independent logical/escaped reserve charging; deterministic primary truncation reason; committed-stream counters; and writer-failure handling. **Documented in G0.3.3; not implemented or tested.**
+- **G033-T01–G033-T10:** design acceptance cases added; all remain NOT RUN because no writer/parser fixture harness exists and formal G0 approval is pending.
+- **ISSUE-020 — Local validation environment unavailable:** still OPEN. Desktop Commander device discovery returned no connected devices on 2026-11-16; the local Obsidian vault, exact game assemblies, staged package and runtime state remain inaccessible.
+- Existing custom Landmark, AssetBundle, custom ChunkPointType, persistence, multiplayer and asset-workflow blockers remain open.
